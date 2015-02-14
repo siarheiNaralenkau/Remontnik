@@ -15,6 +15,15 @@
         width:8.5%;
     }
 
+    .topCompanyCell {
+        border:solid 5px lightblue;
+        border-radius: 5px;
+        float:left;
+        height:90px;
+        margin-top: 4px;
+        margin-left:1%;
+    }
+
     .sectionLogo {
         border: solid 1px #999;
         float: left;
@@ -45,9 +54,12 @@
     .top10Companies {
         width: 90%;
         height: 100px;
-        background-color: #CCC;
         margin-top: 3%;
         margin-left: 5%;
+    }
+
+    .top10Inner {
+        margin: auto
     }
 
     .mainMiddle {
@@ -136,14 +148,26 @@
 </div>
 
 <div class="top10Companies">
-    <div class="topCompanySection">Company 1</div>
-    <div class="topCompanySection">Company 2</div>
-    <div class="topCompanySection">Company 3</div>
-    <div class="topCompanySection">Company 4</div>
-    <div class="topCompanySection">Company 5</div>
-    <div class="topCompanySection">Company 6</div>
-    <div class="topCompanySection">Company 7</div>
-    <div class="topCompanySection">Company 8</div>
+    <div class="top10Inner">
+        <table width="100%"><tr>
+{#        <div class="topCompanySection">Company 1</div>#}
+{#        <div class="topCompanySection">Company 2</div>#}
+{#        <div class="topCompanySection">Company 3</div>#}
+{#        <div class="topCompanySection">Company 4</div>#}
+{#        <div class="topCompanySection">Company 5</div>#}
+{#        <div class="topCompanySection">Company 6</div>#}
+{#        <div class="topCompanySection">Company 7</div>#}
+{#        <div class="topCompanySection">Company 8</div>#}
+            <td class="topCompanyCell">Company 1</td>
+            <td class="topCompanyCell">Company 2</td>
+            <td class="topCompanyCell">Company 3</td>
+            <td class="topCompanyCell">Company 4</td>
+            <td class="topCompanyCell">Company 5</td>
+            <td class="topCompanyCell">Company 6</td>
+            <td class="topCompanyCell">Company 7</td>
+            <td class="topCompanyCell">Company 8</td>
+        </tr></table>
+    </div>
 </div>
 
 <div class="mainMiddle">
