@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+</head>
+<body>
+    <h1>Регистрация на сайте</h1>
+    <form action="../create_user/" method="post">
+        {% csrf_token %}
+        <fieldset>
+            <legend>Кто вы?</legend>
+            <input type="radio" name="reg_type" value="client"/>Заказчик
+            <input type="radio" name="reg_type" value="master"/>Исполнитель
+            <input type="radio" name="reg_type" value="seller"/>Продавец
+        </fieldset>
+        <fieldset>
+            <legend>Данные для регистрации</legend>
+            <div class="div_contact_name">
+                <label for="contact_name">Контактное лицо</label>
+                <input type="text" name="contact_name" id="contact_name"/>
+            </div>
+            <div class="div_email">
+                <label for="email">Введите адрес электронной почты</label>
+                <input type="email" name="email" id="email"/>
+            </div>
+            <div class="div_phone">
+                <label for="phone">Введите номер мобильного телефона</label>
+                <input type="tel" name="phone" id="phone"/>
+            </div>
+            <div>
+                <input type="checkbox"/>Я согласен с условиями работы на сайте
+            </div>
+        </fieldset>
+        <input type="submit" value="Зарегистрироваться"/>
+    </form>
+</body>
+</html>

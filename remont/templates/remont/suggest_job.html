@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Предложить работу</title>
+</head>
+<body>
+    <form action="../suggest_job_save/" method="post">
+        {% csrf_token %}
+        {% if not is_autorized %}
+            <div>
+                <label for="contactPerson">Контактное лицо</label>
+                <input type="text" name="contactPerson" id="contactPerson"/>
+            </div>
+        {% endif %}
+        <div>
+            <label for="shortHeader">Краткий заголовок заявки</label>
+            <input type="text" size="50" id="shortHeader" name="shortHeader">
+        </div>
+        <div>
+            <label for="workType">Вид работ</label>
+            <select name="workType" id="workType">
+                {% for type in work_types %}
+                    <option value="{{type.id}}">{{type.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div>
+            <label for="description">Подробнее</label>
+            <textarea name="description" id="description" cols="125" rows="8"></textarea>
+        </div>
+
+        {% if not is_autorized %}
+            <fieldset>
+                <legend>Контакты:</legend>
+                <div>
+                    <label for="phone">Телефон</label>
+                    <input type="tel" name="phone", id="phone"/>
+                </div>
+                <div>
+                    <label for="mail">Электронная почта</label>
+                    <input type="email" name="mail", id="mail"/>
+                </div>
+            </fieldset>
+        {% endif %}
+        <input type="submit" value="Оставить предложение"/>
+    </form>
+</body>
+</html>

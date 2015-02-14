@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Личный кабинет</title>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/profile.js"></script>
+</head>
+<body>
+    <form action="../update_user_profile/" method="post">
+        {% csrf_token %}
+        <input type="hidden" value="{{ user_profile.id }}" name="profile_id"/>
+        <div>
+            <label for="firstName">Имя: </label>
+            <input type="text" size="50" id="firstName" name="first_name" value="{{ user_profile.user.first_name }}">
+        </div>
+        <div>
+            <label for="lastName">Фамилия: </label>
+            <input type="text" size="50" id="lastName" name="last_name" value="{{ user_profile.user.last_name }}">
+        </div>
+        <div>
+            <label for="email">Электронный адрес: </label>
+            <input type="text" size="50" id="email" name="email" value="{{ user_profile.user.email }}">
+        </div>
+        <div>
+            <label for="phone">Телефон: </label>
+            <input type="text" size="50" id="phone" name="phone" value="{{ user_profile.phone }}">
+        </div>
+        <div>
+            <label for="contactName">Контактное имя: </label>
+            <input type="text" size="50" id="contactName" name="contactName" value="{{ user_profile.contact_name }}">
+        </div>
+        <div class="userImages">
+            <span>Выберите фото работ или видеозаписи работ для демонстрации клиентам</span>
+            <input type="file" name="workFiles[]" multiple id="workFiles">
+        </div>
+        <output id="list"></output>
+        <input type="submit" value="Сохранить"/>
+    </form>
+</body>
+</html>
