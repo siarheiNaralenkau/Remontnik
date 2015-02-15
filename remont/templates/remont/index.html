@@ -1,221 +1,107 @@
-<style>
-    .topPage {
-        width:100%;
-        height:100px;
-        background-color:#CCC;
-    }
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+</head>
 
-    .topCompanySection {
-        border:solid 5px lightblue;
-        border-radius: 5px;
-        float:left;
-        height:90px;
-        margin-top: 4px;
-        margin-left:1%;
-        width:8.5%;
-    }
-
-    .topCompanyCell {
-        border:solid 5px lightblue;
-        border-radius: 5px;
-        float:left;
-        height:90px;
-        margin-top: 4px;
-        margin-left:1%;
-    }
-
-    .sectionLogo {
-        border: solid 1px #999;
-        float: left;
-        height: 90px;
-        width: 15%;
-        margin-top: 4px;
-        margin-left: 1%;
-    }
-
-    .sectionBanner {
-        border: solid 1px #999;
-        height: 90px;
-        width: 48%;
-        float: left;
-        margin-top: 4px;
-        margin-left: 10%;
-    }
-
-    .sectionRegister {
-        border: solid 1px #999;
-        height: 90px;
-        width: 15%;
-        float: right;
-        margin-right: 1%;
-        margin-top: 4px;
-    }
-
-    .top10Companies {
-        width: 90%;
-        height: 100px;
-        margin-top: 3%;
-        margin-left: 5%;
-    }
-
-    .top10Inner {
-        margin: auto
-    }
-
-    .mainMiddle {
-        width:100%;
-        height:260px;
-{#        background-color:#CCC;#}
-        margin-top: 3%;
-    }
-
-    .howSiteWorks {
-        margin-left: 2%;
-        width: 30%;
-        height: 250px;
-        background-color: bisque;
-        float: left;
-        margin-top: 4px;
-        border: 1px solid black;
-    }
-
-    .mainMenu {
-        width: 60%;
-        height: 60px;
-        float: left;
-        margin-left: 1%;
-        margin-top: 20px;
-    }
-
-    .menuItemOuter {
-        border:solid 1px black;
-        float:left;
-        height:50px;
-        margin-top: 4px;
-        margin-left:2%;
-        width:30%;
-        display: table;
-        overflow: hidden;
-        background-color: cadetblue;
-    }
-
-    .menuItemInner {
-        display: table-cell;
-        vertical-align: middle;
-        width: 100%;
-        margin: 0 auto;
-        text-align: center;
-    }
-    
-    .suggestJob {
-        width: 40%;
-        height: 60px;
-        margin-top: 20px;
-        margin-left: 10%;
-        border: 1px solid black;
-        float: left;
-        display: table;
-        overflow: hidden;
-    }
-
-    .suggestJobButton {
-        display: table-cell;
-        vertical-align: middle;
-        width: 100%;
-        margin: 0 auto;
-        text-align: center;
-        background-color: darkcyan;
-    }
-
-    .jobsSuggestions {
-        width: 60%;
-        margin: 0 auto;
-        background-color: antiquewhite;
-        overflow-y: auto;
-    }
-</style>
-
-{#<script type="text/javascript" src="/static/remont/js/index.js"></script>#}
-<script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
-<script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
-
-<div class="topPage">
-	<div id="sectionLogo" class="sectionLogo" style="background-color: red">Place logo here</div>
-    <div id="sectionBanner" class="sectionBanner" style="background-color: green">Place banner here</div>
-    <div id="sectionRegister" class="sectionRegister" style="background-color: ">
-		<a href="/remont/register">Регистрация</a>/<a href="/login">Вход</a>
-    </div>
-</div>
-
-<div class="top10Companies">
-    <div class="top10Inner">
-        <table width="100%"><tr>
-{#        <div class="topCompanySection">Company 1</div>#}
-{#        <div class="topCompanySection">Company 2</div>#}
-{#        <div class="topCompanySection">Company 3</div>#}
-{#        <div class="topCompanySection">Company 4</div>#}
-{#        <div class="topCompanySection">Company 5</div>#}
-{#        <div class="topCompanySection">Company 6</div>#}
-{#        <div class="topCompanySection">Company 7</div>#}
-{#        <div class="topCompanySection">Company 8</div>#}
-            <td class="topCompanyCell">Company 1</td>
-            <td class="topCompanyCell">Company 2</td>
-            <td class="topCompanyCell">Company 3</td>
-            <td class="topCompanyCell">Company 4</td>
-            <td class="topCompanyCell">Company 5</td>
-            <td class="topCompanyCell">Company 6</td>
-            <td class="topCompanyCell">Company 7</td>
-            <td class="topCompanyCell">Company 8</td>
-        </tr></table>
-    </div>
-</div>
-
-<div class="mainMiddle">
-    <div id="videoHowItworks" class="howSiteWorks">Video about how the site works</div>
-    <div id="menuDiv" class="mainMenu">
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <a href="/remont/jobs_catalog">Каталог работ</a>
-            </div>
+<body>
+    <div class="topPage">
+        <div id="sectionLogo" class="sectionLogo">
+            <img src="{{ STATIC_URL }}remont/images/logo.jpg" style="width: 100%; height: 100%">
         </div>
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <a href="/remont/goods_catalog">Каталог товаров</a>
-            </div>
+        <div id="sectionBanner" class="sectionBanner">
+            <img src="{{ STATIC_URL }}remont/images/banner.jpg" style="width: 100%; height: 100%">
         </div>
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <a href="/remont/usefull_articles">Полезные статьи</a>
-            </div>
+        <div id="sectionRegister" class="sectionRegister">
+            <a href="/remont/register">Регистрация</a>/<a href="/login">Вход</a>
+        </div>
+    </div>
+
+    <div class="top10Companies">
+        <div class="top10Inner">
+            <table width="100%"><tr>
+                <td class="topCompanyCell">Company 1</td>
+                <td class="topCompanyCell">Company 2</td>
+                <td class="topCompanyCell">Company 3</td>
+                <td class="topCompanyCell">Company 4</td>
+                <td class="topCompanyCell">Company 5</td>
+                <td class="topCompanyCell">Company 6</td>
+                <td class="topCompanyCell">Company 7</td>
+                <td class="topCompanyCell">Company 8</td>
+            </tr></table>
         </div>
     </div>
     
-    <div class="suggestJob">
-        <div class="suggestJobButton">
-            <a href="/remont/suggest_job">Предложить работу</a>
+{#    <div class="searchCompany">#}
+{#        <input type="text" maxlength="80" class="searchInput" name="searchKeyword">#}
+{#        <button class="searchButton">Найти</button>#}
+{#        <select name="city">#}
+{#            {% for city in cities %}#}
+{#                <option value="{{ city.id }}">{{ city.name }}</option>#}
+{#            {% endfor %}#}
+{#        </select>#}
+{#    </div>#}
+
+    <div class="mainMiddle">
+{#        <div id="videoHowItworks" class="howSiteWorks">Video about how the site works</div>#}
+        <div id="menuDiv" class="mainMenu">
+            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
+                <div class="menuItemInner">
+                    <a href="/remont/jobs_catalog">Каталог работ</a>
+                </div>
+            </div>
+            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
+                <div class="menuItemInner">
+                    <a href="/remont/goods_catalog">Каталог товаров</a>
+                </div>
+            </div>
+            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
+                <div class="menuItemInner">
+                    <a href="/remont/usefull_articles">Полезные статьи</a>
+                </div>
+            </div>
+            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
+                <div class="menuItemInner">
+                    <a href="/remont/organizations_list">Организации</a>
+                </div>
+            </div>
+        </div>
+
+        <div class="suggestJob" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_suggest_job.png)">
+            <div class="suggestJobButton">
+                <a href="/remont/suggest_job">Предложить работу</a>
+            </div>
         </div>
     </div>
-</div>
 
-<div class="jobsSuggestions">
-    <h2>Недавно добавленные заказы и тендеры</h2>
-    <ul>
-        {% for job in jobSuggestions%}
-            <li>
-                <div style="border: 1px solid black; margin-left: 10px; margin-top: 10px">
-                    <h3>{{ job.short_header}}</h3>
-                    <h5>{{ job.job_type.name }}</h5>
-                    <div>
-                        <span>{{ job.date_created }}</span>
-                        <p>{{ job.description }}</p>
+    <div class="jobsSuggestions">
+        <div class="suggestionsHeader">
+            <h2>Недавно добавленные заказы и тендеры</h2>
+        </div>
+        <ul>
+            {% for job in jobSuggestions%}
+                <li>
+                    <div style="border: 1px solid black; margin-left: 10px; margin-top: 10px">
+                        <h3>{{ job.short_header}}</h3>
+                        <h5>{{ job.job_type.name }}</h5>
+                        <div>
+                            <span>{{ job.date_created }}</span>
+                            <p>{{ job.description }}</p>
+                        </div>
                     </div>
+                </li>
+            {% endfor %}
+            <li>
+                <div style="margin-top: 10px; background-color: brown; width: 30%" onclick="showMore()">
+                    Показать больше
                 </div>
             </li>
-        {% endfor %}
-        <li>
-            <div style="margin-top: 10px; background-color: brown; width: 30%" onclick="showMore()">
-                Показать больше
-            </div>
-        </li>
-    </ul>
-</div>
+        </ul>
+    </div>
+
+</body>
+</html>

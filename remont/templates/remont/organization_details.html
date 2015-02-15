@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+    <title>Информация об организации {{ organization_details.name }}</title>
+</head>
+<body>
+    <ul class="simple-list">
+        <li>
+            <img src="/remont/{{ organization_details.logo.url }}"/>
+        </li>
+        <li class="org-details"><span class="details-label">Название организации:</span>{{ organization_details.name }}</li>
+        <li class="org-details"><span class="details-label">Город:</span>{{ organization_details.city.name }}</li>
+        <li class="org-details"><span class="details-label">Адрес:</span>{{ organization_details.address }}</li>
+        <li class="org-details"><span class="details-label">Виды выполняемых работ:</span>
+            {% for job_type in organization_details.job_types.all %}
+                {{ job_type.name }},&nbsp;
+            {% endfor %}
+        </li>
+        <li class="org-details"><span class="details-label">Профиль работ:</span>{{ organization_details.type }}</li>
+        <li class="org-details"><span class="details-label">Об организации:</span>
+            <span>{{ organization_details.description }}</span>
+        </li>
+        <li class="org-details"><span class="details-label">Стационарный телефон:</span>{{ organization_details.landline_phone }}</li>
+        <li class="org-details"><span class="details-label">Мобильный телефон:</span>{{ organization_details.mobile_phone }}</li>
+        <li class="org-details"><span class="details-label">Номер факса:</span>{{ organization_details.fax }}</li>
+        <li class="org-details"><span class="details-label">Web-страница:</span>{{ organization_details.web_site }}</li>
+        <li class="org-details"><span class="details-label">Контактный e-mail:</span>{{ organization_details.email }}</li>
+    </ul>
+</body>
+</html>

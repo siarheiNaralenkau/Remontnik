@@ -2,20 +2,19 @@
 
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
-from django.template import loader
-
-from django.template.context import RequestContext
 from django.contrib.auth.models import User
 
 
 # Главная страница приложения
-from remont.models import WorkType, JobSuggestion, UserProfile
+from remont.models import WorkType, JobSuggestion, UserProfile, OrganizationProfile, City
 
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
     jobSuggestions = JobSuggestion.objects.order_by("-date_created")[:5]
-    return render(request, 'remont/index.html', {"jobSuggestions": jobSuggestions})
+    cities = City.objects.all()
+    return render(request, 'remont/index.html', {"jobSuggestions": jobSuggestions, "cities": cities})
+
 
 # Регистрация пользователя
 def register(request):
@@ -72,8 +71,25 @@ def user_profile(request):
         profile_data["user_profile"] = u_profile
         return render(request, "remont/user_profile.html", profile_data)
 
+
 def update_user_profile(request):
     return redirect("/remont/user_profile")
+
+
+# Отображает список организаций
+def organizations_list(request):
+    # city_id = request.REQUEST["city"]
+    # organizations = OrganizationProfile.objects.filter(city=city_id)
+    organizations = OrganizationProfile.objects.all()
+    return render(request, 'remont/organizations_list.html', {"organizatins": organizations})
+
+
+# Отображает подробную информацию о конкретной организации.
+def org_profile(request):
+    org_id = request.REQUEST["org"]
+    print "Organization id: {0}".format(org_id)
+    organization_details = OrganizationProfile.objects.get(id=org_id)
+    return render(request, 'remont/organization_details.html', {"organization_details": organization_details})
 
 
 

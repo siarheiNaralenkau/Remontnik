@@ -22,9 +22,14 @@ def save_job_icon(instance, filename):
     return storage_path
 
 
+def save_organization_logo(instance, filename):
+    storage_path = 'logos/' + filename
+    return storage_path
+
+
 class WorkCategory(models.Model):
     name = models.CharField(u"Наименование категории работ", max_length=100)
-    icon = models.ImageField(upload_to=save_job_icon, null=True)
+    icon = models.ImageField(upload_to="icons/", blank=True, default=None)
 
     def __unicode__(self):
         return self.name
@@ -37,7 +42,6 @@ class WorkCategory(models.Model):
 class WorkType(models.Model):
     name = models.CharField(u"Вид работы", max_length=100)
     category = models.ForeignKey(WorkCategory, verbose_name=u"Категория работ")
-    icon = models.ImageField(upload_to=save_job_icon, null=True)
 
     def __unicode__(self):
         return self.name
@@ -45,6 +49,45 @@ class WorkType(models.Model):
     class Meta:
         verbose_name = u'Вид работы'
         verbose_name_plural = u'Виды работ'
+
+
+class City(models.Model):
+    name = models.CharField(u'Город', max_length=40)
+
+    def __unicode__(self):
+        return self.name
+
+    class Meta:
+        verbose_name = u'Город'
+        verbose_name_plural = u'Города'
+
+
+class OrganizationProfile(models.Model):
+
+    ORG_PROFILE = (
+        (u'industrial', u'Промышленное строительство'),
+        (u'individual', u'Частное строительство'),
+    )
+
+    class Meta:
+        verbose_name = u'Организация'
+        verbose_name_plural = u'Организации'
+
+    name = models.CharField(u'Название организации', max_length=100)
+    city = models.ForeignKey(City, verbose_name=u"Город регистрации")
+    address = models.CharField(u'Адрес', max_length=150)
+    job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
+    logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, null=True)
+    type = models.CharField(u"Профиль работ", max_length=50, choices=ORG_PROFILE, default=u"Частное строительство")
+    description = models.TextField(u"Обшая информация об организации", blank=True)
+    landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True)
+    mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True)
+    fax = models.CharField(u"Номер факса", max_length=40, blank=True)
+    web_site = models.URLField(u"Web-страница",  max_length=100, blank=True)
+    email = models.EmailField(u"Контактный e-mail", max_length=100, blank=True)
+
+    def __unicode__(self):
+        return self.name
 
 
 class UserProfile(models.Model):
