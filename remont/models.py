@@ -3,6 +3,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
+from django.core.exceptions import ValidationError
 
 
 def save_user_photo(instance, filename):
@@ -74,18 +75,40 @@ class OrganizationProfile(models.Model):
         verbose_name_plural = u'Организации'
 
     name = models.CharField(u'Название организации', max_length=100)
-    city = models.ForeignKey(City, verbose_name=u"Город регистрации")
+    city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city")
     address = models.CharField(u'Адрес', max_length=150, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)
     type = models.CharField(u"Профиль работ", max_length=50, choices=ORG_PROFILE, default=u"Частное строительство")
     description = models.TextField(u"Обшая информация об организации", blank=True)
-    landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True)
-    mobile_phone = models.CharField(u"Мобильный телефон", max_length=30)
-    mobile_phone2 = models.CharField(u"Второй мобильный телефон", max_length=30, blank=True)
-    fax = models.CharField(u"Номер факса", max_length=40, blank=True)
+    landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
+    mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True, default='')
+    mobile_phone2 = models.CharField(u"Второй мобильный телефон", max_length=30, blank=True, default='')
+    fax = models.CharField(u"Номер факса", max_length=40, blank=True, default='')
     web_site = models.URLField(u"Web-страница",  max_length=100, blank=True)
     email = models.EmailField(u"Контактный e-mail", max_length=100, blank=True)
+
+    work_cities = models.ManyToManyField(City, verbose_name=u"Организация работает в городах")
+
+    def save(self, *args, **kwargs):
+        if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
+            raise ValidationError(u"Заполните хотя бы одно из полей: " + ", ".join([
+                OrganizationProfile._meta.get_field_by_name('landline_phone')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('mobile_phone')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
+            ]))
+        else:
+            super(OrganizationProfile, self).save(*args, **kwargs)
+
+    def clean(self):
+        if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
+            raise ValidationError(u"Заполните хотя бы одно из полей: " + ", ".join([
+                OrganizationProfile._meta.get_field_by_name('landline_phone')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('mobile_phone')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
+                OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
+            ]))
 
     def __unicode__(self):
         return self.name
