@@ -39,6 +39,9 @@ else:
     MEDIA_ROOT = "/home/media/"
 MEDIA_URL = "media/"
 
+# Environment configuration(local or remote)
+ENVIRONMENT = os.environ.get('REM_ENVIRONMENT', 'local')
+
 ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Application definition
 
@@ -70,13 +73,6 @@ WSGI_APPLICATION = 'remontnik.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
-
-# DATABASES = {
-#     'default': {
-#         'ENGINE': 'django.db.backends.sqlite3',
-#         'NAME': os.path.join(BASE_DIR, 'db.sqlite3'),
-#     }
-# }
 DATABASES = {
     'default': {
         'NAME': 'remontnik',
@@ -85,6 +81,9 @@ DATABASES = {
         'PASSWORD': 'remontnik',
     }
 }
+
+if ENVIRONMENT == 'remote':
+    DATABASES['default']['HOST'] = '31.130.201.148'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

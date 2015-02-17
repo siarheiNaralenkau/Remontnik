@@ -10,7 +10,7 @@ class WorkTypeAdmin(admin.ModelAdmin):
 
 class OrganizationProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'type', 'city', 'address')
-    list_filter = ('city', 'type', 'job_types', 'job_types__category', 'work_cities')
+    list_filter = ('city', 'job_types__category', 'type', 'job_types', 'work_cities')
 
 admin.site.register(WorkCategory)
 admin.site.register(WorkType, WorkTypeAdmin)
