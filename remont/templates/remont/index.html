@@ -40,7 +40,14 @@
             </tr></table>
         </div>
     </div>
-    
+
+    <div class="placeJobOrder" style="width: 600px; margin: 0 auto">
+        <form action="../suggest_job_save/" method="post">
+            {% csrf_token %}
+            {{ suggest_job_form.as_p }}
+            <input type="button" id="placeOrderButton" value="Оставить заявку" onclick="placeJobOrder()"/>
+        </form>
+    </div>
 {#    <div class="searchCompany">#}
 {#        <input type="text" maxlength="80" class="searchInput" name="searchKeyword">#}
 {#        <button class="searchButton">Найти</button>#}

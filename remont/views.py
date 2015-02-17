@@ -3,7 +3,7 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
-
+from rem_forms import SuggestJobForm
 
 # Главная страница приложения
 from remont.models import WorkType, JobSuggestion, UserProfile, OrganizationProfile, City
@@ -11,9 +11,11 @@ from remont.models import WorkType, JobSuggestion, UserProfile, OrganizationProf
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
-    jobSuggestions = JobSuggestion.objects.order_by("-date_created")[:5]
+    job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
     cities = City.objects.all()
-    return render(request, 'remont/index.html', {"jobSuggestions": jobSuggestions, "cities": cities})
+    suggest_job_form = SuggestJobForm()
+    return render(request, 'remont/index.html', {"jobSuggestions": job_suggestions, "cities": cities,
+                                                 "suggest_job_form": suggest_job_form})
 
 
 # Регистрация пользователя
