@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <script type="text/javascript">
+        function expand(categoryItem) {
+            var typesList = categoryItem.childNodes[1]
+            var isVisible = typesList.style.display;
+            if(isVisible == 'none')
+                typesList.style.display = 'block';
+            else {
+                typesList.style.display = 'none';
+            }
+        }
+
+        function stopProcessing(event) {
+            event.stopPropagation();
+        }
+    </script>
+    <ul>
+        <li onclick="expand(this)">
+            Клининговые услуги
+            <ul class="expandable" style="display: none">
+                <li onclick="stopProcessing(event)">
+                    <label for="id_job_types_1">
+                        <input id="id_job_types_1" name="job_types" type="checkbox" value="1"/>
+                        Аренда инструмента и оборудования
+                    </label>
+                </li>
+                <li onclick="stopProcessing(event)">
+                    <label for="id_job_types_2">
+                        <input id="id_job_types_2" name="job_types" type="checkbox" value="2" />
+                        Мойка фасадов
+                    </label>
+                </li>
+                <li onclick="stopProcessing(event)">
+                    <label for="id_job_types_3">
+                        <input id="id_job_types_3" name="job_types" type="checkbox" value="3" />
+                        Вывоз строительного мусора
+                    </label>
+                </li>
+                <li onclick="stopProcessing(event)">
+                    <label for="id_job_types_3">
+                        <input id="id_job_types_4" name="job_types" type="checkbox" value="4" />
+                        Уборка помещений
+                    </label>
+                </li>
+            </ul>
+        </li>
+        <li onclick="expand(this)">
+            Строительство. Монтажные работы
+            <ul class="expandable" style="display: none">
+                <li>Строительство бассейнов</li>
+                <li>Работа с металлом. Ковка</li>
+                <li>Монтаж и отделка лестниц</li>
+                <li>Изоляционные работы</li>
+            </ul>
+        </li>
+    </ul>
+</body>
+</html>
