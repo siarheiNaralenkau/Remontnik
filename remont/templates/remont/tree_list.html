@@ -7,11 +7,14 @@
 <body>
     <script type="text/javascript">
         function expand(categoryItem) {
-            var typesList = categoryItem.childNodes[1]
+            var typesList = categoryItem.childNodes[5];
             var isVisible = typesList.style.display;
-            if(isVisible == 'none')
+            if(isVisible == 'none') {
+                categoryItem.childNodes[1].innerHTML = '-';
                 typesList.style.display = 'block';
+            }
             else {
+                categoryItem.childNodes[1].innerHTML = '+';
                 typesList.style.display = 'none';
             }
         }
@@ -20,11 +23,33 @@
             event.stopPropagation();
         }
     </script>
+    <style>
+        .expand-state {
+            margin-right: 10px;
+            font-size: 16px;
+            border: 1px solid black;
+            padding-left: 5px;
+            padding-right: 5px;
+        }
+        .category-label {
+            padding: 6px 6px 6px 6px;
+            background-color: #c5c5c5;
+            border-radius: 10px;
+            box-shadow: 0 0 7px rgba(0,0,0,0.6);
+        }
+        .job-item-first {
+            margin-top: 7px
+        }
+        ul {
+            list-style-type: none;
+        }
+    </style>
     <ul>
-        <li onclick="expand(this)">
-            Клининговые услуги
+        <li onclick="expand(this)"; style="margin-bottom: 10px">
+            <span class="expand-state">+</span>
+            <span class="category-label">Клининговые услуги</span>
             <ul class="expandable" style="display: none">
-                <li onclick="stopProcessing(event)">
+                <li onclick="stopProcessing(event)" class="job-item-first">
                     <label for="id_job_types_1">
                         <input id="id_job_types_1" name="job_types" type="checkbox" value="1"/>
                         Аренда инструмента и оборудования

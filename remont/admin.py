@@ -59,7 +59,7 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
                 output.append(format_html(u'<label for="{0}_{1}">'.format(id_, job_type.id)))
                 output.append(format_html(u'<input id="{0}_{1}" name="{2}" type="checkbox" value={3}'.
                                           format(id_, job_type.id, name, job_type.id)))
-                if job_type.id in value:
+                if value and job_type.id in value:
                     output.append(format_html(u' checked="checked"'))
                 output.append(format_html(u'/>{0}</label></li>'.format(job_type.name)))
             output.append(format_html(u'</ul></li>'))
