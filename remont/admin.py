@@ -26,11 +26,14 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
         output = [u"""
             <script type="text/javascript">
                 function expand(categoryItem) {
-                    var typesList = categoryItem.childNodes[1]
+                    var typesList = categoryItem.childNodes[5];
                     var isVisible = typesList.style.display;
-                    if(isVisible == 'none')
+                    if(isVisible == 'none') {
+                        categoryItem.childNodes[1].innerHTML = '-';
                         typesList.style.display = 'block';
+                    }
                     else {
+                        categoryItem.childNodes[1].innerHTML = '+';
                         typesList.style.display = 'none';
                     }
                 }
@@ -39,6 +42,27 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
                     event.stopPropagation();
                 }
             </script>
+            <style>
+                .expand-state {
+                    margin-right: 10px;
+                    font-size: 16px;
+                    border: 1px solid black;
+                    padding-left: 5px;
+                    padding-right: 5px;
+                }
+                .category-label {
+                    padding: 6px 6px 6px 6px;
+                    background-color: #c5c5c5;
+                    border-radius: 10px;
+                    box-shadow: 0 0 7px rgba(0,0,0,0.6);
+                }
+                .job-item-first {
+                    margin-top: 7px
+                }
+                ul {
+                    list-style-type: none;
+                }
+            </style>
         """]
 
         output.append(start_tag)
@@ -52,10 +76,12 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
         # Forming the output.
         for category in types_by_category:
             types = types_by_category[category]
-            output.append(format_html(u'<li onclick="expand(this)">{0}'.format(category)))
+            output.append(format_html(u'<li onclick="expand(this)" style="margin-bottom: 10px">'))
+            output.append(format_html(u'<span class="expand-state">+</span>'))
+            output.append(format_html(u'<span class="category-label">{0}</span>'.format(category)))
             output.append(format_html(u'<ul class="expandable" style="display: none">'))
             for job_type in types:
-                output.append(format_html(u'<li onclick="stopProcessing(event)">'))
+                output.append(format_html(u'<li onclick="stopProcessing(event)" class="job-item-first">'))
                 output.append(format_html(u'<label for="{0}_{1}">'.format(id_, job_type.id)))
                 output.append(format_html(u'<input id="{0}_{1}" name="{2}" type="checkbox" value={3}'.
                                           format(id_, job_type.id, name, job_type.id)))

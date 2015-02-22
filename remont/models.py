@@ -4,7 +4,6 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.exceptions import ValidationError
-from mptt.models import MPTTModel, TreeForeignKey
 
 
 def save_user_photo(instance, filename):
@@ -76,7 +75,7 @@ class OrganizationProfile(models.Model):
         verbose_name_plural = u'Организации'
 
     name = models.CharField(u'Название организации', max_length=100)
-    city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city")
+    city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
     address = models.CharField(u'Адрес', max_length=150, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)
