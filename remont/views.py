@@ -61,7 +61,10 @@ def suggest_job_save(request):
 @csrf_exempt
 def suggest_job_save_ajax(request):
     job_type_id = request.POST["job_type"]
-    job_type = WorkType.objects.filter(id=job_type_id).first()
+    if job_type_id:
+        job_type = WorkType.objects.filter(id=job_type_id).first()
+    else:
+        job_type = None
     job = JobSuggestion(contact_name=request.POST["contact_name"],
                         job_type=job_type,
                         description=request.POST["job_description"],
@@ -69,7 +72,11 @@ def suggest_job_save_ajax(request):
                         email=request.POST["contact_mail"],
                         short_header=request.POST["job_header"])
     job.save()
-    response_data = {'header': job.short_header, 'type_name': job.job_type.name,
+    if job_type:
+        type_name = job_type.name
+    else:
+        type_name = u''
+    response_data = {'header': job.short_header, 'type_name': type_name,
                      'date_created': job.date_created, 'description': job.description}
     response = JsonResponse(response_data, safe=False)
     return response
