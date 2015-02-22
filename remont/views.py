@@ -3,18 +3,24 @@
 from django.shortcuts import render, redirect
 from django.http import HttpResponse
 from django.contrib.auth.models import User
+from django.http import JsonResponse
+from django.views.decorators.csrf import csrf_exempt
+from django.core import serializers
+
 from rem_forms import SuggestJobForm
 
 # Главная страница приложения
-from remont.models import WorkType, JobSuggestion, UserProfile, OrganizationProfile, City
+from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City
 
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
     job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
     cities = City.objects.all()
+    categories = WorkCategory.objects.all()
     suggest_job_form = SuggestJobForm()
     return render(request, 'remont/index.html', {"jobSuggestions": job_suggestions, "cities": cities,
+                                                 "categories": categories,
                                                  "suggest_job_form": suggest_job_form})
 
 
@@ -50,6 +56,23 @@ def suggest_job_save(request):
                         phone=phone, email=mail, short_header=header)
     job.save()
     return redirect("/remont")
+
+
+@csrf_exempt
+def suggest_job_save_ajax(request):
+    job_type_id = request.POST["job_type"]
+    job_type = WorkType.objects.filter(id=job_type_id).first()
+    job = JobSuggestion(contact_name=request.POST["contact_name"],
+                        job_type=job_type,
+                        description=request.POST["job_description"],
+                        phone=request.POST["contact_phone"],
+                        email=request.POST["contact_mail"],
+                        short_header=request.POST["job_header"])
+    job.save()
+    response_data = {'header': job.short_header, 'type_name': job.job_type.name,
+                     'date_created': job.date_created, 'description': job.description}
+    response = JsonResponse(response_data, safe=False)
+    return response
 
 
 # Регистрация нового пользователя
@@ -92,6 +115,19 @@ def org_profile(request):
     print "Organization id: {0}".format(org_id)
     organization_details = OrganizationProfile.objects.get(id=org_id)
     return render(request, 'remont/organization_details.html', {"organization_details": organization_details})
+
+
+# Получает список видо работ по категории
+def get_job_types_by_category(request):
+    category_id = request.GET["category_id"]
+    category = WorkCategory.objects.get(pk=category_id)
+    work_types = WorkType.objects.filter(category=category)
+    response_data = []
+    for w_type in work_types:
+        response_data.append({'id': w_type.id, 'name': w_type.name})
+    response = JsonResponse(response_data, safe=False)
+    return response
+
 
 
 

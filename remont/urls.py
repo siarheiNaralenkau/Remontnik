@@ -12,7 +12,9 @@ urlpatterns = patterns('',
     url(r'^user_profile/$', views.user_profile, name='user_profile'),
     url(r'^update_user_profile/$', views.update_user_profile, name='update_user_profile'),
     url(r'^organizations_list/$', views.organizations_list, name='organizations_list'),
-    url(r'^org_profile/$', views.org_profile, name='org_profile')
+    url(r'^org_profile/$', views.org_profile, name='org_profile'),
+    url(r'^get_job_types_by_category/$', views.get_job_types_by_category, name='get_job_types_by_category'),
+    url(r'^suggest_job_save_ajax/$', views.suggest_job_save_ajax, name='suggest_job_save_ajax'),
 )
 
 if settings.DEBUG:
@@ -20,4 +22,4 @@ if settings.DEBUG:
         url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
             'document_root': settings.MEDIA_ROOT,
         }),
-   )
+    )

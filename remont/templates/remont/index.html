@@ -6,6 +6,57 @@
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+    <script type="text/javascript">
+        String.prototype.format = function () {
+            var args = arguments;
+            return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
+        };
+
+        function categoryChanged() {
+            var categoryId = $(this).val();
+            $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
+                    function(data) {
+                        console.log(data);
+                        $('#job_type').children('option:not(:first)').remove();
+                        for(var i = 0; i < data.length; i++) {
+                            $('#job_type')
+                                 .append($("<option></option>")
+                                 .attr("value",data[i].id)
+                                 .text(data[i].name));
+                        }
+                    }
+            );
+        };
+
+        function saveJobRequest() {
+            var data = {
+                'job_header': $(".job_header").first().val(),
+                'job_category': $(".job_category").first().val(),
+                'job_type': $(".job_type").first().val(),
+                'job_description': $(".job_description").first().val(),
+                'contact_name': $(".contact_name").first().val(),
+                'job_city': $(".job_city").first().val(),
+                'contact_phone': $(".contact_phone").first().val(),
+                'contact_mail': $(".contact_mail").first().val()
+            };
+            $.post('/remont/suggest_job_save_ajax/', data, refreshJobs)
+        };
+
+        function refreshJobs(data, textStatus, jqXHR) {
+            var jobRequestsList = $('.job-requests-list').first()
+            var jobsHtml = jobRequestsList.html()
+            var newSuggestionHtml = '<li><div class="job-request-div"><h3>{0}</h3><h5>{1}</h5><div><span>{2}</span><p>{3}</p></div></div></li>'
+                    .format(data.header, data.type_name, data.date_created, data.description)
+            var newHtml = newSuggestionHtml + jobsHtml;
+            jobRequestsList.html(newHtml);
+            $('.suggest-job-form')[0].reset();
+        };
+
+        $(document).ready(function() {
+            $("#job_category").change(categoryChanged);
+            $(".place-job-request-btn").click(saveJobRequest);
+        });
+    </script>
 </head>
 
 <body>
@@ -41,25 +92,10 @@
         </div>
     </div>
 
-    <div class="placeJobOrder" style="width: 600px; margin: 0 auto">
-        <form action="../suggest_job_save/" method="post">
-            {% csrf_token %}
-            {{ suggest_job_form.as_p }}
-            <input type="button" id="placeOrderButton" value="Оставить заявку" onclick="placeJobOrder()"/>
-        </form>
-    </div>
-{#    <div class="searchCompany">#}
-{#        <input type="text" maxlength="80" class="searchInput" name="searchKeyword">#}
-{#        <button class="searchButton">Найти</button>#}
-{#        <select name="city">#}
-{#            {% for city in cities %}#}
-{#                <option value="{{ city.id }}">{{ city.name }}</option>#}
-{#            {% endfor %}#}
-{#        </select>#}
-{#    </div>#}
+    {% include "remont/add_work_template.html"%}
 
     <div class="mainMiddle">
-{#        <div id="videoHowItworks" class="howSiteWorks">Video about how the site works</div>#}
+
         <div id="menuDiv" class="mainMenu">
             <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
                 <div class="menuItemInner">
@@ -83,21 +119,16 @@
             </div>
         </div>
 
-        <div class="suggestJob" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_suggest_job.png)">
-            <div class="suggestJobButton">
-                <a href="/remont/suggest_job">Предложить работу</a>
-            </div>
-        </div>
     </div>
 
     <div class="jobsSuggestions">
         <div class="suggestionsHeader">
             <h2>Недавно добавленные заказы и тендеры</h2>
         </div>
-        <ul>
+        <ul class="job-requests-list simple-list">
             {% for job in jobSuggestions%}
                 <li>
-                    <div style="border: 1px solid black; margin-left: 10px; margin-top: 10px">
+                    <div class="job-request-div">
                         <h3>{{ job.short_header}}</h3>
                         <h5>{{ job.job_type.name }}</h5>
                         <div>

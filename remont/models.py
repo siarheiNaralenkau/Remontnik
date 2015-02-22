@@ -131,7 +131,7 @@ class UserProfile(models.Model):
     contact_name = models.CharField(u"Контактное имя", max_length=60, blank=True, default="")
     profile_image = models.ImageField(u"Логотип или фото", upload_to=save_user_photo, null=True)
 
-@python_2_unicode_compatible
+
 class JobSuggestion(models.Model):
     class Meta:
         verbose_name = u"Предложение по работе"
@@ -146,12 +146,10 @@ class JobSuggestion(models.Model):
     date_created = models.DateTimeField(verbose_name=u"Дата создания", auto_now_add=True)
 
     def __unicode__(self):
-        return "Job info: {0}, {1}, {2}, {3}, {4}".format(self.contact_name, self.job_type, self.description,
-                                                          self.phone, self.email)
-
-    def __str__(self):
-        return "Job info: {0}, {1}, {2}, {3}, {4}".format(self.contact_name, self.job_type, self.description,
-                                                          self.phone, self.email)
+        return self.short_header
+    # def __unicode__(self):
+    #     return "Job info: {0}, {1}, {2}, {3}, {4}".format(self.contact_name, self.job_type, self.description,
+    #                                                       self.phone, self.email)
 
 
 class UserMedia(models.Model):
