@@ -92,6 +92,7 @@
     float: left;
     margin-left: 5%;
     margin-top: 20px;
+    margin-bottom: 20px;
 }
 
 .menuItemOuter {
@@ -131,12 +132,15 @@
 .jobsSuggestions {
     width: 60%;
     margin: 0 auto;
-    background-color: antiquewhite;
+    background-color: rgb(245, 245, 245);
+    border-radius: 4px;
     overflow-y: auto;
 }
 
 .suggestionsHeader {
     margin: 0 auto;
+    background: linear-gradient(rgb(180, 180, 180), rgb(230, 230, 230));
+    border-radius: 4px;
 }
 
 .simple-list {
@@ -156,15 +160,18 @@
 .job-request-div {
     margin-left: 10px;
     margin-top: 10px;
-    border-bottom: 2px dotted black;
+    margin-right: 20px;
+    padding: 10px;
+    background-color: #ffffff;
+    border: 1px solid darkgray;
 }
 
 /*Стили для формы оставления заявки о работе*/
 .placeJobOrder {
-    width: 600px;
+    width: 850px;
     margin: 0 auto;
-    border-radius: 5px;
-    background-color: rgb(201, 249, 157);
+    border-radius: 4px;
+    background-color: rgb(245, 245, 245);
 }
 
 .input-fields-div {
@@ -172,12 +179,12 @@
     margin-left: 50px
 }
 .input-base {
-    border-radius: 5px
+    border-radius: 4px
 }
 .action-btn {
-    width: 200px;
+    width: 350px;
     height: 40px;
-    border-radius: 8px;
+    border-radius: 4px;
     background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));
     font-size: 18px;
     font-weight: 700;
