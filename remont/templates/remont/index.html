@@ -77,20 +77,21 @@
         </div>
     </div>
 
-    <div class="top10Companies">
-        <div class="top10Inner">
-            <table width="100%"><tr>
-                <td class="topCompanyCell">Company 1</td>
-                <td class="topCompanyCell">Company 2</td>
-                <td class="topCompanyCell">Company 3</td>
-                <td class="topCompanyCell">Company 4</td>
-                <td class="topCompanyCell">Company 5</td>
-                <td class="topCompanyCell">Company 6</td>
-                <td class="topCompanyCell">Company 7</td>
-                <td class="topCompanyCell">Company 8</td>
-            </tr></table>
-        </div>
-    </div>
+    {% include "remont/top_orgs_template.html" %}
+{#    <div class="top10Companies">#}
+{#        <div class="top10Inner">#}
+{#            <table width="100%"><tr>#}
+{#                <td class="topCompanyCell">Company 1</td>#}
+{#                <td class="topCompanyCell">Company 2</td>#}
+{#                <td class="topCompanyCell">Company 3</td>#}
+{#                <td class="topCompanyCell">Company 4</td>#}
+{#                <td class="topCompanyCell">Company 5</td>#}
+{#                <td class="topCompanyCell">Company 6</td>#}
+{#                <td class="topCompanyCell">Company 7</td>#}
+{#                <td class="topCompanyCell">Company 8</td>#}
+{#            </tr></table>#}
+{#        </div>#}
+{#    </div>#}
 
     {% include "remont/add_work_template.html"%}
 
