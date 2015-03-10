@@ -84,6 +84,8 @@ DATABASES = {
 
 if ENVIRONMENT == 'remote':
     DATABASES['default']['HOST'] = '31.130.201.148'
+    DATABASES['default']['USER'] = 'remontnik'
+    DATABASES['default']['PASSWORD'] = 'remontnik'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/

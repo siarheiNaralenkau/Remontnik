@@ -6,6 +6,7 @@
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
     <script type="text/javascript">
         String.prototype.format = function () {
             var args = arguments;
@@ -62,64 +63,49 @@
 <body>
     <div class="topPage">
         <div id="sectionLogo" class="sectionLogo">
-            <img src="{{ STATIC_URL }}remont/images/logo.jpg" style="width: 100%; height: 100%">
+            <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
         </div>
         <div id="sectionBanner" class="sectionBanner">
-            <img src="{{ STATIC_URL }}remont/images/banner.jpg" style="width: 100%; height: 100%">
+            <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
         </div>
         <div id="sectionRegister" class="sectionRegister">
-            <a href="/remont/register">Регистрация</a>/<a href="/login">Вход</a>
-            <span>Тип работ</span>
-            <select name="jobTypes">
-                <option value="1">Промышленные</option>
-                <option value="2">Индивидуальные</option>
-            </select>
+            <div class="center-hor">
+                <a href="/remont/register">Регистрация</a>/<a href="/login">Вход</a>
+            </div>
+            <div class="center-hor margin-top20">
+                <span>Тип работ</span>
+                <select name="jobTypes">
+                    <option value="1">Промышленные</option>
+                    <option value="2">Индивидуальные</option>
+                </select>
+            </div>
         </div>
     </div>
 
     {% include "remont/top_orgs_template.html" %}
-{#    <div class="top10Companies">#}
-{#        <div class="top10Inner">#}
-{#            <table width="100%"><tr>#}
-{#                <td class="topCompanyCell">Company 1</td>#}
-{#                <td class="topCompanyCell">Company 2</td>#}
-{#                <td class="topCompanyCell">Company 3</td>#}
-{#                <td class="topCompanyCell">Company 4</td>#}
-{#                <td class="topCompanyCell">Company 5</td>#}
-{#                <td class="topCompanyCell">Company 6</td>#}
-{#                <td class="topCompanyCell">Company 7</td>#}
-{#                <td class="topCompanyCell">Company 8</td>#}
-{#            </tr></table>#}
-{#        </div>#}
-{#    </div>#}
-
     {% include "remont/add_work_template.html"%}
 
-    <div class="mainMiddle">
-
-        <div id="menuDiv" class="mainMenu">
-            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
-                <div class="menuItemInner">
-                    <a href="/remont/jobs_catalog">Каталог работ</a>
-                </div>
-            </div>
-            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
-                <div class="menuItemInner">
-                    <a href="/remont/goods_catalog">Каталог товаров</a>
-                </div>
-            </div>
-            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
-                <div class="menuItemInner">
-                    <a href="/remont/usefull_articles">Полезные статьи</a>
-                </div>
-            </div>
-            <div class="menuItemOuter" style="background-image: url({{ STATIC_URL }}../../static/remont/images/fon_menu.png)">
-                <div class="menuItemInner">
-                    <a href="/remont/organizations_list">Организации</a>
-                </div>
+    <div id="menuDiv" class="mainMenu">
+        <div class="menuItemOuter">
+            <div class="menuItemInner">
+                <input type="button" class="action-btn width100p" value="Каталог работ"/>
             </div>
         </div>
-
+        <div class="menuItemOuter">
+            <div class="menuItemInner">
+                <input type="button" class="action-btn width100p" value="Каталог товаров"/>
+            </div>
+        </div>
+        <div class="menuItemOuter">
+            <div class="menuItemInner">
+                <input type="button" class="action-btn width100p" value="Полезные статьи"/>
+            </div>
+        </div>
+        <div class="menuItemOuter">
+            <div class="menuItemInner">
+                <input type="button" class="action-btn width100p" value="Организации"/>
+            </div>
+        </div>
     </div>
 
     <div class="jobsSuggestions">
@@ -140,8 +126,8 @@
                 </li>
             {% endfor %}
             <li>
-                <div style="margin-top: 10px; background-color: brown; width: 30%" onclick="showMore()">
-                    Показать больше
+                <div class="div-show-more">
+                    <input type="button" class="action-btn btn-show-more" value="Показать больше" onclick="showMore()"/>
                 </div>
             </li>
         </ul>
