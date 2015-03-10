@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion
+from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape, format_html
@@ -128,4 +128,5 @@ admin.site.register(UserProfile)
 admin.site.register(City)
 admin.site.register(OrganizationProfile, OrganizationProfileAdmin)
 admin.site.register(JobSuggestion)
+admin.site.register(WorkSpec)
 
