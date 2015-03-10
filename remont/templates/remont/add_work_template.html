@@ -1,39 +1,36 @@
 <div class="placeJobOrder">
     <form action="../suggest_job_save/" method="post" class="suggest-job-form">
         <div class="input-fields-div">
-            <input type="text" name="job_header" placeholder="Краткий заголовок заявки" style="width: 750px; margin-top: 10px" class="input-base job_header">
+            <input type="text" name="job_header" placeholder="Краткий заголовок заявки" class="input-base job_header">
         </div>
         <div class="input-fields-div">
-            <select name="job_category" id="job_category" style="width: 300px" class="input-base job_category">
+            <select name="job_category" id="job_category" class="input-base job_category">
                 <option value="" disabled selected>Категория работ</option>
                 {% for category in categories %}
                     <option value="{{ category.id }}">{{ category.name }}</option>
                 {% endfor %}
             </select>
 
-            <select name="job_type" id="job_type" style="width: 300px; margin-left: 150px" class="input-base job_type">
+            <select name="job_type" id="job_type" class="input-base job_type">
                 <option value="" disabled selected>Вид работ</option>
-                <option>Вид 1</option>
-                <option>Вид 2</option>
-                <option>Вид 3</option>
             </select>
         </div>
         <div class="input-fields-div">
-            <textarea style="width: 750px; height: 120px; border-radius: 10px"
+            <textarea
                       placeholder="Максимально подробное описание работ(площадь, объем, сроки и т.п.)"
                       class="job_description">
             </textarea>
         </div>
         <div class="input-fields-div">
-            <input type="text" placeholder="Контактное лицо" class="input-base contact_name" style="width: 300px">
-            <input type="text" placeholder="Ваш город" class="input-base job_city" style="width: 300px; margin-left: 140px">
+            <input type="text" placeholder="Контактное лицо" class="input-base contact_name">
+            <input type="text" placeholder="Ваш город" class="input-base job_city">
         </div>
         <div class="input-fields-div">
-            <input type="tel" placeholder="Телефон" class="input-base contact_phone" style="width: 300px">
-            <input type="email" placeholder="Электронная почта" class="input-base contact_mail" style="width: 300px; margin-left: 140px">
+            <input type="tel" placeholder="Телефон" class="input-base contact_phone">
+            <input type="email" placeholder="Электронная почта" class="input-base contact_mail">
         </div>
-        <div class="input-fields-div" style="margin-bottom: 20px">
-            <input type="button" id="placeOrderButton" value="Оставить заявку" class="action-btn place-job-request-btn" style="margin-left: 175px; margin-bottom: 10px"/>
+        <div class="input-fields-div margin-top20">
+            <input type="button" id="placeOrderButton" value="Оставить заявку" class="action-btn place-job-request-btn"/>
         </div>
     </form>
 </div>

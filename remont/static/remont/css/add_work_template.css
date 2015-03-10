@@ -1,0 +1,52 @@
+.job_header {
+    width: 750px;
+    margin-top: 10px
+}
+
+.job_category {
+    width: 300px
+}
+
+.job_type {
+    width: 300px;
+    margin-left: 150px
+}
+
+.job_description {
+    width: 750px;
+    height: 60px;
+    border-radius: 10px;
+    overflow-y: auto
+}
+
+.contact_name {
+    width: 300px
+}
+
+.job_city {
+    width: 300px;
+    margin-left: 140px
+}
+
+.contact_phone {
+    width: 300px
+}
+
+.contact_mail {
+    width: 300px;
+    margin-left: 140px
+}
+
+.margin-top20 {
+    margin-top: 20px
+}
+
+.place-job-request-btn {
+    margin-left: 175px;
+    margin-bottom: 10px;
+    width: 350px
+}
+
+.width350 {
+    width: 350px;
+}

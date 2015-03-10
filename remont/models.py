@@ -63,12 +63,24 @@ class City(models.Model):
         verbose_name_plural = u'Города'
 
 
-class OrganizationProfile(models.Model):
+class WorkSpec(models.Model):
 
-    ORG_PROFILE = (
+    WORK_SPEC = (
         (u'industrial', u'Промышленное строительство'),
         (u'individual', u'Частное строительство'),
     )
+
+    class  Meta:
+        verbose_name = u"Специализация"
+        verbose_name_plural = u"Специализации работ"
+
+    def __unicode__(self):
+        return self.get_name_display()
+
+    name = models.CharField(u"Специализация", max_length=50, choices=WORK_SPEC)
+
+
+class OrganizationProfile(models.Model):    
 
     class Meta:
         verbose_name = u'Организация'
@@ -78,8 +90,8 @@ class OrganizationProfile(models.Model):
     city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
     address = models.CharField(u'Адрес', max_length=150, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
-    logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)
-    type = models.CharField(u"Профиль работ", max_length=50, choices=ORG_PROFILE, default=u"Частное строительство")
+    logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)    
+    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
     mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True, default='')
@@ -146,10 +158,7 @@ class JobSuggestion(models.Model):
     date_created = models.DateTimeField(verbose_name=u"Дата создания", auto_now_add=True)
 
     def __unicode__(self):
-        return self.short_header
-    # def __unicode__(self):
-    #     return "Job info: {0}, {1}, {2}, {3}, {4}".format(self.contact_name, self.job_type, self.description,
-    #                                                       self.phone, self.email)
+        return self.short_header    
 
 
 class UserMedia(models.Model):
@@ -165,5 +174,3 @@ class UserMedia(models.Model):
     work_file = models.FileField(upload_to=save_media_file)
     file_type = models.CharField(u"Тип записи работы", max_length=10, choices=FILE_TYPE_CHOICES, default="image")
     account = models.ForeignKey(UserProfile, verbose_name=u"Пользователь", null=True)
-
-
