@@ -80,12 +80,7 @@ class WorkSpec(models.Model):
     name = models.CharField(u"Специализация", max_length=50, choices=WORK_SPEC)
 
 
-class OrganizationProfile(models.Model):
-
-    ORG_PROFILE = (
-        (u'industrial', u'Промышленное строительство'),
-        (u'individual', u'Частное строительство'),
-    )
+class OrganizationProfile(models.Model):    
 
     class Meta:
         verbose_name = u'Организация'
@@ -95,8 +90,7 @@ class OrganizationProfile(models.Model):
     city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
     address = models.CharField(u'Адрес', max_length=150, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
-    logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)
-    type = models.CharField(u"Профиль работ", max_length=50, choices=ORG_PROFILE, default='individual')
+    logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)    
     spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')

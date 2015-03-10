@@ -118,9 +118,12 @@ class WorkTypeAdmin(admin.ModelAdmin):
 
 
 class OrganizationProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'type', 'city', 'address')
-    list_filter = ('city', 'job_types__category', 'type', 'job_types', 'work_cities')
+    list_display = ('name', 'get_specs', 'city', 'address')
+    list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
     form = OrganizationProfileModelForm
+
+    def get_specs(self, obj):
+        return ', '.join([spec.get_name_display() for spec in obj.spec.all()])
 
 admin.site.register(WorkCategory)
 admin.site.register(WorkType, WorkTypeAdmin)
