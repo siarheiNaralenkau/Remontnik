@@ -58,6 +58,23 @@ def suggest_job_save(request):
     return redirect("/remont")
 
 
+# Поиск организации по ключевым словам
+def search_organizations(request):
+    keyPhrase = request.REQUEST["q"]
+    orgs = OrganizationProfile.objects.all()
+    response_data = []
+    for org in orgs:
+        job_types = org.job_types.all()
+        for job_type in job_types:
+            if keyPhrase in job_type.name:
+                # response_data.append({'orgName': org.name})
+                response_data.append(org.name)
+                break
+    print "Found {0} organizations: ".format(len(response_data))
+    response = JsonResponse(response_data, safe=False)
+    return response
+
+
 @csrf_exempt
 def suggest_job_save_ajax(request):
     job_type_id = request.POST["job_type"]

@@ -15,6 +15,7 @@ urlpatterns = patterns('',
     url(r'^org_profile/$', views.org_profile, name='org_profile'),
     url(r'^get_job_types_by_category/$', views.get_job_types_by_category, name='get_job_types_by_category'),
     url(r'^suggest_job_save_ajax/$', views.suggest_job_save_ajax, name='suggest_job_save_ajax'),
+    url(r'^search_organizations/$', views.search_organizations, name='search_organizations'),
 )
 
 if settings.DEBUG:
