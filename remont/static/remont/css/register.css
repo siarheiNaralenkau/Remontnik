@@ -1,0 +1,58 @@
+.text-input-div {
+    margin-left: 30px;
+    margin-bottom: 20px;
+}
+
+.field-label {
+    font-weight: bold;
+    margin-right: 20px;
+    width: 250px;
+    height: 25px;
+}
+
+.textarea-label {
+    vertical-align: top;
+    font-weight: bold;
+    margin-right: 20px;
+    width: 250px;
+    height: 25px;
+}
+
+input[type=file] {
+    vertical-align: top;
+}
+
+.top-align-label {
+    vertical-align: top;
+}
+
+p.required {
+    height: 25px;
+    line-height: 25px;
+}
+
+p.not-required {
+    height: 25px;
+    line-height: 25px;
+}
+
+p.required:after {
+    color: #ffffff;
+    content: '12';
+    background-image: url("../images/field-required.png");
+    width: 25px;
+    height: 25px;
+}
+
+p.contact-info {
+    width: 500px;
+}
+
+p.contact-info input {
+    float: right;
+    width: 250px;
+}
+
+fieldset {
+    margin-bottom: 20px;
+}

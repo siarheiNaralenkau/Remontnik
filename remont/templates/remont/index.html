@@ -77,6 +77,7 @@
                 select: function(event, ui) {
                     // Forward to organization profile review...
                     console.log("Selected: " + ui);
+                    window.open("/remont/org_profile?org=" + ui.item.value, "_blank");
                 }
             });
         });

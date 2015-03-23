@@ -10,6 +10,7 @@ from django.core import serializers
 from rem_forms import SuggestJobForm
 
 # Главная страница приложения
+from remont.rem_forms import RegisterForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City
 
 
@@ -26,7 +27,8 @@ def index(request):
 
 # Регистрация пользователя
 def register(request):
-    return render(request, "remont/register.html", {})
+    reg_form = RegisterForm()
+    return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Личный кабинет пользователя
