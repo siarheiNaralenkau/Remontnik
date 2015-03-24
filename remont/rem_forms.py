@@ -1,8 +1,9 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.forms.models import ModelForm
 from models import WorkType, City
-from remont.models import WorkSpec
+from remont.models import WorkSpec, OrganizationProfile
 from remont.rem_widgets import CustomCheckBoxSelectMultiple
 
 
@@ -28,7 +29,7 @@ class RegisterForm(forms.Form):
         super(RegisterForm, self).__init__(*args, **kwargs)
         self.fields['reg_city'] = forms.ChoiceField(choices=get_cities(), label=u"Город регистрации")
         self.fields['work_cities'] = forms.ModelMultipleChoiceField(queryset=City.objects.all(),
-                                                                    label=u"Организация работает в следующих городах",
+                                                                    label=u"Организация работает в городах",
                                                                     widget=forms.CheckboxSelectMultiple)
 
     name = forms.CharField(max_length=100,
@@ -56,4 +57,11 @@ class RegisterForm(forms.Form):
     work_cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(),
                                                  label=u"Организация работает в городах",
                                                  widget=forms.CheckboxSelectMultiple)
+
+
+class OrgProfileForm(ModelForm):
+
+    class Meta:
+        model = OrganizationProfile
+        fields = ['name', 'logo', 'city', 'address', 'job_types', 'mobile_phone']
 

@@ -3,6 +3,7 @@ from remont.models import WorkCategory, WorkType
 from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
+
 # Custom widgets
 class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
 

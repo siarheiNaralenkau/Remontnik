@@ -11,7 +11,7 @@ from rem_forms import SuggestJobForm
 
 # Главная страница приложения
 from remont.rem_forms import RegisterForm
-from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City
+from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec
 
 
 def index(request):
@@ -154,6 +154,33 @@ def get_job_types_by_category(request):
         response_data.append({'id': w_type.id, 'name': w_type.name})
     response = JsonResponse(response_data, safe=False)
     return response
+
+
+# Создает новую организацию на основе заполненной пользователем формы.
+def create_organization(request):
+    if request.method == "POST":
+        reg_form = RegisterForm(request.POST)
+        if reg_form.is_valid():
+            org = OrganizationProfile()
+            org.name = reg_form.cleaned_data["name"]
+            # org_specs = WorkSpec.objects.filter(name__in=reg_form.cleaned_data["spec"])
+            # for spec in org_specs:
+            #     org.spec.add(spec)
+            org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
+            org.address = reg_form.cleaned_data["reg_address"]
+            job_types = reg_form.cleaned_data["job_types"]
+            for j_type in job_types:
+                org.job_types.add(j_type)
+            org.logo = reg_form.cleaned_data["logo"]
+            org.description = reg_form.cleaned_data["description"]
+            org.landline_phone = reg_form.cleaned_data["landing_phone"]
+            org.mobile_phone = reg_form.cleaned_data["mobile_phone"]
+            org.mobile_phone2 = reg_form.cleaned_data["mobile_phone2"]
+            org.fax = reg_form.cleaned_data["fax"]
+            org.web_site = reg_form.cleaned_data["web_site"]
+            org.email = reg_form.cleaned_data["email"]
+            org.work_cities = reg_form.cleaned_data["work_cities"]
+            org.save()
 
 
 

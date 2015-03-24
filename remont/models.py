@@ -70,7 +70,7 @@ class WorkSpec(models.Model):
         (u'individual', u'Частное строительство'),
     )
 
-    class  Meta:
+    class Meta:
         verbose_name = u"Специализация"
         verbose_name_plural = u"Специализации работ"
 
