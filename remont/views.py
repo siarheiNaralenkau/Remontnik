@@ -183,7 +183,27 @@ def create_organization(request):
             org.save()
 
 
-
-
-
-
+# Вход на сайт
+@csrf_exempt
+def login(request):
+    response_data = {}
+    org_login = request.POST["login"]
+    org = OrganizationProfile.objects.filter(name=org_login).first()
+    if not org:
+        org = OrganizationProfile.objects.filter(login=org_login).first()
+    if not org:
+        print("Organization with such name or login doesn't exists!")
+        response_data["status"] = "Unknown organization"
+    elif not org.password:
+        response_data["status"] = "First login"
+    else:
+        entered_password = request.POST["password"]
+        if org.password != entered_password:
+            response_data["status"] = "Incorrect password"
+        else:
+            response_data["status"] = "Success login"
+            response_data["org_name"] = org.name
+            response_data["login"] = org.login
+            request.session["org_id"] = org.id
+    response = JsonResponse(response_data, safe=False)
+    return response

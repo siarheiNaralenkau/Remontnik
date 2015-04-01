@@ -3,85 +3,12 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
     <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
-    <script type="text/javascript">
-        String.prototype.format = function () {
-            var args = arguments;
-            return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
-        };
-
-        function categoryChanged() {
-            var categoryId = $(this).val();
-            $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
-                    function(data) {
-                        console.log(data);
-                        $('#job_type').children('option:not(:first)').remove();
-                        for(var i = 0; i < data.length; i++) {
-                            $('#job_type')
-                                 .append($("<option></option>")
-                                 .attr("value",data[i].id)
-                                 .text(data[i].name));
-                        }
-                    }
-            );
-        };
-
-        function saveJobRequest() {
-            var data = {
-                'job_header': $(".job_header").first().val(),
-                'job_category': $(".job_category").first().val(),
-                'job_type': $(".job_type").first().val(),
-                'job_description': $(".job_description").first().val(),
-                'contact_name': $(".contact_name").first().val(),
-                'job_city': $(".job_city").first().val(),
-                'contact_phone': $(".contact_phone").first().val(),
-                'contact_mail': $(".contact_mail").first().val()
-            };
-            $.post('/remont/suggest_job_save_ajax/', data, refreshJobs)
-        };
-
-        function refreshJobs(data, textStatus, jqXHR) {
-            var jobRequestsList = $('.job-requests-list').first()
-            var jobsHtml = jobRequestsList.html()
-            var newSuggestionHtml = '<li><div class="job-request-div"><h3>{0}</h3><h5>{1}</h5><div><span>{2}</span><p>{3}</p></div></div></li>'
-                    .format(data.header, data.type_name, data.date_created, data.description)
-            var newHtml = newSuggestionHtml + jobsHtml;
-            jobRequestsList.html(newHtml);
-            $('.suggest-job-form')[0].reset();
-        };
-
-        $(document).ready(function() {
-            $("#job_category").change(categoryChanged);
-            $(".place-job-request-btn").click(saveJobRequest);
-
-            // Add search:
-            $(".searchInput").autocomplete({
-                source: function( request, response ) {
-                    $.ajax({
-                        url: "/remont/search_organizations",                        
-                        data: {
-                            q: request.term
-                        },
-                        success: function(result) {
-                            console.log(result);
-                            response(result);
-                        }
-                    });
-                },
-                minLength: 5,                
-                select: function(event, ui) {
-                    // Forward to organization profile review...
-                    console.log("Selected: " + ui);
-                    window.open("/remont/org_profile?org=" + ui.item.value, "_blank");
-                }
-            });
-        });
-    </script>
 </head>
 
 <body>
@@ -94,7 +21,7 @@
         </div>
         <div id="sectionRegister" class="sectionRegister">
             <div class="center-hor">
-                <a href="/remont/register">Регистрация</a>/<a href="/login">Вход</a>
+                <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
             </div>
             <div class="center-hor margin-top20">
                 <span>Тип работ</span>
@@ -157,6 +84,24 @@
                 </div>
             </li>
         </ul>
+    </div>
+
+    <div style="display: none" id="loginDialog" title="Вход">
+        <form name="loginForm" action="login">
+            <div class="login-fields-div">
+                <label class="login-label" for="login">Название организации/Логин:</label>
+                <input type="text" name="login" id="login" value="" class="login-fields-input"/>
+            </div>
+            <div class="login-fields-div">
+                <label for="password">Пароль:</label>
+                <input type="password" name="password" id="password" value="" class="login-fields-input"/>
+            </div>
+            <div class="login-fields-div">
+{#                <input type="button" value="Войти" class="action-btn"/>#}
+                <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+                <a href="/remont/register" class="login-link">Регистрация</a>
+            </div>
+        </form>
     </div>
 
 </body>
