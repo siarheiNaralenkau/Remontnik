@@ -18,6 +18,7 @@ urlpatterns = patterns('',
     url(r'^search_organizations/$', views.search_organizations, name='search_organizations'),
     url(r'^create_organization/$', views.create_organization, name='create_organization'),
     url(r'^login/$', views.login, name='login'),
+    url(r'^set_password/$', views.set_password, name='set_password'),
 )
 
 if settings.DEBUG:

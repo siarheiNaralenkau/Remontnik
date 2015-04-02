@@ -3,18 +3,6 @@ String.prototype.format = function () {
     return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
 }
 
-function sendLoginRequest() {
-    var data = {
-        'login': $("#login").val(),
-        'password': $("#password").val()
-    };
-    $.post("/remont/login/", data, loginResult)
-}
-
-function loginResult(responseData, textStatus, jqXHR) {
-    console.log("Login status: " + responseData.status);
-}
-
 function categoryChanged() {
     var categoryId = $(this).val();
     $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
@@ -56,7 +44,7 @@ function refreshJobs(data, textStatus, jqXHR) {
 }
 
 $(function() {
-    var loginDialog;
+    var loginDialog, setPasswordDialog;
 
     $("#job_category").change(categoryChanged);
     $(".place-job-request-btn").click(saveJobRequest);
@@ -101,9 +89,57 @@ $(function() {
         }
     });
 
+    setPasswordDialog = $("#setPasswordDialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        title: "Создание пароля",
+        height: 270,
+        width: 500,
+        buttons: {
+            "Сохранить пароль": sendSetPasswordRequest
+        },
+        close: function() {
+            document.forms["createPassword"].reset();
+        }
+    });
+
     // Функция отображает диалог для ввода логина и пароля.
     function showLoginDialog() {
         loginDialog.dialog("open");
+    }
+
+    function sendLoginRequest() {
+        var data = {
+            'login': $("#login").val(),
+            'password': $("#password").val()
+        };
+        $.post("/remont/login/", data, loginResult);
+    }
+
+    function sendSetPasswordRequest() {
+        var data = {
+            'login': $("#passwordOrgName").val(),
+            'password': $("#firstPassword").val()
+        };
+        $.post("/remont/set_password/", data, setPasswordResult);
+    }
+
+    function loginResult(responseData, textStatus, jqXHR) {
+        console.log("Login status: " + responseData.status);
+        // При первой попытке входа - просим пользователя ввести пароль.
+        if(responseData.status == "First login") {
+            loginDialog.dialog("close");
+            $("#passwordOrgName").val(responseData.org_name);
+            setPasswordDialog.dialog("open");
+        }
+    }
+
+    function setPasswordResult(responseData, textStatus, jqXHR) {
+        console.log(responseData);
+        if(responseData.status == "success") {
+            window.location.replace("/remont/org_profile?org=" + responseData.org_id);
+        }
     }
 
     $("#loginLink").on('click', showLoginDialog);

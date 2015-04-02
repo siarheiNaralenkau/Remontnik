@@ -196,6 +196,7 @@ def login(request):
         response_data["status"] = "Unknown organization"
     elif not org.password:
         response_data["status"] = "First login"
+        response_data["org_name"] = org.name
     else:
         entered_password = request.POST["password"]
         if org.password != entered_password:
@@ -205,5 +206,28 @@ def login(request):
             response_data["org_name"] = org.name
             response_data["login"] = org.login
             request.session["org_id"] = org.id
+    response = JsonResponse(response_data, safe=False)
+    return response
+
+
+# Установка пароля для организации при первом входе
+@csrf_exempt
+def set_password(request):
+    print 'Defining password for organization...'
+    response_data = {}
+    org_login = request.POST["login"]
+    password = request.POST["password"]
+    org = OrganizationProfile.objects.filter(name=org_login).first()
+    if not org:
+        response_data["status"] = "fail"
+        response_data["error"] = "Организации " + org_login + " не существует!"
+    else:
+        org.password = password
+        try:
+            org.save()
+            response_data["status"] = "success"
+            response_data["org_id"] = org.id
+        except Exception as e:
+            response_data["error"] = e
     response = JsonResponse(response_data, safe=False)
     return response

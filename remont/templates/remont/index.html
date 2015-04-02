@@ -97,9 +97,21 @@
                 <input type="password" name="password" id="password" value="" class="login-fields-input"/>
             </div>
             <div class="login-fields-div">
-{#                <input type="button" value="Войти" class="action-btn"/>#}
                 <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
                 <a href="/remont/register" class="login-link">Регистрация</a>
+            </div>
+        </form>
+    </div>
+
+    <div style="display: none" id="setPasswordDialog">
+        <form name="createPassword" action="createPassword">
+            <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
+            <div class="login-fields-div">
+                <label for="firstPassword">Введите пароль:</label>
+                <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+            </div>
+            <div class="login-fields-div">
+                <span class="help-text">Пароль должен быть не короче 6 символов</span>
             </div>
         </form>
     </div>
