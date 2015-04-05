@@ -178,9 +178,6 @@ def create_organization(request):
         if reg_form.is_valid():
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
-            # org_specs = WorkSpec.objects.filter(name__in=reg_form.cleaned_data["spec"])
-            # for spec in org_specs:
-            #     org.spec.add(spec)
             org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
             org.address = reg_form.cleaned_data["reg_address"]
             job_types = reg_form.cleaned_data["job_types"]
@@ -220,6 +217,7 @@ def login(request):
             response_data["status"] = "Success login"
             response_data["org_name"] = org.name
             response_data["login"] = org.login
+            response_data["org_id"] = org.id
             request.session["org_id"] = org.id
     response = JsonResponse(response_data, safe=False)
     return response

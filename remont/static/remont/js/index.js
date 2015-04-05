@@ -132,6 +132,8 @@ $(function() {
             loginDialog.dialog("close");
             $("#passwordOrgName").val(responseData.org_name);
             setPasswordDialog.dialog("open");
+        } else if(responseData.status == "Success login") {
+            window.location.replace("/remont/org_profile?org=" + responseData.org_id);
         }
     }
 
