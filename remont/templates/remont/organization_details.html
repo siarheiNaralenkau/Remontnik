@@ -2,31 +2,122 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+    <link rel="stylesheet" type="text/css" media="all" href="{{ STATIC_URL }}remont/css/photobox.css" />
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/organization_details.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/index.css">
+
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery.photobox.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/organization_profile.js"></script>
+
     <title>Информация об организации {{ organization_details.name }}</title>
 </head>
 <body>
-    <ul class="simple-list">
-        <li>
-            <img src="/remont/{{ organization_details.logo.url }}" style="width: 200px; height: 200px"/>
-        </li>
-        <li class="org-details"><span class="details-label">Название организации:</span>{{ organization_details.name }}</li>
-        <li class="org-details"><span class="details-label">Город:</span>{{ organization_details.city.name }}</li>
-        <li class="org-details"><span class="details-label">Адрес:</span>{{ organization_details.address }}</li>
-        <li class="org-details"><span class="details-label">Виды выполняемых работ:</span>
-            {% for job_type in organization_details.job_types.all %}
-                {{ job_type.name }},&nbsp;
+    {% include "remont/top_page_template.html" %}
+    <div class="profileDiv">
+        <table>
+            <tr>
+                <td width="250px">
+                    <img src="/remont/{{ organization_details.logo.url }}" style="width: 100px; height: 100px"/>
+                </td>
+                <td width="250px">
+                    <ul style="list-style-type: none;">
+                        <li>
+                            <h2>{{ organization_details.name }}</h2>
+                        </li>
+                        <li style="color: red">
+                            <span>{{organization_details.city.name}}</span>
+                        </li>
+                        <li style="color: #007fff; text-decoration: underline; cursor: pointer">
+                            <span>{{ organization_details.address }}</span>
+                        </li>
+                    </ul>
+                </td>
+                <td width="250px">
+                    <div style="padding-left: 20px">
+                        <section>
+                            <h4>Контактная информация</h4>
+                            <ul style="list-style-type: none;">
+                                <li>{{ organization_details.web_site }}</li>
+                                <li>{{ organization_details.email }}</li>
+                                <li>{{ organization_details.mobile_phone }}</li>
+                                <li>{{ organization_details.mobile_phone }}</li>
+                                <li>{{ organization_details.landing_phone }}</li>
+                                <li>{{ organization_details.fax }}</li>
+                            </ul>
+                        </section>
+                    </div>
+                </td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#">
+                        <img src="/static/remont/images/icon_message.png"/>
+                        <span>Написать сообщение</span>
+                    </a>
+                </td>
+                <td>
+                    <a href="#">
+                        <img src="/static/remont/images/icon_job.png"/>
+                        <span>Предложить работу</span>
+                    </a>
+                </td>
+                <td>
+                    <a href="#">
+                        <img src="/static/remont/images/icon_consultation.png"/>
+                        <span>Получить консультацию</span>
+                    </a>
+                </td>
+            </tr>
+        </table>
+    </div>
+
+    <div class="companyMenu">
+        <ul class="menuList">
+            <li class="companyMenuItem companyMenuActive" data-alias="companyAbout">О компании</li>
+            <li class="companyMenuItem" data-alias="workPhoto">Фотографии работ</li>
+            <li class="companyMenuItem" data-alias="jobTypes">Услуги и цены</li>
+            <li class="companyMenuItem" data-alias="responses">Отзывы</li>
+            <li class="companyMenuItem" data-alias="questionsAndAnswers">Вопросы и ответы</li>
+        </ul>
+    </div>
+
+    <div id="companyAbout" class="profileDiv profileSection">
+        <h3>О Компании</h3>
+        <p>{{ organization_details.description }}</p>
+    </div>
+
+    <div id="workPhoto" class="profileDiv profileSection hidden">
+        <h3>Фотографии работ</h3>
+        <div class="photo-albums-list">
+            {% for album in work_photos %}
+                <div class="album-item" data-album-id="{{ album.id }}">
+                    <img src="/remont/{{ album.title_photo.photo.url }}" class="album-preview"/>
+                    <div class="info">
+                        <span class="album-name">{{ album.name }}</span>
+                        <span class="photos-amount">{{ album.photos_amount }}</span>
+                    </div>
+                </div>
             {% endfor %}
-        </li>
-        <li class="org-details"><span class="details-label">Профиль работ:</span>{{ organization_details.type }}</li>
-        <li class="org-details"><span class="details-label">Об организации:</span>
-            <span>{{ organization_details.description }}</span>
-        </li>
-        <li class="org-details"><span class="details-label">Стационарный телефон:</span>{{ organization_details.landline_phone }}</li>
-        <li class="org-details"><span class="details-label">Мобильный телефон:</span>{{ organization_details.mobile_phone }}</li>
-        <li class="org-details"><span class="details-label">Номер факса:</span>{{ organization_details.fax }}</li>
-        <li class="org-details"><span class="details-label">Web-страница:</span>{{ organization_details.web_site }}</li>
-        <li class="org-details"><span class="details-label">Контактный e-mail:</span>{{ organization_details.email }}</li>
-    </ul>
+    </div>
+
+    <div id="jobTypes" class="profileDiv profileSection hidden">
+        <h3>Услуги и цены</h3>
+    </div>
+
+    <div id="responses" class="profileDiv profileSection hidden">
+        <h3>Отзывы</h3>
+    </div>
+
+    <div id="questionsAndAnswers" class="profileDiv profileSection hidden">
+        <h3>Вопросы и ответы</h3>
+    </div>
+
+    <div id="albumPhotosList"></div>
+    <div id="mediaRoot" class="hidden">{{ mediaRoot }}</div>
+
 </body>
 </html>

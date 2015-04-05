@@ -63,7 +63,7 @@ $(function() {
                 }
             });
         },
-        minLength: 5,
+        minLength: 3,
         select: function(event, ui) {
             // Forward to organization profile review...
             console.log("Selected: " + ui);

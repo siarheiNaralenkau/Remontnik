@@ -11,8 +11,10 @@ from rem_forms import SuggestJobForm
 
 # Главная страница приложения
 from remont.rem_forms import RegisterForm
-from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec
+from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec, \
+                          WorkPhotoAlbum, WorkPhoto
 
+from django.conf import settings
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -63,14 +65,18 @@ def suggest_job_save(request):
 # Поиск организации по ключевым словам
 def search_organizations(request):
     key_phrase = request.REQUEST["q"]
-    orgs = OrganizationProfile.objects.all()
     response_data = []
-    for org in orgs:
+    # 1) Поиск по имени организации
+    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+    for org in orgs_by_name:
+        response_data.append({'label': org.name, 'value': org.id})
+
+    # 2) Поиск по типу выполняемых работ.
+    orgs_by_job_type = OrganizationProfile.objects.all()
+    for org in orgs_by_job_type:
         job_types = org.job_types.all()
         for job_type in job_types:
             if key_phrase in job_type.name:
-                # response_data.append({'orgName': org.name})
-                # response_data.append(org.name)
                 response_data.append({'label': org.name, 'value': org.id})
                 break
     print "Found {0} organizations: ".format(len(response_data))
@@ -141,8 +147,16 @@ def org_profile(request):
     org_id = request.REQUEST["org"]
     print "Organization id: {0}".format(org_id)
     organization_details = OrganizationProfile.objects.get(id=org_id)
-    return render(request, 'remont/organization_details.html', {"organization_details": organization_details})
-
+    # Загружаем фото работ организации
+    photos = []
+    albums = WorkPhotoAlbum.objects.all()
+    for cur_album in albums:
+        album_photos = WorkPhoto.objects.filter(album=cur_album)
+        if len(album_photos) > 0:
+            photos.append({'id': cur_album.id, 'name': cur_album.name, 'photos_amount': len(album_photos), 'title_photo': album_photos[0]})
+    return render(request, 'remont/organization_details.html', {"organization_details": organization_details,
+                                                                "work_photos": photos,
+                                                                "mediaRoot": settings.MEDIA_ROOT})
 
 # Получает список видо работ по категории
 def get_job_types_by_category(request):
@@ -231,3 +245,17 @@ def set_password(request):
             response_data["error"] = e
     response = JsonResponse(response_data, safe=False)
     return response
+
+
+# Получаем фотографии из альбома.
+def get_album_photos(request):
+    album_photos = []
+    album_id = request.GET["album_id"]
+    photo_album = WorkPhotoAlbum.objects.filter(id=album_id).first()
+    if photo_album:
+        photos = WorkPhoto.objects.filter(album=photo_album)
+        for photo_obj in photos:
+            album_photos.append({'id': photo_obj.id, 'url': photo_obj.photo.url})
+    response = JsonResponse(album_photos, safe=False)
+    return response
+

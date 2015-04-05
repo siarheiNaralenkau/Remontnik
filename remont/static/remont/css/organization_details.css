@@ -1,0 +1,75 @@
+.companyMenu {
+    display: block;
+    margin-left: auto;
+    margin-top: 10px;
+    margin-right: auto;
+    width: 70%;
+}
+
+.profileDiv {
+    width: 70%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    margin-top: 10px;
+    background-color: rgb(245, 245, 245);
+}
+
+.menuList {
+    margin: 0; padding: 4px;
+}
+
+.companyMenuItem {
+    display: inline;
+    margin-right: 5px;
+    padding: 3px;
+
+    height: 25px;
+    border-radius: 4px;
+    background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));
+    font-size: 18px;
+    font-weight: 700;
+}
+
+.companyMenuItem:hover {
+    background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+}
+
+.companyMenuActive {
+    background: linear-gradient(rgb(234, 234, 234), rgb(136, 136, 136)) !important;
+}
+
+.hidden {
+    display: none;
+}
+
+.photo-albums-list {
+    width: 100%;
+    height: auto;
+    overflow: hidden;
+}
+
+.album-item {
+    display: inline-block;
+    height: auto;
+    width: auto;
+    margin: 0 10px;
+    cursor: pointer;
+}
+
+.album-preview {
+    width: 192px;
+    height: 192px;
+}
+
+.album-name {
+    font-size: 16px;
+    font-weight: 600;
+    color: #000;
+}
+
+.photos-amount {
+    font-size: 12px;
+    color: #999999;
+    float: right;
+}
