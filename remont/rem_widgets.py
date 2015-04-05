@@ -1,10 +1,6 @@
-from django.contrib import admin
 from django import forms
-from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto
-
-from django.utils.encoding import force_unicode
-from django.utils.html import conditional_escape, format_html
+from remont.models import WorkCategory, WorkType
+from django.utils.html import format_html
 from django.utils.safestring import mark_safe
 
 
@@ -99,40 +95,3 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
         # To Override output rendering - see example at: http://stackoverflow.com/questions/3986757/how-can-i-render-a-custom-nested-checkbox-tree-view-in-django-admin
         # return super(CustomCheckBoxSelectMultiple, self).render(name, value, attrs, choices)
         # return mark_safe(output.replace(u'<ul>', u'').replace(u'</ul>', u'').replace(u'<li>', u'<p>').replace(u'</li>', u'</p>'))
-
-
-# Custom admin forms
-class OrganizationProfileModelForm(forms.ModelForm):
-    class Meta:
-        model = OrganizationProfile
-        widgets = {
-            # 'job_types': forms.CheckboxSelectMultiple
-            'job_types': CustomCheckBoxSelectMultiple
-        }
-
-
-# Custom admin classes
-class WorkTypeAdmin(admin.ModelAdmin):
-    list_display = ('name', 'category')
-    search_fields = ('name',)
-    list_filter = ('category',)
-
-
-class OrganizationProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_specs', 'city', 'address')
-    list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
-    form = OrganizationProfileModelForm
-
-    def get_specs(self, obj):
-        return ', '.join([spec.get_name_display() for spec in obj.spec.all()])
-
-admin.site.register(WorkCategory)
-admin.site.register(WorkType, WorkTypeAdmin)
-admin.site.register(UserProfile)
-admin.site.register(City)
-admin.site.register(OrganizationProfile, OrganizationProfileAdmin)
-admin.site.register(JobSuggestion)
-admin.site.register(WorkSpec)
-admin.site.register(WorkPhotoAlbum)
-admin.site.register(WorkPhoto)
-

@@ -4,6 +4,9 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.exceptions import ValidationError
+from django.conf import settings
+
+import os
 
 
 def save_user_photo(instance, filename):
@@ -14,6 +17,13 @@ def save_user_photo(instance, filename):
 
 def save_media_file(instance, filename):
     storage_path = "/".join([instance.user.username, instance.file_type, filename])
+    print storage_path
+    return storage_path
+
+
+# Сохранение фотографии работы
+def save_work_photo(instance, filename):
+    storage_path = instance.album.organization.name + '/' + instance.album.name + '/' + filename
     print storage_path
     return storage_path
 
@@ -70,7 +80,7 @@ class WorkSpec(models.Model):
         (u'individual', u'Частное строительство'),
     )
 
-    class  Meta:
+    class Meta:
         verbose_name = u"Специализация"
         verbose_name_plural = u"Специализации работ"
 
@@ -90,7 +100,7 @@ class OrganizationProfile(models.Model):
     city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
     address = models.CharField(u'Адрес', max_length=150, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
-    logo = models.ImageField(u'Логотип организации', upload_to='logos/', blank=True, default=None)    
+    logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, blank=True, default=None)
     spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
@@ -101,6 +111,9 @@ class OrganizationProfile(models.Model):
     email = models.EmailField(u"Контактный e-mail", max_length=100, blank=True)
 
     work_cities = models.ManyToManyField(City, verbose_name=u"Организация работает в городах")
+
+    password = models.CharField(u'Пароль', max_length=120, null=True, default=None)
+    login = models.CharField(u'Логин на сайте', max_length=100, null=True, default=None)
 
     def save(self, *args, **kwargs):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -174,3 +187,33 @@ class UserMedia(models.Model):
     work_file = models.FileField(upload_to=save_media_file)
     file_type = models.CharField(u"Тип записи работы", max_length=10, choices=FILE_TYPE_CHOICES, default="image")
     account = models.ForeignKey(UserProfile, verbose_name=u"Пользователь", null=True)
+
+
+class WorkPhotoAlbum(models.Model):
+    class Meta:
+        verbose_name = u"Фотоальбом организации"
+        verbose_name_plural = u"Фотоальбомы организации"
+
+    organization = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False)
+    name = models.CharField(u"Название альбома", max_length=60)
+
+    def save(self, *args, **kwargs):
+        album_path = settings.MEDIA_ROOT + self.organization.name + '/' + self.name
+        if not os.path.exists(album_path):
+            os.makedirs(album_path)
+        super(WorkPhotoAlbum, self).save(*args, **kwargs)
+
+    def __unicode__(self):
+        return self.name
+
+
+class WorkPhoto(models.Model):
+    class Meta:
+        verbose_name = u"Фотография выполненной работы"
+        verbose_name_plural = u"Фотографии выполненных работ"
+
+    album = models.ForeignKey(WorkPhotoAlbum, verbose_name=u"Альбом", null=False)
+    photo = models.ImageField(u'Фото сделанной работы', upload_to=save_work_photo)
+
+    def __unicode__(self):
+        return self.photo.url

@@ -3,6 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 
+
 def update_work_spec(apps, schema_editor):
 	OrganizationProfile = apps.get_model('remont', 'OrganizationProfile')
 	WorkSpec = apps.get_model('remont', 'WorkSpec')

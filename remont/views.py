@@ -10,8 +10,11 @@ from django.core import serializers
 from rem_forms import SuggestJobForm
 
 # Главная страница приложения
-from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City
+from remont.rem_forms import RegisterForm
+from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec, \
+                          WorkPhotoAlbum, WorkPhoto
 
+from django.conf import settings
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -26,7 +29,8 @@ def index(request):
 
 # Регистрация пользователя
 def register(request):
-    return render(request, "remont/register.html", {})
+    reg_form = RegisterForm()
+    return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Личный кабинет пользователя
@@ -56,6 +60,28 @@ def suggest_job_save(request):
                         phone=phone, email=mail, short_header=header)
     job.save()
     return redirect("/remont")
+
+
+# Поиск организации по ключевым словам
+def search_organizations(request):
+    key_phrase = request.REQUEST["q"]
+    response_data = []
+    # 1) Поиск по имени организации
+    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+    for org in orgs_by_name:
+        response_data.append({'label': org.name, 'value': org.id})
+
+    # 2) Поиск по типу выполняемых работ.
+    orgs_by_job_type = OrganizationProfile.objects.all()
+    for org in orgs_by_job_type:
+        job_types = org.job_types.all()
+        for job_type in job_types:
+            if key_phrase in job_type.name:
+                response_data.append({'label': org.name, 'value': org.id})
+                break
+    print "Found {0} organizations: ".format(len(response_data))
+    response = JsonResponse(response_data, safe=False)
+    return response
 
 
 @csrf_exempt
@@ -121,8 +147,16 @@ def org_profile(request):
     org_id = request.REQUEST["org"]
     print "Organization id: {0}".format(org_id)
     organization_details = OrganizationProfile.objects.get(id=org_id)
-    return render(request, 'remont/organization_details.html', {"organization_details": organization_details})
-
+    # Загружаем фото работ организации
+    photos = []
+    albums = WorkPhotoAlbum.objects.all()
+    for cur_album in albums:
+        album_photos = WorkPhoto.objects.filter(album=cur_album)
+        if len(album_photos) > 0:
+            photos.append({'id': cur_album.id, 'name': cur_album.name, 'photos_amount': len(album_photos), 'title_photo': album_photos[0]})
+    return render(request, 'remont/organization_details.html', {"organization_details": organization_details,
+                                                                "work_photos": photos,
+                                                                "mediaRoot": settings.MEDIA_ROOT})
 
 # Получает список видо работ по категории
 def get_job_types_by_category(request):
@@ -136,7 +170,92 @@ def get_job_types_by_category(request):
     return response
 
 
+# Создает новую организацию на основе заполненной пользователем формы.
+def create_organization(request):
+    if request.method == "POST":
+        reg_form = RegisterForm(request.POST)
+        if reg_form.is_valid():
+            org = OrganizationProfile()
+            org.name = reg_form.cleaned_data["name"]
+            # org_specs = WorkSpec.objects.filter(name__in=reg_form.cleaned_data["spec"])
+            # for spec in org_specs:
+            #     org.spec.add(spec)
+            org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
+            org.address = reg_form.cleaned_data["reg_address"]
+            job_types = reg_form.cleaned_data["job_types"]
+            for j_type in job_types:
+                org.job_types.add(j_type)
+            org.logo = reg_form.cleaned_data["logo"]
+            org.description = reg_form.cleaned_data["description"]
+            org.landline_phone = reg_form.cleaned_data["landing_phone"]
+            org.mobile_phone = reg_form.cleaned_data["mobile_phone"]
+            org.mobile_phone2 = reg_form.cleaned_data["mobile_phone2"]
+            org.fax = reg_form.cleaned_data["fax"]
+            org.web_site = reg_form.cleaned_data["web_site"]
+            org.email = reg_form.cleaned_data["email"]
+            org.work_cities = reg_form.cleaned_data["work_cities"]
+            org.save()
 
 
+# Вход на сайт
+@csrf_exempt
+def login(request):
+    response_data = {}
+    org_login = request.POST["login"]
+    org = OrganizationProfile.objects.filter(name=org_login).first()
+    if not org:
+        org = OrganizationProfile.objects.filter(login=org_login).first()
+    if not org:
+        print("Organization with such name or login doesn't exists!")
+        response_data["status"] = "Unknown organization"
+    elif not org.password:
+        response_data["status"] = "First login"
+        response_data["org_name"] = org.name
+    else:
+        entered_password = request.POST["password"]
+        if org.password != entered_password:
+            response_data["status"] = "Incorrect password"
+        else:
+            response_data["status"] = "Success login"
+            response_data["org_name"] = org.name
+            response_data["login"] = org.login
+            request.session["org_id"] = org.id
+    response = JsonResponse(response_data, safe=False)
+    return response
 
+
+# Установка пароля для организации при первом входе
+@csrf_exempt
+def set_password(request):
+    print 'Defining password for organization...'
+    response_data = {}
+    org_login = request.POST["login"]
+    password = request.POST["password"]
+    org = OrganizationProfile.objects.filter(name=org_login).first()
+    if not org:
+        response_data["status"] = "fail"
+        response_data["error"] = "Организации " + org_login + " не существует!"
+    else:
+        org.password = password
+        try:
+            org.save()
+            response_data["status"] = "success"
+            response_data["org_id"] = org.id
+        except Exception as e:
+            response_data["error"] = e
+    response = JsonResponse(response_data, safe=False)
+    return response
+
+
+# Получаем фотографии из альбома.
+def get_album_photos(request):
+    album_photos = []
+    album_id = request.GET["album_id"]
+    photo_album = WorkPhotoAlbum.objects.filter(id=album_id).first()
+    if photo_album:
+        photos = WorkPhoto.objects.filter(album=photo_album)
+        for photo_obj in photos:
+            album_photos.append({'id': photo_obj.id, 'url': photo_obj.photo.url})
+    response = JsonResponse(album_photos, safe=False)
+    return response
 
