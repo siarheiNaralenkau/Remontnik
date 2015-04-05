@@ -149,7 +149,7 @@ def org_profile(request):
     organization_details = OrganizationProfile.objects.get(id=org_id)
     # Загружаем фото работ организации
     photos = []
-    albums = WorkPhotoAlbum.objects.all()
+    albums = WorkPhotoAlbum.objects.filter(organization=organization_details)
     for cur_album in albums:
         album_photos = WorkPhoto.objects.filter(album=cur_album)
         if len(album_photos) > 0:
@@ -157,6 +157,7 @@ def org_profile(request):
     return render(request, 'remont/organization_details.html', {"organization_details": organization_details,
                                                                 "work_photos": photos,
                                                                 "mediaRoot": settings.MEDIA_ROOT})
+
 
 # Получает список видо работ по категории
 def get_job_types_by_category(request):

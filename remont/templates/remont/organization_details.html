@@ -21,7 +21,9 @@
         <table>
             <tr>
                 <td width="250px">
-                    <img src="/remont/{{ organization_details.logo.url }}" style="width: 100px; height: 100px"/>
+                    {% if organization_details.logo.name %}
+                        <img src="/remont/{{ organization_details.logo.url }}" style="width: 100px; height: 100px"/>
+                    {% endif %}
                 </td>
                 <td width="250px">
                     <ul style="list-style-type: none;">
