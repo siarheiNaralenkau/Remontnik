@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto
+                          WorkPhotoAlbum, WorkPhoto, Article
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape, format_html
@@ -135,4 +135,5 @@ admin.site.register(JobSuggestion)
 admin.site.register(WorkSpec)
 admin.site.register(WorkPhotoAlbum)
 admin.site.register(WorkPhoto)
+admin.site.register(Article)
 
