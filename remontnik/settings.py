@@ -116,5 +116,6 @@ CKEDITOR_CONFIGS = {
         'toolbar': 'full',
         'height': 600,
         'width': 800,
+        'language': 'ru'
     },
 }
