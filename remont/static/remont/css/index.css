@@ -148,7 +148,6 @@
 
 .suggestionsHeader {
     margin: 0 auto;
-    background: linear-gradient(rgb(180, 180, 180), rgb(230, 230, 230));
     border-radius: 4px;
 }
 
@@ -193,12 +192,33 @@
 .action-btn {
     height: 40px;
     border-radius: 4px;
-    background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));
+    /*background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));*/
     font-size: 18px;
     font-weight: 700;
+    text-align: left;
+    line-height: 40px;
+    padding-left: 15px;
 }
 .action-btn:hover {
     background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+    cursor: pointer;
+}
+
+.place-job-request-btn {
+    text-align: center;
+}
+
+.btn-show-more {
+    cursor: pointer;
+    font-size: 18px;
+    font-weight: 700;
+    text-decoration: underline;
+    padding-top: 15px;
+    padding-bottom: 10px;
+}
+
+.btn-show-more:hover {
+    color: #003eff;
 }
 
 .width100p {
@@ -245,4 +265,43 @@
 
 .login-link {
     margin-left: 30px;
+}
+
+.main-menu-list {
+    width: 90%;
+}
+
+.main-menu-item {
+    width: 90%;
+    list-style-type: none;
+    margin-top: 10px;
+}
+
+.main-div {
+    float: left;
+    width: 100%
+}
+
+.menu-div {
+    width: 25%;
+    height: 100%;
+    display: block;
+    float: left;
+    border-right: 2px solid #CCC;
+    padding-right: 10px;
+}
+
+.menu {
+    border-bottom: 1px solid #CCC;
+}
+
+.how-site-works {
+    padding-top: 20px;
+    padding-bottom: 20px;
+    border-bottom: 1px solid #CCC;
+}
+
+.content-div {
+    float: left;
+    width: 74%;
 }

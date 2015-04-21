@@ -5,6 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.exceptions import ValidationError
 from django.conf import settings
+from ckeditor.fields import RichTextField
 
 import os
 
@@ -217,3 +218,17 @@ class WorkPhoto(models.Model):
 
     def __unicode__(self):
         return self.photo.url
+
+
+class Article(models.Model):
+    class Meta:
+        verbose_name = u"Статья о стройке и ремонте"
+        verbose_name_plural = u"Статьи о стройке и ремонте"
+
+    name = models.CharField(u"Название статьи", max_length=100)
+    content = RichTextField()
+    date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
+    date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)
+
+    def __unicode__(self):
+        return self.name

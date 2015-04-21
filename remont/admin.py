@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto
+                          WorkPhotoAlbum, WorkPhoto, Article
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape, format_html
@@ -126,6 +126,11 @@ class OrganizationProfileAdmin(admin.ModelAdmin):
     def get_specs(self, obj):
         return ', '.join([spec.get_name_display() for spec in obj.spec.all()])
 
+
+class ArticleAdmin(admin.ModelAdmin):
+    list_display = ('name', 'date_created', 'date_modified')
+
+
 admin.site.register(WorkCategory)
 admin.site.register(WorkType, WorkTypeAdmin)
 admin.site.register(UserProfile)
@@ -135,4 +140,5 @@ admin.site.register(JobSuggestion)
 admin.site.register(WorkSpec)
 admin.site.register(WorkPhotoAlbum)
 admin.site.register(WorkPhoto)
+admin.site.register(Article, ArticleAdmin)
 
