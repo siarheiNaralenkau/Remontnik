@@ -1,0 +1,7 @@
+1) cd var/www/
+2) Activate python virtual environment: source ./remontnik/bin/activate
+3) cd ./app/remontnik
+4) Checkout latest changes: git pull
+5) Update dependencies: pip install -r requirements.pip
+6) Run migrations: python manage.py migrate
+7) Run server: nohup python manage.py runserver 0:8000 &
