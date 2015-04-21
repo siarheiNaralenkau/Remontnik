@@ -227,6 +227,8 @@ class Article(models.Model):
 
     name = models.CharField(u"Название статьи", max_length=100)
     content = RichTextField()
+    date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
+    date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)
 
     def __unicode__(self):
         return self.name

@@ -1,0 +1,17 @@
+.video-how-to {
+    width: 100%;
+    height: 240px;
+    border: 1px solid black;
+}
+
+.video-container {
+    display: block;
+    text-align: center;
+    width: 80%;
+    margin: 0 auto;
+}
+
+.how-to-header {
+    font-size: 22px;
+    font-weight: bold;
+}

@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        .jobs-suggestions-container {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="jobs-suggestions-container">
+        <div class="jobsSuggestions">
+            <div class="suggestionsHeader">
+                <h2 style="text-align: center">Недавно добавленные заказы и тендеры</h2>
+            </div>
+            <ul class="job-requests-list simple-list">
+                {% for job in jobSuggestions%}
+                    <li>
+                        <div class="job-request-div">
+                            <h3>{{ job.short_header}}</h3>
+                            <h5>{{ job.job_type.name }}</h5>
+                            <div>
+                                <span>{{ job.date_created }}</span>
+                                <p>{{ job.description }}</p>
+                            </div>
+                        </div>
+                    </li>
+                {% endfor %}
+                <li>
+                    <div class="div-show-more">
+                        <div class="btn-show-more" onclick="showMore()">Показать больше...</div>
+                    </div>
+                </li>
+            </ul>
+        </div>
+    </div>
+</body>
+</html>

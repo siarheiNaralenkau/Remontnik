@@ -33,57 +33,22 @@
         </div>
     </div>
 
-    {% include "remont/top_orgs_template.html" %}
-    {% include "remont/add_work_template.html"%}
-
-    <div id="menuDiv" class="mainMenu">
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <input type="button" class="action-btn width100p" value="Каталог работ"/>
+    {# Split page into 2 sections: 25 and 75 % width #}
+    <div class="main-div">
+        <div class="menu-div">
+            <div class="menu">
+                {% include "remont/main_menu.html" %}
+            </div>
+            <div class="how-site-works">
+                {% include "remont/how_site_works.html" %}
             </div>
         </div>
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <input type="button" class="action-btn width100p" value="Каталог товаров"/>
-            </div>
+        <div class="content-div">
+            {% include "remont/top_orgs_template.html" %}
+            {% include "remont/search_template.html" %}
+            {% include "remont/add_work_template.html" %}
+            {% include "remont/job_suggestions.html" %}
         </div>
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <input type="button" class="action-btn width100p" value="Полезные статьи"/>
-            </div>
-        </div>
-        <div class="menuItemOuter">
-            <div class="menuItemInner">
-                <input type="button" class="action-btn width100p" value="Организации"/>
-            </div>
-        </div>
-    </div>
-
-    {% include "remont/search_template.html" %}
-
-    <div class="jobsSuggestions">
-        <div class="suggestionsHeader">
-            <h2>Недавно добавленные заказы и тендеры</h2>
-        </div>
-        <ul class="job-requests-list simple-list">
-            {% for job in jobSuggestions%}
-                <li>
-                    <div class="job-request-div">
-                        <h3>{{ job.short_header}}</h3>
-                        <h5>{{ job.job_type.name }}</h5>
-                        <div>
-                            <span>{{ job.date_created }}</span>
-                            <p>{{ job.description }}</p>
-                        </div>
-                    </div>
-                </li>
-            {% endfor %}
-            <li>
-                <div class="div-show-more">
-                    <input type="button" class="action-btn btn-show-more" value="Показать больше" onclick="showMore()"/>
-                </div>
-            </li>
-        </ul>
     </div>
 
     <div style="display: none" id="loginDialog" title="Вход">
