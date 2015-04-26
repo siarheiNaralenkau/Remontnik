@@ -97,6 +97,9 @@ def suggest_job_save_ajax(request):
                         phone=request.POST["contact_phone"],
                         email=request.POST["contact_mail"],
                         short_header=request.POST["job_header"])
+    job_spec = request.POST["job_spec"]
+    work_spec = WorkSpec.objects.get(id=int(job_spec))
+    job.job_spec = work_spec
     job.save()
     if job_type:
         type_name = job_type.name

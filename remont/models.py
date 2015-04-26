@@ -79,6 +79,7 @@ class WorkSpec(models.Model):
     WORK_SPEC = (
         (u'industrial', u'Промышленное строительство'),
         (u'individual', u'Частное строительство'),
+        (u'all', u'Все')
     )
 
     class Meta:
@@ -170,6 +171,7 @@ class JobSuggestion(models.Model):
     phone = models.CharField(u"Контактный телефон", max_length=25, default="")
     email = models.EmailField(u"Электронная почта", default="")
     date_created = models.DateTimeField(verbose_name=u"Дата создания", auto_now_add=True)
+    job_spec = models.ForeignKey(WorkSpec, verbose_name=u"Специализация", null=True, default="")
 
     def __unicode__(self):
         return self.short_header    
@@ -227,8 +229,10 @@ class Article(models.Model):
 
     name = models.CharField(u"Название статьи", max_length=100)
     content = RichTextField()
+    job_spec = models.ForeignKey(WorkSpec, verbose_name=u"Специализация", null=True, default="")
     date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
     date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)
+
 
     def __unicode__(self):
         return self.name

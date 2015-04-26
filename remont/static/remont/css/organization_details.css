@@ -73,3 +73,25 @@
     color: #999999;
     float: right;
 }
+
+.left-bar {
+    width: 17%;
+    height: 100%;
+    display: block;
+    float: left;
+    border-right: 2px solid #CCC;
+    padding-right: 10px;
+}
+
+.left-bar-item {
+    width: 98%;
+    border: 1px solid #000000;
+    padding: 5px;
+    margin: 1%;
+}
+
+.org-logo {
+    width: 200px;
+    heigth: 200px;
+    padding-left: 20px;
+}

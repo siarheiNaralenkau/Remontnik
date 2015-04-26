@@ -17,109 +17,131 @@
 </head>
 <body>
     {% include "remont/top_page_template.html" %}
-    <div class="profileDiv">
-        <table>
-            <tr>
-                <td width="250px">
-                    {% if organization_details.logo.name %}
-                        <img src="/remont/{{ organization_details.logo.url }}" style="width: 100px; height: 100px"/>
-                    {% endif %}
-                </td>
-                <td width="250px">
-                    <ul style="list-style-type: none;">
-                        <li>
-                            <h2>{{ organization_details.name }}</h2>
-                        </li>
-                        <li style="color: red">
-                            <span>{{organization_details.city.name}}</span>
-                        </li>
-                        <li style="color: #007fff; text-decoration: underline; cursor: pointer">
-                            <span>{{ organization_details.address }}</span>
-                        </li>
-                    </ul>
-                </td>
-                <td width="250px">
-                    <div style="padding-left: 20px">
-                        <section>
-                            <h4>Контактная информация</h4>
-                            <ul style="list-style-type: none;">
-                                <li>{{ organization_details.web_site }}</li>
-                                <li>{{ organization_details.email }}</li>
-                                <li>{{ organization_details.mobile_phone }}</li>
-                                <li>{{ organization_details.mobile_phone }}</li>
-                                <li>{{ organization_details.landing_phone }}</li>
-                                <li>{{ organization_details.fax }}</li>
-                            </ul>
-                        </section>
-                    </div>
-                </td>
-            </tr>
-            <tr>
-                <td>
-                    <a href="#">
-                        <img src="/static/remont/images/icon_message.png"/>
-                        <span>Написать сообщение</span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
-                        <img src="/static/remont/images/icon_job.png"/>
-                        <span>Предложить работу</span>
-                    </a>
-                </td>
-                <td>
-                    <a href="#">
-                        <img src="/static/remont/images/icon_consultation.png"/>
-                        <span>Получить консультацию</span>
-                    </a>
-                </td>
-            </tr>
-        </table>
-    </div>
-
-    <div class="companyMenu">
-        <ul class="menuList">
-            <li class="companyMenuItem companyMenuActive" data-alias="companyAbout">О компании</li>
-            <li class="companyMenuItem" data-alias="workPhoto">Фотографии работ</li>
-            <li class="companyMenuItem" data-alias="jobTypes">Услуги и цены</li>
-            <li class="companyMenuItem" data-alias="responses">Отзывы</li>
-            <li class="companyMenuItem" data-alias="questionsAndAnswers">Вопросы и ответы</li>
-        </ul>
-    </div>
-
-    <div id="companyAbout" class="profileDiv profileSection">
-        <h3>О Компании</h3>
-        <p>{{ organization_details.description }}</p>
-    </div>
-
-    <div id="workPhoto" class="profileDiv profileSection hidden">
-        <h3>Фотографии работ</h3>
-        <div class="photo-albums-list">
-            {% for album in work_photos %}
-                <div class="album-item" data-album-id="{{ album.id }}">
-                    <img src="/remont/{{ album.title_photo.photo.url }}" class="album-preview"/>
-                    <div class="info">
-                        <span class="album-name">{{ album.name }}</span>
-                        <span class="photos-amount">{{ album.photos_amount }}</span>
-                    </div>
+    <div class="profileDiv" style="width: 100%; display: block">
+        <div class="left-bar">
+            {% if organization_details.logo.name %}
+                <div class="logo-div left-bar-item">
+                    <img src="/remont/{{ organization_details.logo.url }}" class="org-logo"/>
                 </div>
-            {% endfor %}
-    </div>
-
-    <div id="jobTypes" class="profileDiv profileSection hidden">
-        <h3>Услуги и цены</h3>
-    </div>
-
-    <div id="responses" class="profileDiv profileSection hidden">
-        <h3>Отзывы</h3>
-    </div>
-
-    <div id="questionsAndAnswers" class="profileDiv profileSection hidden">
-        <h3>Вопросы и ответы</h3>
-    </div>
-
-    <div id="albumPhotosList"></div>
+            {% endif %}
+            <div class="actions-div left-bar-item">
+                <ul>
+                    <li>Отправить сообщение</li>
+                    <li>Предложить работу</li>
+                </ul>
+            </div>
+            <div class="work-photos-div left-bar-item">
+                Фотографии работ
+            </div>
+            <div class="work-videos-div left-bar-item">
+                Видео работ
+            </div>
+            <div class="partners-div left-bar-item">
+                Партнеры
+            </div>
+        </div>
+{#        <table>#}
+{#            <tr>#}
+{#                <td width="250px">#}
+{#                    {% if organization_details.logo.name %}#}
+{#                        <img src="/remont/{{ organization_details.logo.url }}" style="width: 100px; height: 100px"/>#}
+{#                    {% endif %}#}
+{#                </td>#}
+{#                <td width="250px">#}
+{#                    <ul style="list-style-type: none;">#}
+{#                        <li>#}
+{#                            <h2>{{ organization_details.name }}</h2>#}
+{#                        </li>#}
+{#                        <li style="color: red">#}
+{#                            <span>{{organization_details.city.name}}</span>#}
+{#                        </li>#}
+{#                        <li style="color: #007fff; text-decoration: underline; cursor: pointer">#}
+{#                            <span>{{ organization_details.address }}</span>#}
+{#                        </li>#}
+{#                    </ul>#}
+{#                </td>#}
+{#                <td width="250px">#}
+{#                    <div style="padding-left: 20px">#}
+{#                        <section>#}
+{#                            <h4>Контактная информация</h4>#}
+{#                            <ul style="list-style-type: none;">#}
+{#                                <li>{{ organization_details.web_site }}</li>#}
+{#                                <li>{{ organization_details.email }}</li>#}
+{#                                <li>{{ organization_details.mobile_phone }}</li>#}
+{#                                <li>{{ organization_details.mobile_phone }}</li>#}
+{#                                <li>{{ organization_details.landing_phone }}</li>#}
+{#                                <li>{{ organization_details.fax }}</li>#}
+{#                            </ul>#}
+{#                        </section>#}
+{#                    </div>#}
+{#                </td>#}
+{#            </tr>#}
+{#            <tr>#}
+{#                <td>#}
+{#                    <a href="#">#}
+{#                        <img src="/static/remont/images/icon_message.png"/>#}
+{#                        <span>Написать сообщение</span>#}
+{#                    </a>#}
+{#                </td>#}
+{#                <td>#}
+{#                    <a href="#">#}
+{#                        <img src="/static/remont/images/icon_job.png"/>#}
+{#                        <span>Предложить работу</span>#}
+{#                    </a>#}
+{#                </td>#}
+{#                <td>#}
+{#                    <a href="#">#}
+{#                        <img src="/static/remont/images/icon_consultation.png"/>#}
+{#                        <span>Получить консультацию</span>#}
+{#                    </a>#}
+{#                </td>#}
+{#            </tr>#}
+{#        </table>#}
+{#    </div>#}
+{##}
+{#    <div class="companyMenu">#}
+{#        <ul class="menuList">#}
+{#            <li class="companyMenuItem companyMenuActive" data-alias="companyAbout">О компании</li>#}
+{#            <li class="companyMenuItem" data-alias="workPhoto">Фотографии работ</li>#}
+{#            <li class="companyMenuItem" data-alias="jobTypes">Услуги и цены</li>#}
+{#            <li class="companyMenuItem" data-alias="responses">Отзывы</li>#}
+{#            <li class="companyMenuItem" data-alias="questionsAndAnswers">Вопросы и ответы</li>#}
+{#        </ul>#}
+{#    </div>#}
+{##}
+{#    <div id="companyAbout" class="profileDiv profileSection">#}
+{#        <h3>О Компании</h3>#}
+{#        <p>{{ organization_details.description }}</p>#}
+{#    </div>#}
+{##}
+{#    <div id="workPhoto" class="profileDiv profileSection hidden">#}
+{#        <h3>Фотографии работ</h3>#}
+{#        <div class="photo-albums-list">#}
+{#            {% for album in work_photos %}#}
+{#                <div class="album-item" data-album-id="{{ album.id }}">#}
+{#                    <img src="/remont/{{ album.title_photo.photo.url }}" class="album-preview"/>#}
+{#                    <div class="info">#}
+{#                        <span class="album-name">{{ album.name }}</span>#}
+{#                        <span class="photos-amount">{{ album.photos_amount }}</span>#}
+{#                    </div>#}
+{#                </div>#}
+{#            {% endfor %}#}
+{#    </div>#}
+{##}
+{#    <div id="jobTypes" class="profileDiv profileSection hidden">#}
+{#        <h3>Услуги и цены</h3>#}
+{#    </div>#}
+{##}
+{#    <div id="responses" class="profileDiv profileSection hidden">#}
+{#        <h3>Отзывы</h3>#}
+{#    </div>#}
+{##}
+{#    <div id="questionsAndAnswers" class="profileDiv profileSection hidden">#}
+{#        <h3>Вопросы и ответы</h3>#}
+{#    </div>#}
+{##}
+{#    <div id="albumPhotosList"></div>#}
     <div id="mediaRoot" class="hidden">{{ mediaRoot }}</div>
-
+</div>
 </body>
 </html>

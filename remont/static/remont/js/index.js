@@ -28,9 +28,10 @@ function saveJobRequest() {
         'contact_name': $(".contact_name").first().val(),
         'job_city': $(".job_city").first().val(),
         'contact_phone': $(".contact_phone").first().val(),
-        'contact_mail': $(".contact_mail").first().val()
+        'contact_mail': $(".contact_mail").first().val(),
+        'job_spec': $("#jobTypes").val()
     };
-    $.post('/remont/suggest_job_save_ajax/', data, refreshJobs)
+    $.post('/remont/suggest_job_save_ajax/', data, refreshJobs);
 }
 
 function refreshJobs(data, textStatus, jqXHR) {

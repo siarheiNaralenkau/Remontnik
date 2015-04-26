@@ -40,7 +40,6 @@
 }
 
 .sectionRegister {
-    border: solid 2px #999;
     height: 90px;
     width: 15%;
     float: right;
@@ -141,7 +140,7 @@
 .jobsSuggestions {
     width: 60%;
     margin: 0 auto;
-    background-color: rgb(245, 245, 245);
+    /*background-color: rgb(245, 245, 245);*/
     border-radius: 4px;
     overflow-y: auto;
 }
@@ -179,7 +178,7 @@
     width: 850px;
     margin: 0 auto;
     border-radius: 4px;
-    background-color: rgb(245, 245, 245);
+    /*background-color: rgb(245, 245, 245);*/
 }
 
 .input-fields-div {

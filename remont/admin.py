@@ -121,6 +121,7 @@ class WorkTypeAdmin(admin.ModelAdmin):
 class OrganizationProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'get_specs', 'city', 'address')
     list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
+    search_fields = ['name']
     form = OrganizationProfileModelForm
 
     def get_specs(self, obj):
