@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.forms.models import ModelForm
 from models import WorkType, City
 from remont.models import WorkSpec, OrganizationProfile
-from remont.rem_widgets import CustomCheckBoxSelectMultiple
+from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
+from django.forms import Textarea, Select, PasswordInput
 
 def get_cities():
     cities_choices = []
@@ -59,9 +59,17 @@ class RegisterForm(forms.Form):
                                                  widget=forms.CheckboxSelectMultiple)
 
 
-class OrgProfileForm(ModelForm):
-
+class OrganizationProfileModelForm(forms.ModelForm):
     class Meta:
         model = OrganizationProfile
-        fields = ['name', 'logo', 'city', 'address', 'job_types', 'mobile_phone']
-
+        fields = ('name', 'city', 'address', 'description', 'logo',
+                  'job_types', 'landline_phone', 'mobile_phone',
+                  'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'password')
+        widgets = {
+            'job_types': CustomCheckBoxSelectMultiple,
+            'address': Textarea(attrs={'cols': 60, 'rows': 3}),
+            'city': Select(attrs={'style': 'width: 200px; float: none'}),
+            'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),
+            'password': PasswordInput(),
+            'logo': SingleImageInput()
+        }

@@ -1,8 +1,11 @@
+# -*- coding: utf-8 -*-
+
 from django import forms
 from remont.models import WorkCategory, WorkType
-from django.utils.html import format_html
+from django.utils.html import format_html, escape, conditional_escape
 from django.utils.safestring import mark_safe
-
+from django.utils.encoding import force_unicode
+from django.forms import ClearableFileInput, CheckboxInput, FileInput
 
 # Custom widgets
 class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
@@ -95,3 +98,113 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
         # To Override output rendering - see example at: http://stackoverflow.com/questions/3986757/how-can-i-render-a-custom-nested-checkbox-tree-view-in-django-admin
         # return super(CustomCheckBoxSelectMultiple, self).render(name, value, attrs, choices)
         # return mark_safe(output.replace(u'<ul>', u'').replace(u'</ul>', u'').replace(u'<li>', u'<p>').replace(u'</li>', u'</p>'))
+
+
+class SingleImageInput(FileInput):
+
+    def render(self, name, value, attrs=None,):
+        preview_div_id = name + "PreviewDiv"
+        output = list()
+
+        output.append(
+            u"""
+                <style type="text/css">
+                    .file-form {
+                        background-color: #FFFFFF;
+                        border: 1px solid #CCCCCC;
+                        border-radius: 2px;
+                        cursor: pointer;
+                        height: 26px;
+                        overflow: hidden;
+                        padding: 2px;
+                        position: relative;
+                        text-align: left;
+                        vertical-align: middle;
+                        width: 230px;
+                    }
+            """
+        )
+        output.append(
+            u"""
+            .file-form .select-button {
+                background-color: #A2A3A3;
+                border: 1px solid #939494;
+                border-radius: 2px;
+                color: #FFFFFF;
+                float: right;
+                font-size: 16px;
+                height: 20px;
+                line-height: 20px;
+                overflow: hidden;
+                padding: 2px 6px;
+                text-align: center;
+                vertical-align: middle;
+                width: 50px;
+            }"""
+        )
+        output.append(
+            u"""
+            .file-form .single-file-upload{
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                -moz-opacity: 0;
+                filter: alpha(opacity=0);
+                opacity: 0;
+                font-size: 150px;
+                height: 30px;
+                z-index: 20;
+            }
+
+            .thumb {
+                height: 100px;
+                width: 100px;
+                border: 1px solid #000;
+                margin: 10px 5px 0 0;
+            }"""
+        )
+        output.append((u"\n#{0}".format(preview_div_id)))
+        output.append(
+            u"""
+            {
+                margin-left: 20px;
+                margin-top: 10px;
+                margin-bottom: 10px;
+                display: inline-block;
+            }
+            </style>"""
+        )
+        output.append(u"""
+            <script type="text/javascript">
+                function handleFileSelect(evt) {
+                    var file = evt.target.files[0];
+            """)
+        output.append(u"""document.getElementById("{0}").innerHTML = '';""".format(preview_div_id))
+        output.append(u"""
+            if(file.type.match('image.*')) {
+                var reader = new FileReader();
+                reader.onload = (function(theFile) {
+                    return function(e) {
+                        var imgPreview = ['<img class="thumb" src="', e.target.result, '" title="', theFile.name, '"/>'].join('');
+            """)
+        output.append(u"""document.getElementById("{0}").innerHTML = imgPreview;""".format(preview_div_id))
+        output.append(u"""
+                            }
+                        })(file);
+
+                        reader.readAsDataURL(file);
+                    }
+                };
+            </script>""")
+        output.append(u"""
+            <div class="file-form">
+                <div class="select-button">Обзор</div>
+        """)
+        output.append(u"""<input class="single-file-upload" type="file" name="{0}" id="{1}"
+            onchange="handleFileSelect(event);"/>""".format(name, attrs["id"]))
+        output.append(u"""</div><div id="{0}"></div>""".format(preview_div_id))
+
+        result = mark_safe(''.join(output))
+        return result
+

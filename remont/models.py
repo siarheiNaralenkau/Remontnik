@@ -100,7 +100,7 @@ class OrganizationProfile(models.Model):
 
     name = models.CharField(u'Название организации', max_length=100)
     city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
-    address = models.CharField(u'Адрес', max_length=150, blank=True)
+    address = models.CharField(u'Адрес', max_length=180, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, blank=True, default=None)
     spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)

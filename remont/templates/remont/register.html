@@ -14,109 +14,17 @@
     <form action="../create_organization/" method="post">
         {{ reg_form.non_field_errors }}
         {% csrf_token %}
-        <div class="text-input-div">
-            <p class="required field">
-                {{ reg_form.name.errors }}
-                <label class="field-label" for="id_name">{{ reg_form.name.label }}:</label>
-                {{ reg_form.name }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            <p class="required field">
-                {{ reg_form.spec.errors }}
-                <label class="field-label" for="id_spec">{{ reg_form.spec.label }}:</label>
-                {{ reg_form.spec }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            <p class="required field">
-                {{ reg_form.reg_city.errors }}
-                <label class="field-label" for="id_reg_city">{{ reg_form.reg_city.label }}:</label>
-                {{ reg_form.reg_city }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            <p class="not-required field">
-                {{ reg_form.reg_address.errors }}
-                <label class="field-label" for="id_reg_address">{{ reg_form.reg_address.label }}:</label>
-                {{ reg_form.reg_address }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            <p class="required">
-                {{ reg_form.job_types.errors }}
-                <label class="field-label" for="id_job_types">{{ reg_form.job_types.label }}:</label>
-                {{ reg_form.job_types }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            {{ reg_form.logo.errors }}
-            <label class="top-align-label field-label" for="id_logo">{{ reg_form.logo.label }}:</label>
-            <div class="fileform">
-                <div class="selectbutton">Обзор</div>
-                {{ reg_form.logo }}
+        {% for field in reg_form %}
+            <div style="display: block; width: 800px; padding-bottom: 20px">
+                <label style="font-weight: 800; margin-left: 20px; width: 250px; float: left">
+                    {{ field.label }}:
+                </label>
+                {% if field.html_name == 'job_types' %}
+                    <br/>
+                {% endif %}
+                {{ field }}
             </div>
-            <div id="previewDiv" class="previewDiv"></div>
-        </div>
-        <div class="text-input-div">
-            <p>
-                {{ reg_form.description.errors }}
-                <label class="textarea-label" for="id_description">{{ reg_form.description.label }}:</label>
-                {{ reg_form.description }}
-            </p>
-        </div>
-        <div class="text-input-div">
-            <p class="required">
-                {{ reg_form.work_cities.errors }}
-                <label class="field-label" for="id_work_cities">{{ reg_form.work_cities.label }}:</label>
-                {{ reg_form.work_cities }}
-            </p>
-        </div>
-        <fieldset>
-            <legend>Контактная информация</legend>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.landing_phone.errors }}
-                    <label class="field-label" for="id_landing_phone">{{ reg_form.landing_phone.label }}:</label>
-                    {{ reg_form.landing_phone }}
-                </p>
-            </div>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.mobile_phone.errors }}
-                    <label class="field-label" for="id_mobile_phone">{{ reg_form.mobile_phone.label }}:</label>
-                    {{ reg_form.mobile_phone }}
-                </p>
-            </div>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.mobile_phone2.errors }}
-                    <label class="field-label" for="id_mobile_phone2">{{ reg_form.mobile_phone2.label }}:</label>
-                    {{ reg_form.mobile_phone2 }}
-                </p>
-            </div>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.fax.errors }}
-                    <label class="field-label" for="id_fax">{{ reg_form.fax.label }}:</label>
-                    {{ reg_form.fax }}
-                </p>
-            </div>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.web_site.errors }}
-                    <label class="field-label" for="id_web_site">{{ reg_form.web_site.label }}:</label>
-                    {{ reg_form.web_site }}
-                </p>
-            </div>
-            <div class="text-input-div">
-                <p class="contact-info">
-                    {{ reg_form.email.errors }}
-                    <label class="field-label" for="id_email">{{ reg_form.email.label }}:</label>
-                    {{ reg_form.email }}
-                </p>
-            </div>
-        </fieldset>
+        {% endfor %}
         <div>
             <input type="submit" value="Зарегистрироваться"/>
         </div>
