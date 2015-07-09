@@ -2,6 +2,7 @@ from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Article
+from remont.rem_forms import OrganizationProfileModelForm
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape, format_html
@@ -99,16 +100,6 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
         # To Override output rendering - see example at: http://stackoverflow.com/questions/3986757/how-can-i-render-a-custom-nested-checkbox-tree-view-in-django-admin
         # return super(CustomCheckBoxSelectMultiple, self).render(name, value, attrs, choices)
         # return mark_safe(output.replace(u'<ul>', u'').replace(u'</ul>', u'').replace(u'<li>', u'<p>').replace(u'</li>', u'</p>'))
-
-
-# Custom admin forms
-class OrganizationProfileModelForm(forms.ModelForm):
-    class Meta:
-        model = OrganizationProfile
-        widgets = {
-            # 'job_types': forms.CheckboxSelectMultiple
-            'job_types': CustomCheckBoxSelectMultiple
-        }
 
 
 # Custom admin classes
