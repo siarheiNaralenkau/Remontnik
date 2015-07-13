@@ -64,7 +64,7 @@ class OrganizationProfileModelForm(forms.ModelForm):
         model = OrganizationProfile
         fields = ('name', 'city', 'address', 'description', 'logo',
                   'job_types', 'landline_phone', 'mobile_phone',
-                  'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'password')
+                  'mobile_phone2', 'fax', 'web_site', 'email', 'collegues', 'login', 'password')
         widgets = {
             'job_types': CustomCheckBoxSelectMultiple,
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),

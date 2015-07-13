@@ -261,3 +261,28 @@ def get_album_photos(request):
     response = JsonResponse(album_photos, safe=False)
     return response
 
+
+# Получаем список организаций(Для страницы)
+def get_orgs_list(request):
+    orgs_list = list(OrganizationProfile.objects.all().order_by('name'))
+    print("Amount of organizations: {0}".format(len(orgs_list)))
+    return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
+
+def view_profile(request):
+    return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
+
+# Получаем информацию об организации в формате JSON
+def get_profile_info(request):
+    org_id = request.GET["org_id"]
+    print("Organization id: {0}".format(org_id))
+    org_profile = OrganizationProfile.objects.filter(id=org_id).first()
+    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
+                    "address": org_profile.address, "rating": 3.5, "logo_url": org_profile.logo.url}
+    collegs = org_profile.collegues.all()
+    collegs_array = []
+    for c in collegs:
+        collegs_array.append({"id": c.id, "name": c.name, "logo_url": c.logo.url})
+    profile_json["collegues"] = collegs_array
+    print("Profile JSON: {0}".format(profile_json))
+    response = JsonResponse(profile_json, safe=False)
+    return response

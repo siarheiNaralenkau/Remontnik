@@ -20,6 +20,9 @@ urlpatterns = patterns('',
     url(r'^login/$', views.login, name='login'),
     url(r'^set_password/$', views.set_password, name='set_password'),
     url(r'^get_album_photos/$', views.get_album_photos, name='get_album_photos'),
+    url(r'^orgs_list/$', views.get_orgs_list, name='get_orgs_list'),
+    url(r'^view_profile/$', views.view_profile, name='view_profile'),
+    url(r'^get_profile_info/$', views.get_profile_info, name='get_profile_info'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 
