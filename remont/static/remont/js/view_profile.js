@@ -75,6 +75,21 @@ $(function() {
         $("#showMap").click(showOnMap);
 
         $("#aboutCompany").text(data.about);
+
+        // Load photos
+        $("#photosHeader").text(data.photos.length + ' Фотографий');
+        var photoFragment = document.createDocumentFragment();
+        for(var i = 0; i < data.photos.length; i++) {
+            var photoImg = document.createElement("img");
+            $(photoImg).attr("src", "/remont/" + data.photos[i]);
+            $(photoImg).addClass("work-image");                        
+            photoFragment.appendChild(photoImg);
+        }
+        $("#photos")[0].appendChild(photoFragment);
+        // $(".work-image").each(function() {
+        //     var width = $(this).width();
+        //     $(this).css({'height': width + 'px'});
+        // });
     }, "json");
 
     function showMoreJobs() {        

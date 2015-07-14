@@ -11,6 +11,10 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import sys
+import codecs
+
+sys.stdout = codecs.getwriter('utf8')(sys.stdout)
+sys.stderr = codecs.getwriter('utf8')(sys.stderr)
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -32,7 +36,7 @@ ALLOWED_HOSTS = []
 
 platform = sys.platform
 if sys.platform.startswith("win"):
-    MEDIA_ROOT = "c:/MyDevelopment/MediaStorage/"
+    MEDIA_ROOT = "c://MyDevelopment//MediaStorage//"
 elif sys.platform.startswith("linux"):
     MEDIA_ROOT = "/home/media/remontnik/"
 else:

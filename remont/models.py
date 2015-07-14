@@ -23,9 +23,11 @@ def save_media_file(instance, filename):
 
 
 # Сохранение фотографии работы
-def save_work_photo(instance, filename):
-    storage_path = instance.album.organization.name + '/' + instance.album.name + '/' + filename
-    print storage_path
+def save_work_photo(instance, filename):    
+    storage_path = str(instance.organization.id)
+    if instance.album:
+        storage_path = storage_path + "/" + str(instance.album.id)
+    storage_path = storage_path + "/" + filename
     return storage_path
 
 
@@ -117,7 +119,7 @@ class OrganizationProfile(models.Model):
     password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
     login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
 
-    collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues", null=True)
+    collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues")
 
     def save(self, *args, **kwargs):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -203,11 +205,12 @@ class WorkPhotoAlbum(models.Model):
     name = models.CharField(u"Название альбома", max_length=60)
 
     def save(self, *args, **kwargs):
-        album_path = settings.MEDIA_ROOT + self.organization.name + '/' + self.name
-        if not os.path.exists(album_path):
-            os.makedirs(album_path)
         super(WorkPhotoAlbum, self).save(*args, **kwargs)
-
+        album_folder = settings.MEDIA_ROOT + str(self.organization.id) + "//" + str(self.id)
+        print album_folder      
+        if not os.path.exists(album_folder):
+            os.makedirs(album_folder)                
+        
     def __unicode__(self):
         return self.name
 
@@ -217,7 +220,8 @@ class WorkPhoto(models.Model):
         verbose_name = u"Фотография выполненной работы"
         verbose_name_plural = u"Фотографии выполненных работ"
 
-    album = models.ForeignKey(WorkPhotoAlbum, verbose_name=u"Альбом", null=False)
+    organization = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=True)
+    album = models.ForeignKey(WorkPhotoAlbum, verbose_name=u"Альбом", null=True, blank=True)
     photo = models.ImageField(u'Фото сделанной работы', upload_to=save_work_photo)
 
     def __unicode__(self):

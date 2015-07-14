@@ -305,5 +305,9 @@ def get_profile_info(request):
 
     profile_json["about"] = org_profile.description
 
+    photos = WorkPhoto.objects.filter(organization=org_profile)
+    print("Photos amount: {0}".format(len(photos)))
+    profile_json["photos"] = [p.photo.url for p in photos]
+
     response = JsonResponse(profile_json, safe=False)
     return response

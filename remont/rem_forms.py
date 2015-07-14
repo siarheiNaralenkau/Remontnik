@@ -66,7 +66,7 @@ class OrganizationProfileModelForm(forms.ModelForm):
                   'job_types', 'landline_phone', 'mobile_phone',
                   'mobile_phone2', 'fax', 'web_site', 'email', 'collegues', 'login', 'password')
         widgets = {
-            'job_types': CustomCheckBoxSelectMultiple,
+            # 'job_types': CustomCheckBoxSelectMultiple,
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),
             'city': Select(attrs={'style': 'width: 200px; float: none'}),
             'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),
