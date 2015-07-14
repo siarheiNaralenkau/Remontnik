@@ -273,8 +273,7 @@ def view_profile(request):
 
 # Получаем информацию об организации в формате JSON
 def get_profile_info(request):
-    org_id = request.GET["org_id"]
-    print("Organization id: {0}".format(org_id))
+    org_id = request.GET["org_id"]    
     org_profile = OrganizationProfile.objects.filter(id=org_id).first()
     profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
                     "address": org_profile.address, "rating": 3.5, "logo_url": org_profile.logo.url}
@@ -283,6 +282,28 @@ def get_profile_info(request):
     for c in collegs:
         collegs_array.append({"id": c.id, "name": c.name, "logo_url": c.logo.url})
     profile_json["collegues"] = collegs_array
-    print("Profile JSON: {0}".format(profile_json))
+    
+    job_types = [job.name for job in org_profile.job_types.all()]
+    profile_json["job_types"] = job_types
+
+    contacts = []
+    if org_profile.landline_phone:
+        contacts.append(org_profile.landline_phone)
+    if org_profile.mobile_phone:
+        contacts.append(org_profile.mobile_phone)
+    if org_profile.mobile_phone2:
+        contacts.append(org_profile.mobile_phone2)
+    if org_profile.fax:
+        contacts.append(org_profile.fax)
+    if org_profile.web_site:
+        contacts.append(org_profile.web_site)
+    if org_profile.email:
+        contacts.append(org_profile.email)
+    profile_json["contacts"] = contacts
+
+    profile_json["address"] = org_profile.address
+
+    profile_json["about"] = org_profile.description
+
     response = JsonResponse(profile_json, safe=False)
     return response
