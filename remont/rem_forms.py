@@ -62,14 +62,13 @@ class RegisterForm(forms.Form):
 class OrganizationProfileModelForm(forms.ModelForm):
     class Meta:
         model = OrganizationProfile
-        fields = ('name', 'city', 'address', 'description', 'logo',
-                  'job_types', 'landline_phone', 'mobile_phone',
-                  'mobile_phone2', 'fax', 'web_site', 'email', 'collegues', 'login', 'password')
+        fields = ('name', 'city', 'address', 'job_types', 'logo', 'spec',
+                  'description', 'landline_phone', 'mobile_phone',
+                  'mobile_phone2', 'fax', 'web_site', 'email', 'work_cities', 'collegues', 'login', 'password')
         widgets = {
-            # 'job_types': CustomCheckBoxSelectMultiple,
+            'job_types': CustomCheckBoxSelectMultiple,
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),
             'city': Select(attrs={'style': 'width: 200px; float: none'}),
-            'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),
-            'password': PasswordInput(),
+            'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),            
             'logo': SingleImageInput()
         }

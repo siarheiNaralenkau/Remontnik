@@ -105,7 +105,7 @@ class OrganizationProfile(models.Model):
     address = models.CharField(u'Адрес', max_length=180, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, blank=True, default=None)
-    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)
+    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=u'Все')
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
     mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True, default='')
