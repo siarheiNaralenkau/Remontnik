@@ -1,3 +1,4 @@
 from django.contrib import admin
+from lastActivityDate.models import UserActivity
 
-# Register your models here.
+admin.site.register(UserActivity)

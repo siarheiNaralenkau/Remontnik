@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django import forms
-from remont.models import WorkCategory, WorkType, UserProfile, City, OrganizationProfile, JobSuggestion, WorkSpec, \
+from remont.models import WorkCategory, WorkType, City, OrganizationProfile, JobSuggestion, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Article
 from remont.rem_forms import OrganizationProfileModelForm
 
@@ -31,7 +31,6 @@ class ArticleAdmin(admin.ModelAdmin):
 
 admin.site.register(WorkCategory)
 admin.site.register(WorkType, WorkTypeAdmin)
-admin.site.register(UserProfile)
 admin.site.register(City)
 admin.site.register(OrganizationProfile, OrganizationProfileAdmin)
 admin.site.register(JobSuggestion)

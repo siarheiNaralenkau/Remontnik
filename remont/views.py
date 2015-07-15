@@ -11,7 +11,7 @@ from rem_forms import SuggestJobForm
 
 # Главная страница приложения
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
-from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec, \
+from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto
 
 from django.conf import settings
@@ -109,32 +109,6 @@ def suggest_job_save_ajax(request):
                      'date_created': job.date_created, 'description': job.description}
     response = JsonResponse(response_data, safe=False)
     return response
-
-
-# Регистрация нового пользователя
-def create_user(request):
-    reg_type = request.REQUEST["reg_type"]
-    contact_name = request.REQUEST["contact_name"]
-    email = request.REQUEST["email"]
-    phone = request.REQUEST["phone"]
-    password = email
-    auth_user = User.objects.create_user(email, email, password)
-    user_profile = UserProfile(user_id=auth_user.id, contact_name=contact_name, reg_type=reg_type, phone=phone)
-    user_profile.save()
-    request.session['user_id'] = user_profile.id
-    return redirect("/remont/user_profile")
-
-
-def user_profile(request):
-    profile_data = {}
-    if "user_id" in request.session:
-        u_profile = UserProfile.objects.get(id=request.session["user_id"])
-        profile_data["user_profile"] = u_profile
-        return render(request, "remont/user_profile.html", profile_data)
-
-
-def update_user_profile(request):
-    return redirect("/remont/user_profile")
 
 
 # Отображает список организаций
