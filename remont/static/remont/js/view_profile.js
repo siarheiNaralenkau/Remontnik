@@ -25,6 +25,7 @@ $(function() {
         for(var i = 0; i < data.collegues.length; i++) {
             var collegItem = document.createElement("li");
             collegItem.setAttribute("class", "colleg-item");
+            collegItem.setAttribute("data-orgid", data.collegues[i].id);
             
             var collegImg = document.createElement("img");
             collegImg.setAttribute("src", "/remont/" + data.collegues[i].logo_url);
@@ -34,7 +35,9 @@ $(function() {
             var collegName = document.createElement("span");
             collegName.setAttribute("class", "colleg-name");
             collegName.innerHTML = data.collegues[i].name;
-            collegItem.appendChild(collegName);            
+            collegItem.appendChild(collegName);         
+
+            $(collegItem).click(viewFriendOrg);   
 
             collegsFragment.appendChild(collegItem);
         }
@@ -80,16 +83,15 @@ $(function() {
         $("#photosHeader").text(data.photos.length + ' Фотографий');
         var photoFragment = document.createDocumentFragment();
         for(var i = 0; i < data.photos.length; i++) {
+            var imgLink = document.createElement("a");
+            $(imgLink).attr("href", "/remont/" + data.photos[i]);
             var photoImg = document.createElement("img");
-            $(photoImg).attr("src", "/remont/" + data.photos[i]);
-            $(photoImg).addClass("work-image");                        
-            photoFragment.appendChild(photoImg);
+            $(photoImg).attr("src", "/remont/" + data.photos[i]);            
+            $(photoImg).addClass("work-image");                  
+            imgLink.appendChild(photoImg);      
+            photoFragment.appendChild(imgLink);
         }
-        $("#photos")[0].appendChild(photoFragment);
-        // $(".work-image").each(function() {
-        //     var width = $(this).width();
-        //     $(this).css({'height': width + 'px'});
-        // });
+        $("#photos")[0].appendChild(photoFragment);        
     }, "json");
 
     function showMoreJobs() {        
@@ -152,5 +154,11 @@ $(function() {
         $(this).unbind();
         $(this).click(showMap);
         $("#addressMap").addClass("hidden");
+    }
+
+    function viewFriendOrg() {
+        var orgId = $(this).attr("data-orgid");
+        var url = "/remont/view_profile?org_id=" + orgId;
+        window.open(url, "_self");
     }
 });

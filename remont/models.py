@@ -119,7 +119,7 @@ class OrganizationProfile(models.Model):
     password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
     login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
 
-    collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues")
+    collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues", blank=True)
 
     def save(self, *args, **kwargs):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:

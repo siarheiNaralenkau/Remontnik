@@ -276,11 +276,22 @@ def get_profile_info(request):
     org_id = request.GET["org_id"]    
     org_profile = OrganizationProfile.objects.filter(id=org_id).first()
     profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
-                    "address": org_profile.address, "rating": 3.5, "logo_url": org_profile.logo.url}
+                    "address": org_profile.address, "rating": 3.5}
+
+    if org_profile.logo:
+        profile_json["logo_url"] = org_profile.logo.url
+    else:
+        profile_json["logo_url"] = ""
+
     collegs = org_profile.collegues.all()
     collegs_array = []
     for c in collegs:
-        collegs_array.append({"id": c.id, "name": c.name, "logo_url": c.logo.url})
+        colleg_item = {"id": c.id, "name": c.name}
+        if c.logo:
+            colleg_item["logo_url"] = c.logo.url
+        else:
+            colleg_item["logo_url"] = ""
+        collegs_array.append(colleg_item)
     profile_json["collegues"] = collegs_array
     
     job_types = [job.name for job in org_profile.job_types.all()]
