@@ -5,7 +5,7 @@ from models import WorkType, City
 from remont.models import WorkSpec, OrganizationProfile
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
-from django.forms import Textarea, Select, PasswordInput
+from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple
 
 def get_cities():
     cities_choices = []
@@ -70,5 +70,6 @@ class OrganizationProfileModelForm(forms.ModelForm):
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),
             'city': Select(attrs={'style': 'width: 200px; float: none'}),
             'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),            
-            'logo': SingleImageInput()
+            'logo': SingleImageInput,
+            'collegues': CheckboxSelectMultiple
         }

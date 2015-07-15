@@ -144,6 +144,10 @@ class OrganizationProfile(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_spec(self):
+        return ', '.join([s.get_name_display() for s in self.spec.all()])
+    get_spec.short_description = u'Специализация'
+
 
 class UserProfile(models.Model):
     REG_TYPE_CHOICES = (
