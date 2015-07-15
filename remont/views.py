@@ -15,6 +15,7 @@ from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationPro
                           WorkPhotoAlbum, WorkPhoto
 
 from django.conf import settings
+from django.contrib.auth import authenticate, login
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -174,31 +175,31 @@ def create_organization(request):
 
 # Вход на сайт
 @csrf_exempt
-def login(request):
+def site_login(request):    
     response_data = {}
-    org_login = request.POST["login"]
-    org = OrganizationProfile.objects.filter(name=org_login).first()
-    if not org:
-        org = OrganizationProfile.objects.filter(login=org_login).first()
-    if not org:
-        print("Organization with such name or login doesn't exists!")
-        response_data["status"] = "Unknown organization"
-    elif not org.password:
-        response_data["status"] = "First login"
-        response_data["org_name"] = org.name
-    else:
-        entered_password = request.POST["password"]
-        if org.password != entered_password:
-            response_data["status"] = "Incorrect password"
-        else:
-            response_data["status"] = "Success login"
-            response_data["org_name"] = org.name
-            response_data["login"] = org.login
-            response_data["org_id"] = org.id
-            request.session["org_id"] = org.id
-    response = JsonResponse(response_data, safe=False)
-    return response
+    uname = request.POST["login"]
+    passwd = request.POST["password"]
+    user = authenticate(username=uname, password=passwd)
+    
+    if user is None: 
+        # Попытка авторизации, используя имя организации
+        org = OrganizationProfile.objects.filter(name=uname).first()
+        if org:
+            uname = org.account.username
+            user = authenticate(username=uname, password=passwd)
 
+    if user is not None:
+        if user.is_active:
+            print("User is valid, active and authenticated")
+            login(request, user)
+            print("User: {0} is successfully logged in! Redirecting to main page...".format(uname))
+            response_data = {}
+            response_data["status"] = "success"
+            return JsonResponse(response_data, safe=False)
+        else:
+            print("The password is valid, but the account has been disabled!")            
+    else:
+        print("The username and password were incorrect.")
 
 # Установка пароля для организации при первом входе
 @csrf_exempt
