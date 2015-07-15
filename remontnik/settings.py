@@ -59,6 +59,7 @@ INSTALLED_APPS = (
     'django.db.backends.mysql',
     'ckeditor',
     'remont',
+    'lastActivityDate',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -69,6 +70,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'lastActivityDate.middleware.LastActivityMiddleware'
 )
 
 ROOT_URLCONF = 'remontnik.urls'

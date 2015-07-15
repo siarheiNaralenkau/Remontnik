@@ -2,6 +2,10 @@ from django.conf.urls import patterns, url, include
 from django.conf import settings
 from remont import views
 
+skip_last_activity_date = [
+    #Your expressions go here
+]
+
 urlpatterns = patterns('',
     url(r'^$', views.index, name='index'),
     url(r'^register/$', views.register, name='register'),
