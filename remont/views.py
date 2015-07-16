@@ -12,10 +12,10 @@ from rem_forms import SuggestJobForm
 # Главная страница приложения
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto
+                          WorkPhotoAlbum, WorkPhoto, Message
 
 from django.conf import settings
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -23,10 +23,15 @@ def index(request):
     cities = City.objects.all()
     categories = WorkCategory.objects.all()
     suggest_job_form = SuggestJobForm()
-    return render(request, 'remont/index.html', {"jobSuggestions": job_suggestions, "cities": cities,
-                                                 "categories": categories,
-                                                 "suggest_job_form": suggest_job_form})
+    response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
+    # Check if user is logged in.
+    if request.user.is_authenticated():
+        print "User is logged in!"
+        response_data["logged_in"] = True
+        newMessages = Message.objects.filter(was_read__isnull=True)
+        response_data["newMesagesAmount"] = len(newMessages)
 
+    return render(request, 'remont/index.html', response_data)
 
 # Регистрация пользователя
 def register(request):
@@ -181,6 +186,8 @@ def site_login(request):
     passwd = request.POST["password"]
     user = authenticate(username=uname, password=passwd)
     
+    response_data = {}
+
     if user is None: 
         # Попытка авторизации, используя имя организации
         org = OrganizationProfile.objects.filter(name=uname).first()
@@ -189,17 +196,26 @@ def site_login(request):
             user = authenticate(username=uname, password=passwd)
 
     if user is not None:
-        if user.is_active:
-            print("User is valid, active and authenticated")
-            login(request, user)
-            print("User: {0} is successfully logged in! Redirecting to main page...".format(uname))
-            response_data = {}
+        if user.is_active:            
+            login(request, user)                        
             response_data["status"] = "success"
             return JsonResponse(response_data, safe=False)
         else:
-            print("The password is valid, but the account has been disabled!")            
+            response_data["status"] = "error"
+            response_data["error_message"] = u"Аккаунт пользователя {0} не активирован!".format(uname)
     else:
-        print("The username and password were incorrect.")
+        response_data["status"] = "error"
+        response_data["error_message"] = "Неправильное имя пользователя или пароль"
+
+    response = JsonResponse(response_data, safe=False)
+    return response
+
+
+# Выход с сайта
+@csrf_exempt
+def site_logout(request):
+    logout(request)
+    return redirect("/remont")    
 
 # Установка пароля для организации при первом входе
 @csrf_exempt

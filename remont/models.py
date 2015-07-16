@@ -136,6 +136,7 @@ class OrganizationProfile(models.Model):
             # Создаем аккаунт пользователя для организации, если указан логин           
             if self.login:
                 account = User.objects.create_user(self.login, self.email, self.password)
+                account.first_name = self.name
                 account.save()
 
     def clean(self):
@@ -283,6 +284,8 @@ class Message(models.Model):
     org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False, blank=False)
     text = models.CharField(u"Сообщение", max_length=1000)
     msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, default=u"Анонимный пользователь")
+    was_written = models.DateTimeField(verbose_name=u"Дата создания сообщения", auto_now_add=True, null=True)
+    was_read = models.DateTimeField(verbose_name=u"Дата прочтения сообщения", null=True, default=None)
 
 
 # Валюта
