@@ -313,3 +313,27 @@ def get_profile_info(request):
 
     response = JsonResponse(profile_json, safe=False)
     return response
+
+
+# Отправляем сообщение организации(Другому пользователю)
+@csrf_exempt
+def send_text_mesaage(request):
+    response_data = {}
+    sender = None
+    receiver_id = request.POST["org_id"]
+    receiver_org = OrganizationProfile.objects.filter(id=receiver_id).first()
+    if receiver_org.account:        
+        message_text = request.POST["message"]
+        if request.user.is_authenticated():
+            print 'User is authenticated!'
+            sender = request.user
+        msg = Message(msg_to=receiver_org.account, msg_from=sender, text=message_text)
+        msg.save()
+        print "Message was successfully send"
+        response_data["status"] = "success"
+    else:
+        print "Error during message sending."
+        response_data["status"] = "error"
+        response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
+
+    return JsonResponse(response_data, safe=False)

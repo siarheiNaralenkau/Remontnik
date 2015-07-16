@@ -131,13 +131,16 @@ class OrganizationProfile(models.Model):
                 OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
                 OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
             ]))
-        else:
-            super(OrganizationProfile, self).save(*args, **kwargs)
+        else:                        
             # Создаем аккаунт пользователя для организации, если указан логин           
-            if self.login:
+            if self.login and not self.account:                                
                 account = User.objects.create_user(self.login, self.email, self.password)
                 account.first_name = self.name
+                account.email = self.email
                 account.save()
+                self.account = account                
+            super(OrganizationProfile, self).save(*args, **kwargs)
+            
 
     def clean(self):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -281,12 +284,11 @@ class Message(models.Model):
         verbose_name = u"Сообщение"
         verbose_name_plural = u"Сообщения"
 
-    org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False, blank=False)
-    text = models.CharField(u"Сообщение", max_length=1000)
-    msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, default=u"Анонимный пользователь")
+    msg_to = models.ForeignKey(User, verbose_name=u"Получатель сообщения", null=False, blank=False, default=None, related_name='receiver')
+    msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, related_name='sender')    
+    text = models.CharField(u"Сообщение", max_length=1000)    
     was_written = models.DateTimeField(verbose_name=u"Дата создания сообщения", auto_now_add=True, null=True)
     was_read = models.DateTimeField(verbose_name=u"Дата прочтения сообщения", null=True, default=None)
-
 
 # Валюта
 class Currency(models.Model):

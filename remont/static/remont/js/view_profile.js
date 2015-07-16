@@ -1,4 +1,19 @@
 $(function() {
+    var sendMsgDialog = $("#messageDialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        title: "Написать сообщение",
+        height: 400,
+        width: 550,
+        buttons: {
+            "Отправить": sendMessage
+        },
+        close: function() {
+            document.forms["messageForm"].reset();
+        }
+    });
+
     var orgId = $("#orgId").text();
     console.log("Selected organization id: ", orgId);
     $.get("/remont/get_profile_info", {org_id: orgId}, function(data) {
@@ -161,4 +176,26 @@ $(function() {
         var url = "/remont/view_profile?org_id=" + orgId;
         window.open(url, "_self");
     }
+
+    function sendMessage() {
+        var data = {
+            org_id: $("#org_id").val(),
+            message: $("#tMessage").val()
+        }
+        $.post("/remont/send_text_mesaage/", data, sendMessageResult);
+    }
+
+    function sendMessageResult(responseData, textStatus, jqXHR) {
+        console.log("Send message result: " + responseData);
+        if(responseData.status === "success") {
+            sendMsgDialog.dialog("close");
+            $("#msgError").text("");
+        } else {
+            $("#msgError").text(responseData.error_message);
+        }
+    }
+
+    $("#btnSendMsg").click(function() {
+        sendMsgDialog.dialog("open");
+    });
 });

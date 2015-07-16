@@ -25,6 +25,7 @@ urlpatterns = patterns('',
     url(r'^orgs_list/$', views.get_orgs_list, name='get_orgs_list'),
     url(r'^view_profile/$', views.view_profile, name='view_profile'),
     url(r'^get_profile_info/$', views.get_profile_info, name='get_profile_info'),
+    url(r'^send_text_mesaage/$', views.send_text_mesaage, name='send_text_mesaage'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 
