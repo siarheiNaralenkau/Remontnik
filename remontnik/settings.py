@@ -1,3 +1,5 @@
+# -*- coding: utf-8 -*-
+
 """
 Django settings for remontnik project.
 
@@ -11,6 +13,36 @@ https://docs.djangoproject.com/en/1.6/ref/settings/
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 import os
 import sys
+import codecs
+import locale
+
+# def setup_console(sys_enc="utf-8"):
+#     reload(sys)
+#     try:
+#         # для win32 вызываем системную библиотечную функцию
+#         if sys.platform.startswith("win"):
+#             import ctypes
+#             enc = "cp%d" % ctypes.windll.kernel32.GetOEMCP() #TODO: проверить на win64/python64
+#         else:
+#             # для Linux всё, кажется, есть и так
+#             enc = (sys.stdout.encoding if sys.stdout.isatty() else
+#                         sys.stderr.encoding if sys.stderr.isatty() else
+#                             sys.getfilesystemencoding() or sys_enc)
+
+#         # кодировка для sys
+#         sys.setdefaultencoding(sys_enc)
+
+#         # переопределяем стандартные потоки вывода, если они не перенаправлены
+#         if sys.stdout.isatty() and sys.stdout.encoding != enc:
+#             sys.stdout = codecs.getwriter(enc)(sys.stdout, 'replace')
+
+#         if sys.stderr.isatty() and sys.stderr.encoding != enc:
+#             sys.stderr = codecs.getwriter(enc)(sys.stderr, 'replace')
+
+#     except:
+#         pass # Ошибка? Всё равно какая - работаем по-старому...
+
+# setup_console()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -32,7 +64,7 @@ ALLOWED_HOSTS = []
 
 platform = sys.platform
 if sys.platform.startswith("win"):
-    MEDIA_ROOT = "c:/MyDevelopment/MediaStorage/"
+    MEDIA_ROOT = "c://MyDevelopment//MediaStorage//"
 elif sys.platform.startswith("linux"):
     MEDIA_ROOT = "/home/media/remontnik/"
 else:
@@ -55,6 +87,7 @@ INSTALLED_APPS = (
     'django.db.backends.mysql',
     'ckeditor',
     'remont',
+    'lastActivityDate',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -65,6 +98,7 @@ MIDDLEWARE_CLASSES = (
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.locale.LocaleMiddleware',
+    'lastActivityDate.middleware.LastActivityMiddleware'
 )
 
 ROOT_URLCONF = 'remontnik.urls'
@@ -93,13 +127,13 @@ if ENVIRONMENT == 'remote':
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+USE_TZ = False
+
+TIME_ZONE = 'Europe/Minsk'
 
 USE_I18N = True
 
 USE_L10N = True
-
-USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)

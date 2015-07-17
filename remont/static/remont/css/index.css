@@ -1,6 +1,9 @@
 .topPage {
-    width:100%;
-    height:100px;
+    display: table;    
+    width: 100%;
+    height: 100px;
+    table-layout: fixed;
+    border-spacing: 10px;
 }
 
 .topCompanySection {
@@ -12,6 +15,7 @@
     margin-left:1%;
     width:8.5%;
 }
+
 .topCompanyCell {
     border:solid 5px lightblue;
     border-radius: 5px;
@@ -22,15 +26,16 @@
     width: 10%;
 }
 
-.sectionLogo {
-    float: left;
+.sectionLogo {        
     height: 90px;
-    width: 15%;
+    width: 15%;    
     margin-top: 4px;
     margin-left: 1%;
+    display: table-cell;
 }
 
-.sectionBanner {
+.sectionBanner {    
+    display: table-cell;
     border: solid 1px #999;
     height: 90px;
     width: 34%;
@@ -39,14 +44,14 @@
     margin-left: 17%;
 }
 
-.sectionRegister {
+.sectionRegister {   
+    display: table-cell; 
     height: 90px;
     width: 15%;
     float: right;
     margin-right: 1%;
     margin-top: 4px;
-    border-radius: 2px;
-    display: block;
+    border-radius: 2px;    
 }
 
 .top10Companies {
@@ -303,4 +308,35 @@
 .content-div {
     float: left;
     width: 74%;
+}
+
+.error-div {
+    color: #FF0000;
+    font-size: 12px;
+    font-weight: 800;
+}
+
+.logged-user-info {
+    background-color: #FFFFCC;    
+    width: 100%;
+    height: 25px;
+}
+
+.welcome-message {
+    float: left;    
+    margin-left: 50%;
+}
+
+.new-messages {
+    float: left;    
+    margin-left: 2%;
+}
+
+.exit-btn {
+    float: left;    
+    margin-left: 2%;
+    cursor: pointer;
+    background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+    border-radius: 4px;
+    padding: 5px;
 }

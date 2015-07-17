@@ -6,6 +6,7 @@ from django.utils.encoding import python_2_unicode_compatible
 from django.core.exceptions import ValidationError
 from django.conf import settings
 from ckeditor.fields import RichTextField
+from django.core.validators import MaxValueValidator, MinValueValidator
 
 import os
 
@@ -23,9 +24,11 @@ def save_media_file(instance, filename):
 
 
 # Сохранение фотографии работы
-def save_work_photo(instance, filename):
-    storage_path = instance.album.organization.name + '/' + instance.album.name + '/' + filename
-    print storage_path
+def save_work_photo(instance, filename):    
+    storage_path = str(instance.organization.id)
+    if instance.album:
+        storage_path = storage_path + "/" + str(instance.album.id)
+    storage_path = storage_path + "/" + filename
     return storage_path
 
 
@@ -100,10 +103,10 @@ class OrganizationProfile(models.Model):
 
     name = models.CharField(u'Название организации', max_length=100)
     city = models.ForeignKey(City, verbose_name=u"Город регистрации", related_name="reg_city", null=True)
-    address = models.CharField(u'Адрес', max_length=150, blank=True)
+    address = models.CharField(u'Адрес', max_length=180, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, blank=True, default=None)
-    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=None)
+    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=u'Все')
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
     mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True, default='')
@@ -116,6 +119,9 @@ class OrganizationProfile(models.Model):
 
     password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
     login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
+    account = models.ForeignKey(User, verbose_name=u"Аккаунт", related_name="account", null=True, blank=True)
+
+    collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues", blank=True)
 
     def save(self, *args, **kwargs):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -125,8 +131,16 @@ class OrganizationProfile(models.Model):
                 OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
                 OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
             ]))
-        else:
+        else:                        
+            # Создаем аккаунт пользователя для организации, если указан логин           
+            if self.login and not self.account:                                
+                account = User.objects.create_user(self.login, self.email, self.password)
+                account.first_name = self.name
+                account.email = self.email
+                account.save()
+                self.account = account                
             super(OrganizationProfile, self).save(*args, **kwargs)
+            
 
     def clean(self):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -140,25 +154,36 @@ class OrganizationProfile(models.Model):
     def __unicode__(self):
         return self.name
 
+    def get_spec(self):
+        return ', '.join([s.get_name_display() for s in self.spec.all()])
+    get_spec.short_description = u'Специализация'
 
-class UserProfile(models.Model):
-    REG_TYPE_CHOICES = (
-        ('client', u'Заказчик'),
-        ('master', u'Исполнитель'),
-        ('seller', u'Продавец'),
-    )
 
+# Профайл продавца товаров
+class SellerProfile(models.Model):
     class Meta:
-        verbose_name = u"Зарегистрированный пользователь"
-        verbose_name_plural = u"Зарегистрированные пользователи"
+        verbose_name = u"Продавец"
+        verbose_name_plural = u"Продавцы"
 
-    user = models.OneToOneField(User)
-    reg_type = models.CharField(u"Вид регистрации", choices=REG_TYPE_CHOICES, default='client', max_length=20)
-    phone = models.CharField(u"Контактный телефон", max_length=25, blank=True, default="")
-    contact_name = models.CharField(u"Контактное имя", max_length=60, blank=True, default="")
-    profile_image = models.ImageField(u"Логотип или фото", upload_to=save_user_photo, null=True)
+    name = models.CharField("Наименование продавца", max_length=100)
+    account = models.ForeignKey(User, verbose_name=u"Аккаунт", null=True, blank=True)
+    password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
+    login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
 
 
+# Профайл заказчика
+class CustomerProfile(models.Model):
+    class Meta:
+        verbose_name = u"Продавец"
+        verbose_name_plural = u"Продавцы"
+
+    name = models.CharField("Контактное имя заказчика", max_length=100)
+    account = models.ForeignKey(User, verbose_name=u"Аккаунт", null=True, blank=True)
+    password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
+    login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
+
+
+# Предложение работы
 class JobSuggestion(models.Model):
     class Meta:
         verbose_name = u"Предложение по работе"
@@ -177,6 +202,7 @@ class JobSuggestion(models.Model):
         return self.short_header    
 
 
+# Фото/Видео ресурсы пользователей
 class UserMedia(models.Model):
     FILE_TYPE_CHOICES = (
         ('video', u'Video'),
@@ -189,9 +215,10 @@ class UserMedia(models.Model):
 
     work_file = models.FileField(upload_to=save_media_file)
     file_type = models.CharField(u"Тип записи работы", max_length=10, choices=FILE_TYPE_CHOICES, default="image")
-    account = models.ForeignKey(UserProfile, verbose_name=u"Пользователь", null=True)
+    account = models.ForeignKey(User, verbose_name=u"Аккаунт пользователя", null=True)
 
 
+# Фотоальбомы выполненных работ
 class WorkPhotoAlbum(models.Model):
     class Meta:
         verbose_name = u"Фотоальбом организации"
@@ -201,11 +228,12 @@ class WorkPhotoAlbum(models.Model):
     name = models.CharField(u"Название альбома", max_length=60)
 
     def save(self, *args, **kwargs):
-        album_path = settings.MEDIA_ROOT + self.organization.name + '/' + self.name
-        if not os.path.exists(album_path):
-            os.makedirs(album_path)
         super(WorkPhotoAlbum, self).save(*args, **kwargs)
-
+        album_folder = settings.MEDIA_ROOT + str(self.organization.id) + "//" + str(self.id)
+        print album_folder      
+        if not os.path.exists(album_folder):
+            os.makedirs(album_folder)                
+        
     def __unicode__(self):
         return self.name
 
@@ -215,7 +243,8 @@ class WorkPhoto(models.Model):
         verbose_name = u"Фотография выполненной работы"
         verbose_name_plural = u"Фотографии выполненных работ"
 
-    album = models.ForeignKey(WorkPhotoAlbum, verbose_name=u"Альбом", null=False)
+    organization = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=True)
+    album = models.ForeignKey(WorkPhotoAlbum, verbose_name=u"Альбом", null=True, blank=True)
     photo = models.ImageField(u'Фото сделанной работы', upload_to=save_work_photo)
 
     def __unicode__(self):
@@ -233,6 +262,51 @@ class Article(models.Model):
     date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
     date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)
 
-
     def __unicode__(self):
         return self.name
+
+
+# Отзыв о работе.
+class Review(models.Model):
+    class Meta:
+        verbose_name = u"Отзыв о работе"
+        verbose_name_plural = u"Отзывы о работе"
+
+    mark = models.IntegerField(u"Оценка", null=False, blank=False, validators=[MinValueValidator(0), MaxValueValidator(5)])
+    good = models.CharField(u"Плюсы", max_length=200)
+    bad = models.CharField(u"Минусы", max_length=200)
+    org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False, blank=False)
+
+
+# Сообщение для организации
+class Message(models.Model):
+    class Meta:
+        verbose_name = u"Сообщение"
+        verbose_name_plural = u"Сообщения"
+
+    msg_to = models.ForeignKey(User, verbose_name=u"Получатель сообщения", null=False, blank=False, default=None, related_name='receiver')
+    msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, related_name='sender')    
+    text = models.CharField(u"Сообщение", max_length=1000)    
+    was_written = models.DateTimeField(verbose_name=u"Дата создания сообщения", auto_now_add=True, null=True)
+    was_read = models.DateTimeField(verbose_name=u"Дата прочтения сообщения", null=True, default=None)
+
+# Валюта
+class Currency(models.Model):
+    class Meta:
+        verbose_name = u"Валюта"
+        verbose_name_plural = u"Валюты"
+
+    code = models.CharField(u"Код валюты", max_length=10, null=True, blank=True)
+    name = models.CharField(u"Наименование валюты", max_length=50, default=u"бел. руб")
+
+
+# Цена на определенную работу
+class JobPrice(models.Model):
+    class Meta:
+        verbose_name = u"Стоимость работы"
+        verbose_name_plural = u"Стоимости работ"
+
+    org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False, blank=False)
+    desc = models.CharField(u"Описание работы", max_length=200)
+    price = models.IntegerField(u"Цена") 
+    cur = models.ForeignKey(Currency, verbose_name=u"Валюта", null=True, blank=True)   

@@ -4,7 +4,7 @@
 		<meta charset="utf-8">
 		<title>Пример загрузчика файлов</title>
 		<style type="text/css">
-			.fileform {
+			.file-form {
 				background-color: #FFFFFF;
 				border: 1px solid #CCCCCC;
 				border-radius: 2px;
@@ -18,7 +18,7 @@
 				width: 230px;
 			}
 
-			.fileform .selectbutton { 
+			.file-form .select-button {
 			    background-color: #A2A3A3;
 			    border: 1px solid #939494;
 			    border-radius: 2px;
@@ -34,66 +34,59 @@
 			    width: 50px;
 			}
 
-			.fileform #upload{
-			    position:absolute; 
-			    top:0; 
-			    left:0; 
-			    width:100%; 
+			.file-form .single-file-upload{
+			    position: absolute;
+			    top: 0;
+			    left: 0;
+			    width: 100%;
 			    -moz-opacity: 0; 
 			    filter: alpha(opacity=0); 
 			    opacity: 0; 
 			    font-size: 150px; 
 			    height: 30px; 
-			    z-index:20;
+			    z-index: 20;
 			}
 
-			.thumb {
+            .thumb {
 				height: 100px;
 				width: 100px;
 				border: 1px solid #000;
 				margin: 10px 5px 0 0;
 			}
 
-			.previewDiv {
+			.uploadPreviewDiv {
 				margin-top: 10px;
 				margin-bottom: 10px;				
 				display: inline-block;							
 			}
 		</style>
+
 		<script type="text/javascript">
 			function handleFileSelect(evt) {
-				var files = evt.target.files;
-				var output = [];
-				document.getElementById("previewDiv").innerHTML = '';
-				for(var i = 0, f; f = files[i]; i++) {
-					if(!f.type.match('image.*')) {
-						continue;
-					}
+				var file = evt.target.files[0];
+				document.getElementsByClassName("uploadPreviewDiv")[0].innerHTML = '';
 
+                if(file.type.match('image.*')) {
 					var reader = new FileReader();
 
 					reader.onload = (function(theFile) {
 						return function(e) {							
 							var imgPreview = ['<img class="thumb" src="', e.target.result, '" title="', theFile.name, '"/>'].join('');
-							document.getElementById("previewDiv").innerHTML = document.getElementById("previewDiv").innerHTML + imgPreview;
+							document.getElementsByClassName("uploadPreviewDiv")[0].innerHTML = imgPreview;
 						}
-					})(f);
+					})(file);
 
-					reader.readAsDataURL(f);
+					reader.readAsDataURL(file);
 				}
 			};				
 		</script>
 	</head>
+
 	<body>
-		<form action="" name="uploadForm">			
-			<div class="fileform">				
-				<div class="selectbutton">Обзор</div>
-				<input id="upload" type="file" name="upload[]" multiple onchange="handleFileSelect(event);"/>
-			</div>
-			<div id="previewDiv" class="previewDiv"></div>
-			<div>
-				<input type="submit" value="Сохранить">
-			</div>
-		</form>		
+        <div class="file-form">
+            <div class="select-button">Обзор</div>
+            <input class="single-file-upload" type="file" name="upload" onchange="handleFileSelect(event);"/>
+        </div>
+        <div class="uploadPreviewDiv"></div>
 	</body>
 </html>
