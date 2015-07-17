@@ -34,6 +34,11 @@ $(function() {
             horizontal: true
         });
 
+        
+        $("#lastVisit").text(data.last_visit);        
+        $("#reviewsAmount").text("Отзывы " + data.reviews_amount);
+        $("#collegsAmount").text(data.collegues.length + " партнеров");
+
         // Fill collegues list
         var collegs = document.getElementById("collegsList");
         var collegsFragment = document.createDocumentFragment();

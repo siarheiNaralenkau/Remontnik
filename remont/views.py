@@ -12,7 +12,9 @@ from rem_forms import SuggestJobForm
 # Главная страница приложения
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto, Message
+                          WorkPhotoAlbum, WorkPhoto, Message, Review
+
+from lastActivityDate.users_activity_service import get_last_visit
 
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
@@ -25,10 +27,10 @@ def index(request):
     suggest_job_form = SuggestJobForm()
     response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
     # Check if user is logged in.
-    if request.user.is_authenticated():
-        print "User is logged in!"
+    if request.user.is_authenticated():        
         response_data["logged_in"] = True
-        newMessages = Message.objects.filter(was_read__isnull=True)
+        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
+        print "New messages amount: {0}".format(len(newMessages))
         response_data["newMesagesAmount"] = len(newMessages)
 
     return render(request, 'remont/index.html', response_data)
@@ -308,8 +310,17 @@ def get_profile_info(request):
     profile_json["about"] = org_profile.description
 
     photos = WorkPhoto.objects.filter(organization=org_profile)
-    print("Photos amount: {0}".format(len(photos)))
+    
     profile_json["photos"] = [p.photo.url for p in photos]
+
+    if org_profile.account:
+        print("Organization user: {0}".format(org_profile.account.id))
+        profile_json["last_visit"] = get_last_visit(org_profile.account.id)
+    else:
+        profile_json["last_visit"] = 'Never'
+
+    reviews = Review.objects.filter(org=org_profile)
+    profile_json["reviews_amount"] = len(reviews)
 
     response = JsonResponse(profile_json, safe=False)
     return response
