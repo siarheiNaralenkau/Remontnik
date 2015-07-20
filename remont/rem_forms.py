@@ -5,7 +5,7 @@ from models import WorkType, City
 from remont.models import WorkSpec, OrganizationProfile
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
-from django.forms import Textarea, Select, PasswordInput
+from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple
 
 
 def get_cities():
@@ -27,50 +27,61 @@ class SuggestJobForm(forms.Form):
 
 class RegisterForm(forms.Form):
     def __init__(self, *args, **kwargs):
-        super(RegisterForm, self).__init__(*args, **kwargs)
-        self.fields['reg_city'] = forms.ChoiceField(choices=get_cities(), label=u"Город регистрации")
-        self.fields['work_cities'] = forms.ModelMultipleChoiceField(queryset=City.objects.all(),
-                                                                    label=u"Организация работает в городах",
-                                                                    widget=forms.CheckboxSelectMultiple)
+        super(RegisterForm, self).__init__(*args, **kwargs)        
 
     name = forms.CharField(max_length=100,
                            label=u'Название организации',
-                           widget=forms.TextInput(attrs={}))
-    spec = forms.MultipleChoiceField(choices=WorkSpec.WORK_SPEC, widget=forms.CheckboxSelectMultiple,
-                                     label=u"Специализация")
-    reg_city = forms.ChoiceField(choices=get_cities(), label=u"Город регистрации")
-    reg_address = forms.CharField(max_length=150, label=u"Адрес организации", required=False)
-
-    job_types = forms.ModelMultipleChoiceField(queryset=WorkType.objects.all(),
-                                               label=u"Виды выполняемых работ",
-                                               widget=CustomCheckBoxSelectMultiple)
-
-    logo = forms.ImageField(label=u"Логотип", required=False)
-    description = forms.CharField(label=u"Обшая информация об организации",
-                                  required=False,
-                                  widget=forms.Textarea(attrs={"rows": 5, "cols": 80}))
+                           widget=forms.TextInput(attrs={}),
+                           error_messages={"required": u"Укажите название организации"})
+    logo = forms.ImageField(label="Логотип организации", widget=SingleImageInput(), required=False)
+    city = forms.ChoiceField(choices=get_cities(), label=u"Город регистрации", required=False)
+    address = forms.CharField(label="Адрес", max_length=180, required=False, widget=Textarea(attrs={'cols': 60, 'rows': 3}))
+    description = forms.CharField(label=u"Обшая информация об организации", required=False, widget=forms.Textarea(attrs={"rows": 8, "cols": 60}))
+    
     landing_phone = forms.CharField(label=u"Стационарный телефон", max_length=30, required=False)
     mobile_phone = forms.CharField(label=u"Мобильный телефон", max_length=30, required=False)
     mobile_phone2 = forms.CharField(label=u"Второй мобильный телефон", max_length=30, required=False)
     fax = forms.CharField(label=u"Номер факса", max_length=40, required=False)
     web_site = forms.URLField(label=u"Домашняя страница", max_length=100, required=False)
-    email = forms.EmailField(label=u"Электронная почта", max_length=100, required=False)
-    work_cities = forms.ModelMultipleChoiceField(queryset=City.objects.all(),
-                                                 label=u"Организация работает в городах",
-                                                 widget=forms.CheckboxSelectMultiple)
+    email = forms.EmailField(label=u"Электронная почта", max_length=100, required=True)
 
+    login = forms.CharField(label=u"Логин на сайте", 
+                            max_length=100, 
+                            required=True, 
+                            error_messages={"required": u"Укажите логин аккаунта организации"})
+    password = forms.CharField(label="Пароль", 
+                               max_length=16, 
+                               required=True, 
+                               widget=PasswordInput(), 
+                               error_messages={"required": u"Укажите пароль аккаунта организации"})
+    password_repeat = forms.CharField(label="Повторите пароль", 
+                                      max_length=16, 
+                                      required=True, 
+                                      widget=PasswordInput(), 
+                                      error_messages={"required": u"Введите пароль повторно"})
+
+    work_cities = forms.ModelMultipleChoiceField(label="Города, где работаете", 
+                                                 required=True, 
+                                                 queryset=City.objects.order_by("name"), 
+                                                 widget=CheckboxSelectMultiple(),
+                                                 error_messages={"required": u"Укажите города, в которых работаете"})
+    job_types = forms.ModelMultipleChoiceField(label="Виды выполняемых работ", 
+                                               required=True, 
+                                               queryset=WorkType.objects.all(), 
+                                               widget=CustomCheckBoxSelectMultiple(),
+                                               error_messages={"required": u"Укажите виды выполняемых работ"})
 
 class OrganizationProfileModelForm(forms.ModelForm):
     class Meta:
         model = OrganizationProfile
-        fields = ('name', 'city', 'address', 'description', 'logo',
-                  'job_types', 'landline_phone', 'mobile_phone',
-                  'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'password')
+        fields = ('name', 'city', 'address', 'job_types', 'logo', 'spec',
+                  'description', 'landline_phone', 'mobile_phone',
+                  'mobile_phone2', 'fax', 'web_site', 'email', 'work_cities', 'collegues', 'login', 'password')
         widgets = {
             'job_types': CustomCheckBoxSelectMultiple,
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),
             'city': Select(attrs={'style': 'width: 200px; float: none'}),
-            'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),
-            'password': PasswordInput(),
-            'logo': SingleImageInput()
+            'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),            
+            'logo': SingleImageInput,
+            'collegues': CheckboxSelectMultiple
         }

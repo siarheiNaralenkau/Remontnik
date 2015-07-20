@@ -44,6 +44,10 @@ function refreshJobs(data, textStatus, jqXHR) {
     $('.suggest-job-form')[0].reset();
 }
 
+function mainMenuClick(url) {
+    window.open(url, "_self");
+}
+
 $(function() {
     var loginDialog, setPasswordDialog;
 
@@ -115,7 +119,7 @@ $(function() {
             'login': $("#login").val(),
             'password': $("#password").val()
         };
-        $.post("/remont/login/", data, loginResult);
+        $.post("/remont/site_login/", data, loginResult);                
     }
 
     function sendSetPasswordRequest() {
@@ -127,15 +131,14 @@ $(function() {
     }
 
     function loginResult(responseData, textStatus, jqXHR) {
-        console.log("Login status: " + responseData.status);
-        // При первой попытке входа - просим пользователя ввести пароль.
-        if(responseData.status == "First login") {
+        console.log("Login status: " + responseData.status); 
+        if(responseData.status === "success") {
             loginDialog.dialog("close");
-            $("#passwordOrgName").val(responseData.org_name);
-            setPasswordDialog.dialog("open");
-        } else if(responseData.status == "Success login") {
-            window.location.replace("/remont/org_profile?org=" + responseData.org_id);
-        }
+            $("#loginError").text("");
+            window.location.replace("/remont");
+        } else {
+            $("#loginError").text(responseData.error_message);
+        }        
     }
 
     function setPasswordResult(responseData, textStatus, jqXHR) {
@@ -145,5 +148,10 @@ $(function() {
         }
     }
 
+    function logout() {
+        window.location.replace("/remont/site_logout");
+    }
+
     $("#loginLink").on('click', showLoginDialog);
+    $("#exitBtn").on('click', logout);
 });

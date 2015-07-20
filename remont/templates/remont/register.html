@@ -11,22 +11,28 @@
 <body>
     {% include "remont/top_page_template.html" %}
     <h1>Регистрация на сайте</h1>
-    <form action="../create_organization/" method="post">
+    <form action="../create_organization/" method="post" novalidate>
         {{ reg_form.non_field_errors }}
         {% csrf_token %}
         {% for field in reg_form %}
-            <div style="display: block; width: 800px; padding-bottom: 20px">
-                <label style="font-weight: 800; margin-left: 20px; width: 250px; float: left">
+            <div class="register-field">                
+                <label class="register-label">
                     {{ field.label }}:
                 </label>
-                {% if field.html_name == 'job_types' %}
-                    <br/>
+                {% if field.field.required %}
+                    <span class="required-field">
+                {% else %}
+                    <span>
                 {% endif %}
-                {{ field }}
+                    {{field}}                
+                </span>
+                {{field.errors}}
             </div>
         {% endfor %}
-        <div>
-            <input type="submit" value="Зарегистрироваться"/>
+        <div class="register-field">
+            <div class="submit-btn-div">
+                <input type="submit" value="Зарегистрироваться"/>
+            </div>
         </div>
     </form>
 </body>

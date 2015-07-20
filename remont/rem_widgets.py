@@ -15,7 +15,7 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
     def render(self, name, value, attrs=None, choices=()):
         # Get job types grouped by categories.
         id_ = attrs.get(u'id', None)
-        start_tag = format_html(u'<ul id="{0}">', id_) if id_ else '<ul>'
+        start_tag = format_html(u'<ul id="{0}" class="categories-list">', id_) if id_ else '<ul class="categories-list">'
 
         types_by_category = {}
         categories = WorkCategory.objects.all()
@@ -62,16 +62,17 @@ class CustomCheckBoxSelectMultiple(forms.CheckboxSelectMultiple):
                 ul {
                     list-style-type: none;
                 }
+                .categories-list {
+                    margin-top: 10px;
+                }
             </style>
-        """]
+        """]        
 
         output.append(start_tag)
         for i, choice in enumerate(self.choices):
             choice_value, choice_label = choice
             work_type = WorkType.objects.get(pk=choice_value)
-            types_by_category[work_type.category.name].append(work_type)
-
-        print types_by_category
+            types_by_category[work_type.category.name].append(work_type)        
 
         # Forming the output.
         for category in types_by_category:

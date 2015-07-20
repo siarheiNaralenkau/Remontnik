@@ -7,14 +7,19 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from rem_forms import SuggestJobForm
+# from rem_forms import SuggestJobForm
 
 # Главная страница приложения
-from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
-from remont.models import WorkType, WorkCategory, JobSuggestion, UserProfile, OrganizationProfile, City, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto
+from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm
+from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
+                          WorkPhotoAlbum, WorkPhoto, Message, Review
+
+from lastActivityDate.users_activity_service import get_last_visit
 
 from django.conf import settings
+from django.contrib.auth import authenticate, login, logout
+
+from remont.mail_sending_service import send_confirm_registration
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -22,14 +27,18 @@ def index(request):
     cities = City.objects.all()
     categories = WorkCategory.objects.all()
     suggest_job_form = SuggestJobForm()
-    return render(request, 'remont/index.html', {"jobSuggestions": job_suggestions, "cities": cities,
-                                                 "categories": categories,
-                                                 "suggest_job_form": suggest_job_form})
+    response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
+    # Check if user is logged in.
+    if request.user.is_authenticated():        
+        response_data["logged_in"] = True
+        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)        
+        response_data["newMesagesAmount"] = len(newMessages)
 
+    return render(request, 'remont/index.html', response_data)
 
 # Регистрация пользователя
 def register(request):
-    reg_form = OrganizationProfileModelForm()
+    reg_form = RegisterForm()
     return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
@@ -111,32 +120,6 @@ def suggest_job_save_ajax(request):
     return response
 
 
-# Регистрация нового пользователя
-def create_user(request):
-    reg_type = request.REQUEST["reg_type"]
-    contact_name = request.REQUEST["contact_name"]
-    email = request.REQUEST["email"]
-    phone = request.REQUEST["phone"]
-    password = email
-    auth_user = User.objects.create_user(email, email, password)
-    user_profile = UserProfile(user_id=auth_user.id, contact_name=contact_name, reg_type=reg_type, phone=phone)
-    user_profile.save()
-    request.session['user_id'] = user_profile.id
-    return redirect("/remont/user_profile")
-
-
-def user_profile(request):
-    profile_data = {}
-    if "user_id" in request.session:
-        u_profile = UserProfile.objects.get(id=request.session["user_id"])
-        profile_data["user_profile"] = u_profile
-        return render(request, "remont/user_profile.html", profile_data)
-
-
-def update_user_profile(request):
-    return redirect("/remont/user_profile")
-
-
 # Отображает список организаций
 def organizations_list(request):
     # city_id = request.REQUEST["city"]
@@ -175,18 +158,17 @@ def get_job_types_by_category(request):
 
 
 # Создает новую организацию на основе заполненной пользователем формы.
+@csrf_exempt
 def create_organization(request):
     if request.method == "POST":
         reg_form = RegisterForm(request.POST)
         if reg_form.is_valid():
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
-            org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
-            org.address = reg_form.cleaned_data["reg_address"]
-            job_types = reg_form.cleaned_data["job_types"]
-            for j_type in job_types:
-                org.job_types.add(j_type)
             org.logo = reg_form.cleaned_data["logo"]
+            city_id = int(reg_form.cleaned_data["city"])
+            org.city = City.objects.filter(id=city_id).first()
+            org.address = reg_form.cleaned_data["address"]
             org.description = reg_form.cleaned_data["description"]
             org.landline_phone = reg_form.cleaned_data["landing_phone"]
             org.mobile_phone = reg_form.cleaned_data["mobile_phone"]
@@ -194,37 +176,60 @@ def create_organization(request):
             org.fax = reg_form.cleaned_data["fax"]
             org.web_site = reg_form.cleaned_data["web_site"]
             org.email = reg_form.cleaned_data["email"]
-            org.work_cities = reg_form.cleaned_data["work_cities"]
+
+            org.login = reg_form.cleaned_data["login"]
+            password = reg_form.cleaned_data["password"]
+            password_repeat = reg_form.cleaned_data["password_repeat"]
+            org.password = password
+
+            work_cities = reg_form.cleaned_data["work_cities"]            
+            job_types = reg_form.cleaned_data["job_types"]            
+            
             org.save()
+            send_confirm_registration(org.email, org.account.id)
+            return render(request, 'remont/confirm_registration.html', {})
+        else:            
+            return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Вход на сайт
 @csrf_exempt
-def login(request):
+def site_login(request):    
     response_data = {}
-    org_login = request.POST["login"]
-    org = OrganizationProfile.objects.filter(name=org_login).first()
-    if not org:
-        org = OrganizationProfile.objects.filter(login=org_login).first()
-    if not org:
-        print("Organization with such name or login doesn't exists!")
-        response_data["status"] = "Unknown organization"
-    elif not org.password:
-        response_data["status"] = "First login"
-        response_data["org_name"] = org.name
-    else:
-        entered_password = request.POST["password"]
-        if org.password != entered_password:
-            response_data["status"] = "Incorrect password"
+    uname = request.POST["login"]
+    passwd = request.POST["password"]
+    user = authenticate(username=uname, password=passwd)
+    
+    response_data = {}
+
+    if user is None: 
+        # Попытка авторизации, используя имя организации
+        org = OrganizationProfile.objects.filter(name=uname).first()
+        if org:
+            uname = org.account.username
+            user = authenticate(username=uname, password=passwd)
+
+    if user is not None:
+        if user.is_active:            
+            login(request, user)                        
+            response_data["status"] = "success"
+            return JsonResponse(response_data, safe=False)
         else:
-            response_data["status"] = "Success login"
-            response_data["org_name"] = org.name
-            response_data["login"] = org.login
-            response_data["org_id"] = org.id
-            request.session["org_id"] = org.id
+            response_data["status"] = "error"
+            response_data["error_message"] = u"Аккаунт пользователя {0} не активирован!".format(uname)
+    else:
+        response_data["status"] = "error"
+        response_data["error_message"] = "Неправильное имя пользователя или пароль"
+
     response = JsonResponse(response_data, safe=False)
     return response
 
+
+# Выход с сайта
+@csrf_exempt
+def site_logout(request):
+    logout(request)
+    return redirect("/remont")    
 
 # Установка пароля для организации при первом входе
 @csrf_exempt
@@ -260,4 +265,112 @@ def get_album_photos(request):
             album_photos.append({'id': photo_obj.id, 'url': photo_obj.photo.url})
     response = JsonResponse(album_photos, safe=False)
     return response
+
+
+# Получаем список организаций(Для страницы)
+def get_orgs_list(request):
+    orgs_list = list(OrganizationProfile.objects.all().order_by('name'))
+    print("Amount of organizations: {0}".format(len(orgs_list)))
+    return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
+
+def view_profile(request):
+    return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
+
+# Получаем информацию об организации в формате JSON
+def get_profile_info(request):
+    org_id = request.GET["org_id"]    
+    org_profile = OrganizationProfile.objects.filter(id=org_id).first()
+    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
+                    "address": org_profile.address, "rating": 3.5}
+
+    if org_profile.logo:
+        profile_json["logo_url"] = org_profile.logo.url
+    else:
+        profile_json["logo_url"] = ""
+
+    collegs = org_profile.collegues.all()
+    collegs_array = []
+    for c in collegs:
+        colleg_item = {"id": c.id, "name": c.name}
+        if c.logo:
+            colleg_item["logo_url"] = c.logo.url
+        else:
+            colleg_item["logo_url"] = ""
+        collegs_array.append(colleg_item)
+    profile_json["collegues"] = collegs_array
+    
+    job_types = [job.name for job in org_profile.job_types.all()]
+    profile_json["job_types"] = job_types
+
+    contacts = []
+    if org_profile.landline_phone:
+        contacts.append(org_profile.landline_phone)
+    if org_profile.mobile_phone:
+        contacts.append(org_profile.mobile_phone)
+    if org_profile.mobile_phone2:
+        contacts.append(org_profile.mobile_phone2)
+    if org_profile.fax:
+        contacts.append(org_profile.fax)
+    if org_profile.web_site:
+        contacts.append(org_profile.web_site)
+    if org_profile.email:
+        contacts.append(org_profile.email)
+    profile_json["contacts"] = contacts
+
+    profile_json["address"] = org_profile.address
+
+    profile_json["about"] = org_profile.description
+
+    photos = WorkPhoto.objects.filter(organization=org_profile)
+    
+    profile_json["photos"] = [p.photo.url for p in photos]
+
+    if org_profile.account:
+        print("Organization user: {0}".format(org_profile.account.id))
+        profile_json["last_visit"] = get_last_visit(org_profile.account.id)
+    else:
+        profile_json["last_visit"] = 'Never'
+
+    reviews = Review.objects.filter(org=org_profile)
+    profile_json["reviews_amount"] = len(reviews)
+
+    response = JsonResponse(profile_json, safe=False)
+    return response
+
+
+# Отправляем сообщение организации(Другому пользователю)
+@csrf_exempt
+def send_text_mesaage(request):
+    response_data = {}
+    sender = None
+    receiver_id = request.POST["org_id"]
+    receiver_org = OrganizationProfile.objects.filter(id=receiver_id).first()
+    if receiver_org.account:        
+        message_text = request.POST["message"]
+        if request.user.is_authenticated():
+            print 'User is authenticated!'
+            sender = request.user
+        msg = Message(msg_to=receiver_org.account, msg_from=sender, text=message_text)
+        msg.save()
+        print "Message was successfully send"
+        response_data["status"] = "success"
+    else:
+        print "Error during message sending."
+        response_data["status"] = "error"
+        response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
+
+    return JsonResponse(response_data, safe=False)
+
+
+# Подтверждение пользователем своей регистрации
+def confirm_registration(request):
+    user_id = request.GET["user_id"]
+    if user_id:
+        account = User.objects.filter(id=user_id).first()
+        account.is_active = True
+        account.save()
+        print "Account was activated successfully!"
+
+    return redirect("/remont")
+
 
