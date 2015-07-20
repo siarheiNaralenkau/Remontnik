@@ -1,78 +1,37 @@
-.text-input-div {
-    margin-left: 30px;
-    margin-bottom: 20px;
+.register-field {
+    display: block; 
+    width: 800px; 
+    padding-bottom: 20px;
+    clear: both;
 }
 
-.field-label {
-    font-weight: bold;
-    margin-right: 20px;
-    width: 250px;
-    height: 25px;
+.register-label {
+    font-weight: 800; 
+    margin-left: 20px; 
+    width: 250px; 
+    float: left;
 }
 
-.textarea-label {
-    vertical-align: top;
-    font-weight: bold;
-    margin-right: 20px;
-    width: 250px;
-    height: 25px;
+.submit-btn-div {
+    width: 30%;
+    margin: 0 auto;
 }
 
-input[type=file] {
-    vertical-align: top;
-}
-
-.top-align-label {
-    vertical-align: top;
-}
-
-p.required {
-    height: 25px;
-    line-height: 25px;
-}
-
-p.not-required {
-    height: 25px;
-    line-height: 25px;
-}
-
-/*p.required:after {*/
-    /*color: #ffffff;*/
-    /*content: '12';*/
-    /*background-image: url("../images/field-required.png");*/
-    /*width: 25px;*/
-    /*height: 25px;*/
-/*}*/
-
-p.contact-info {
-    width: 500px;
-}
-
-p.contact-info input {
-    float: right;
+input[type="text"], input[type="url"], input[type="email"], input[type="password"], select {
     width: 250px;
 }
 
-p.field {
-    width: 500px;
+#id_work_cities {
+    list-style-type: none;
+    float: left;
+    margin-left: -50px;
+    margin-top: 0px;
 }
 
-p.field input,select {
-    float: right;
-    width: 250px;
-}
-
-p.text-input {
-    width: 500px;
-}
-
-p.text-input input {
-    float: right;
-    width: 250px;
-}
-
-fieldset {
-    margin-bottom: 20px;
+#id_job_types {
+    float: left;
+    margin-left: -50px;
+    margin-top: 10px;
 }
 
 /*Styles for file upload field*/

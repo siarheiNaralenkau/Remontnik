@@ -7,10 +7,10 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from rem_forms import SuggestJobForm
+# from rem_forms import SuggestJobForm
 
 # Главная страница приложения
-from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
+from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review
 
@@ -37,7 +37,7 @@ def index(request):
 
 # Регистрация пользователя
 def register(request):
-    reg_form = OrganizationProfileModelForm()
+    reg_form = RegisterForm()
     return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
@@ -157,6 +157,7 @@ def get_job_types_by_category(request):
 
 
 # Создает новую организацию на основе заполненной пользователем формы.
+@csrf_exempt
 def create_organization(request):
     if request.method == "POST":
         reg_form = RegisterForm(request.POST)
@@ -348,3 +349,4 @@ def send_text_mesaage(request):
         response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
 
     return JsonResponse(response_data, safe=False)
+
