@@ -137,6 +137,7 @@ class OrganizationProfile(models.Model):
                 account = User.objects.create_user(self.login, self.email, self.password)
                 account.first_name = self.name
                 account.email = self.email
+                account.is_active = False
                 account.save()
                 self.account = account                
             super(OrganizationProfile, self).save(*args, **kwargs)

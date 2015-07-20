@@ -19,6 +19,8 @@ from lastActivityDate.users_activity_service import get_last_visit
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 
+from remont.mail_sending_service import send_confirm_registration
+
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
     job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
@@ -29,8 +31,7 @@ def index(request):
     # Check if user is logged in.
     if request.user.is_authenticated():        
         response_data["logged_in"] = True
-        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
-        print "New messages amount: {0}".format(len(newMessages))
+        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)        
         response_data["newMesagesAmount"] = len(newMessages)
 
     return render(request, 'remont/index.html', response_data)
@@ -185,6 +186,7 @@ def create_organization(request):
             job_types = reg_form.cleaned_data["job_types"]            
             
             org.save()
+            send_confirm_registration(org.email, org.account.id)
             return render(request, 'remont/confirm_registration.html', {})
         else:            
             return render(request, "remont/register.html", {"reg_form": reg_form})
@@ -358,4 +360,17 @@ def send_text_mesaage(request):
         response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
 
     return JsonResponse(response_data, safe=False)
+
+
+# Подтверждение пользователем своей регистрации
+def confirm_registration(request):
+    user_id = request.GET["user_id"]
+    if user_id:
+        account = User.objects.filter(id=user_id).first()
+        account.is_active = True
+        account.save()
+        print "Account was activated successfully!"
+
+    return redirect("/remont")
+
 

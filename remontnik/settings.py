@@ -15,6 +15,7 @@ import os
 import sys
 import codecs
 import locale
+import socket
 
 # def setup_console(sys_enc="utf-8"):
 #     reload(sys)
@@ -45,7 +46,6 @@ import locale
 # setup_console()
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
-
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.6/howto/deployment/checklist/
@@ -153,3 +153,12 @@ CKEDITOR_CONFIGS = {
         'language': 'ru'
     },
 }
+
+try:
+    HOST_NAME = socket.gethostname()
+except:
+    HOST_NAME = "localhost"
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+MAIL_FROM = "naralenkov2010@gmail.com"
+MAIL_PASSWORD = "qwerty12Q"
