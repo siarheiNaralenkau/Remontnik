@@ -164,12 +164,10 @@ def create_organization(request):
         if reg_form.is_valid():
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
-            org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
-            org.address = reg_form.cleaned_data["reg_address"]
-            job_types = reg_form.cleaned_data["job_types"]
-            for j_type in job_types:
-                org.job_types.add(j_type)
             org.logo = reg_form.cleaned_data["logo"]
+            city_id = int(reg_form.cleaned_data["city"])
+            org.city = City.objects.filter(id=city_id).first()
+            org.address = reg_form.cleaned_data["address"]
             org.description = reg_form.cleaned_data["description"]
             org.landline_phone = reg_form.cleaned_data["landing_phone"]
             org.mobile_phone = reg_form.cleaned_data["mobile_phone"]
@@ -177,8 +175,19 @@ def create_organization(request):
             org.fax = reg_form.cleaned_data["fax"]
             org.web_site = reg_form.cleaned_data["web_site"]
             org.email = reg_form.cleaned_data["email"]
-            org.work_cities = reg_form.cleaned_data["work_cities"]
+
+            org.login = reg_form.cleaned_data["login"]
+            password = reg_form.cleaned_data["password"]
+            password_repeat = reg_form.cleaned_data["password_repeat"]
+            org.password = password
+
+            work_cities = reg_form.cleaned_data["work_cities"]            
+            job_types = reg_form.cleaned_data["job_types"]            
+            
             org.save()
+            return render(request, 'remont/confirm_registration.html', {})
+        else:            
+            return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Вход на сайт

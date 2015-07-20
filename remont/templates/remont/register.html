@@ -15,11 +15,18 @@
         {{ reg_form.non_field_errors }}
         {% csrf_token %}
         {% for field in reg_form %}
-            <div class="register-field">
+            <div class="register-field">                
                 <label class="register-label">
                     {{ field.label }}:
                 </label>
-                {{field}}
+                {% if field.field.required %}
+                    <span class="required-field">
+                {% else %}
+                    <span>
+                {% endif %}
+                    {{field}}                
+                </span>
+                {{field.errors}}
             </div>
         {% endfor %}
         <div class="register-field">

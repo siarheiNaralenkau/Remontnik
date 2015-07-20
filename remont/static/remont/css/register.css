@@ -34,6 +34,21 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
     margin-top: 10px;
 }
 
+.errorlist {
+    font-size: 14px;
+    font-weight: bold;
+    color: #FF0033;
+}
+
+.required-field:after {
+    content: "";
+    display: inline-block;
+    height: 17px;
+    width: 17px;
+    margin: auto;
+    background-image: url("/static/remont/images/field-required.png")
+}
+
 /*Styles for file upload field*/
 .fileform {
     background-color: #FFFFFF;
