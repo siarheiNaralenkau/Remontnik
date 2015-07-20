@@ -7,6 +7,7 @@ from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
 from django.forms import Textarea, Select, PasswordInput
 
+
 def get_cities():
     cities_choices = []
     cities = City.objects.all()
