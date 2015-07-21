@@ -332,11 +332,15 @@
     margin-left: 2%;
 }
 
-.exit-btn {
+.top-btn {
     float: left;    
     margin-left: 2%;
     cursor: pointer;
     background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
     border-radius: 4px;
     padding: 5px;
+}
+
+.hidden {
+    display: none;
 }

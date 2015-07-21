@@ -152,6 +152,11 @@ $(function() {
         window.location.replace("/remont/site_logout");
     }
 
+    function editProfile() {
+        window.location.replace("/remont/edit_profile?user_id=" + $("#userId").text());
+    }
+
     $("#loginLink").on('click', showLoginDialog);
     $("#exitBtn").on('click', logout);
+    $("#editProfileBtn").on('click', editProfile);
 });

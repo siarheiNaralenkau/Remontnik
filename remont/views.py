@@ -10,7 +10,7 @@ from django.core import serializers
 # from rem_forms import SuggestJobForm
 
 # Главная страница приложения
-from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm
+from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review
 
@@ -20,6 +20,7 @@ from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 
 from remont.mail_sending_service import send_confirm_registration
+
 
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -36,15 +37,11 @@ def index(request):
 
     return render(request, 'remont/index.html', response_data)
 
+
 # Регистрация пользователя
 def register(request):
     reg_form = RegisterForm()
     return render(request, "remont/register.html", {"reg_form": reg_form})
-
-
-# Личный кабинет пользователя
-def profile(request, user_id):
-    return HttpResponse(u"Кабинет пользователя %s" % user_id)
 
 
 # Страница предложения о работе.
@@ -126,23 +123,6 @@ def organizations_list(request):
     # organizations = OrganizationProfile.objects.filter(city=city_id)
     organizations = OrganizationProfile.objects.all()
     return render(request, 'remont/organizations_list.html', {"organizatins": organizations})
-
-
-# Отображает подробную информацию о конкретной организации.
-def org_profile(request):
-    org_id = request.REQUEST["org"]
-    print "Organization id: {0}".format(org_id)
-    organization_details = OrganizationProfile.objects.get(id=org_id)
-    # Загружаем фото работ организации
-    photos = []
-    albums = WorkPhotoAlbum.objects.filter(organization=organization_details)
-    for cur_album in albums:
-        album_photos = WorkPhoto.objects.filter(album=cur_album)
-        if len(album_photos) > 0:
-            photos.append({'id': cur_album.id, 'name': cur_album.name, 'photos_amount': len(album_photos), 'title_photo': album_photos[0]})
-    return render(request, 'remont/organization_details.html', {"organization_details": organization_details,
-                                                                "work_photos": photos,
-                                                                "mediaRoot": settings.MEDIA_ROOT})
 
 
 # Получает список видо работ по категории
@@ -372,5 +352,31 @@ def confirm_registration(request):
         print "Account was activated successfully!"
 
     return redirect("/remont")
+
+# Редактируем профайл организации
+def edit_profile(request):
+    user_id = request.GET["user_id"]        
+    if user_id:
+        user = User.objects.filter(id=int(user_id)).first()
+        org = OrganizationProfile.objects.filter(account=user).first()
+        if user and org:            
+            profile_form = OrganizationEditForm(instance=org)
+            photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
+            grouped_photos = []
+            photos_amount = 0
+            for ph_album in photo_albums:
+                photos = WorkPhoto.objects.filter(album=ph_album)
+                photos_amount += len(photos)
+                album_info = {"id": ph_album.id, "name": ph_album.name, "photos": photos}
+                grouped_photos.append(album_info)
+            ungrouped_photos = WorkPhoto.objects.filter(organization=org, album__isnull=True)
+            photos_amount += len(ungrouped_photos)
+            if len(ungrouped_photos) > 0:
+                unnamed_album = {"id": 0, "name": u"Другие фотографии", "photos": ungrouped_photos}
+                grouped_photos.append(unnamed_album)
+
+            return render(request, "remont/edit_profile.html", {"profile_form": profile_form, 
+                                                                "work_photos": grouped_photos, 
+                                                                "photos_amount": photos_amount})
 
 

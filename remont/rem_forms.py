@@ -73,9 +73,9 @@ class RegisterForm(forms.Form):
 class OrganizationProfileModelForm(forms.ModelForm):
     class Meta:
         model = OrganizationProfile
-        fields = ('name', 'city', 'address', 'job_types', 'logo', 'spec',
-                  'description', 'landline_phone', 'mobile_phone',
-                  'mobile_phone2', 'fax', 'web_site', 'email', 'work_cities', 'collegues', 'login', 'password')
+        fields = ('name', 'logo', 'city', 'address', 'spec',
+                  'description',  'login', 'password', 'landline_phone', 'mobile_phone',
+                  'mobile_phone2', 'fax', 'web_site', 'email', 'work_cities', 'job_types', 'collegues', 'login', 'password', )
         widgets = {
             'job_types': CustomCheckBoxSelectMultiple,
             'address': Textarea(attrs={'cols': 60, 'rows': 3}),
@@ -84,3 +84,19 @@ class OrganizationProfileModelForm(forms.ModelForm):
             'logo': SingleImageInput,
             'collegues': CheckboxSelectMultiple
         }
+
+
+class OrganizationEditForm(forms.ModelForm):
+  class Meta:
+    model = OrganizationProfile
+    fields = ('name', 'logo', 'city', 'address', 'description',  'landline_phone', 'mobile_phone',
+              'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'password', 'work_cities', 'job_types')
+    widgets = {
+        'job_types': CustomCheckBoxSelectMultiple(),
+        'address': Textarea(attrs={'cols': 60, 'rows': 3}),
+        'city': Select(attrs={'style': 'width: 200px; float: none'}),
+        'description': Textarea(attrs={'cols': 60, 'rows': 8}),            
+        'logo': SingleImageInput(),
+        'collegues': CheckboxSelectMultiple(),
+        'work_cities': CheckboxSelectMultiple()
+    }

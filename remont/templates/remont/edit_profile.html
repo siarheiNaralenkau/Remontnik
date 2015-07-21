@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Редактирование профайла организации</title>    
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/edit_profile.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+</head>
+<body>
+    {% include "remont/top_page_template.html" %}
+    <div class="main-container">  
+        <div class="profile-container">
+            <form action="../create_organization/" method="post" novalidate>            
+                {% csrf_token %}
+                {% for field in profile_form %}
+                    <div class="profile-field">                
+                        <label class="profile-label">
+                            {{ field.label }}:
+                        </label>
+                        {% if field.field.required %}
+                            <span class="required-field">
+                        {% else %}
+                            <span>
+                        {% endif %}
+                            {{field}}                
+                        </span>
+                        {{field.errors}}
+                    </div>
+                {% endfor %}
+                <div class="profile-field">
+                    <div class="submit-btn-div">
+                        <input type="submit" value="Сохранить изменения"/>
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="additional-container">
+            <p>Фотографии выполненных работ</p>
+            <span>Альбомов: {{work_photos|length}}</span>
+            <span>Фотографий: {{photos_amount}}</span>
+            <div class="albums-list">
+                {% for album in work_photos %}
+                <div>
+                    <span>{{ album.name }}</span>
+                    <span>{{ album.photos|length }}
+                </div>
+                {% endfor %}
+            </div>
+            <div class="photo-uploader">
+                <form name="uploadPhotoForm" action="upload_work_photos">
+                    <label class="select-photo-btn">
+                        Добавить фотографии
+                        <input id="uploadPhoto" name="uploadPhoto[]" multiple type="file" class="hidden-input"/>
+                    </label>
+                    <div id="photosPreview"></div>
+                    <input type="submit" value="Сохранить фотографии"/>                    
+                </form>
+            </div>
+            <!-- <p>Видео выполненных работ</p> -->
+        </div>
+    </div>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/edit_profile.js"></script>
+</body>
+</html>
