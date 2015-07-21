@@ -5,7 +5,22 @@ $(function() {
 
     function handlePhotoSelection(event) {
         var files = event.target.files;
-        alert("Files amount: " + files.length);
+        var previewDiv = document.getElementById("photosPreview");
+        previewDiv.innerHTML = "";
+        for(var i = 0, f; f = files[i]; i++) {
+            if(f.type.match("image.*")) {
+                var reader = new FileReader();
+
+                reader.onload = (function(fileObj) {
+                    return function(event) {
+                        var img = ['<img class="thumb" src="', event.target.result, '" title="', fileObj.name, '"/>'].join('');
+                        previewDiv.innerHTML += img;
+                    }
+                })(f);
+
+                reader.readAsDataURL(f);
+            }
+        }
     }
 
     $("#selectBtn").click(openFileDialog);
