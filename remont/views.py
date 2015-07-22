@@ -7,10 +7,7 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-# from rem_forms import SuggestJobForm
-
-# Главная страница приложения
-from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm
+from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review
 
@@ -21,7 +18,9 @@ from django.contrib.auth import authenticate, login, logout
 
 from remont.mail_sending_service import send_confirm_registration
 
+from django.forms.formsets import formset_factory
 
+# Главная страница приложения
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
     job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
@@ -375,8 +374,33 @@ def edit_profile(request):
                 unnamed_album = {"id": 0, "name": u"Другие фотографии", "photos": ungrouped_photos}
                 grouped_photos.append(unnamed_album)
 
+            UploadPhotoFormSet = formset_factory(UploadPhotoForm)
+            photo_formset = UploadPhotoFormSet()
+
             return render(request, "remont/edit_profile.html", {"profile_form": profile_form, 
                                                                 "work_photos": grouped_photos, 
-                                                                "photos_amount": photos_amount})
+                                                                "photos_amount": photos_amount,
+                                                                "photo_formset": photo_formset})
 
+
+# Загрузка фотографий выполненных работ
+@csrf_exempt
+def upload_work_photos(request):
+    org = OrganizationProfile.objects.filter(account = request.user).first()
+    if request.method == "POST":
+        files_to_upload = request.FILES.getlist("uploadPhoto")
+        for f in files_to_upload:            
+            photo_obj = WorkPhoto(organization=org, photo=f)
+            photo_obj.save()
+        return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
+
+
+# Создание нового фотоальбома
+@csrf_exempt
+def create_photo_album(request):    
+    org = OrganizationProfile.objects.filter(account = request.user).first()
+    album = WorkPhotoAlbum(organization=org, name=request.POST["albumName"])
+    album.save()
+    response_data = {"id": album.id, "name": album.name, "photos": []}
+    return JsonResponse(response_data, safe=False)
 

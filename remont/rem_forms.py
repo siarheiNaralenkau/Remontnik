@@ -1,8 +1,7 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from models import WorkType, City
-from remont.models import WorkSpec, OrganizationProfile
+from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
 from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple
@@ -100,3 +99,10 @@ class OrganizationEditForm(forms.ModelForm):
         'collegues': CheckboxSelectMultiple(),
         'work_cities': CheckboxSelectMultiple()
     }
+
+
+class UploadPhotoForm(forms.ModelForm):
+  class Meta:
+    model = WorkPhoto
+    fields = ('organization', 'album', 'photo')
+  

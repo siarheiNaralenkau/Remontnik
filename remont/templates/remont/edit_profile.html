@@ -39,29 +39,52 @@
             <p>Фотографии выполненных работ</p>
             <span>Альбомов: {{work_photos|length}}</span>
             <span>Фотографий: {{photos_amount}}</span>
-            <div class="albums-list">
+            <div class="albums-list" id="albumsList">
                 {% for album in work_photos %}
-                <div>
-                    <span>{{ album.name }}</span>
-                    <span>{{ album.photos|length }}
-                </div>
+                    {% include "remont/blocks/album_preview_template.html" %}
                 {% endfor %}
             </div>
             <div class="photo-uploader">
-                <form name="uploadPhotoForm" action="upload_work_photos">
+                <form name="uploadPhotoForm" action="../upload_work_photos/" enctype="multipart/form-data" method="POST">                    
                     <label class="select-photo-btn">
                         Добавить фотографии
-                        <input id="uploadPhoto" name="uploadPhoto[]" multiple type="file" class="hidden-input"/>
+                        <input id="uploadPhoto" name="uploadPhoto" multiple type="file" class="hidden-input"/>
                     </label>
+                    <label class="select-photo-btn" id="btnCreateAlbum">Создать альбом</label>
                     <div id="photosPreview"></div>
-                    <input type="submit" value="Сохранить фотографии"/>                    
+                    <input type="submit" value="Сохранить фотографии" class="hidden-input" id="saveImgBtn"/>
+                    <input type="button" value="Отмена" class="hidden-input" id="cancelImgBtn"/>
                 </form>
             </div>
             <!-- <p>Видео выполненных работ</p> -->
         </div>
-    </div>
+    </div>   
+
+    <div style="display: none" id="createAlbumDialog">
+        <form name="createAlbumForm">
+            <div>
+                <label for="newAlbumName">Название альбома:</label>
+                <input type="text" name="albumName" id="newAlbumName"/>
+            </div>        
+        </form>
+    </div> 
+
+    <div id="albumTemplate" style="display: none">
+        <div class='album-trumb'>
+            <div style='display: none'>{0}</div>
+            <div class='row-block'>
+                <span class='album-name'>{1}</span>
+                <span class='album-ph-amount'>{2}</span>
+            </div>
+            <div class='row-block'>                    
+                <img src='{{ STATIC_URL }}remont/images/question.jpg' class='work-image-trumb'/> 
+            </div>
+        </div>
+    </div>    
+
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/rem_utils.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/edit_profile.js"></script>
 </body>
 </html>

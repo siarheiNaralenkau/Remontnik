@@ -1,0 +1,14 @@
+<div class="album-trumb">
+    <div style="display: none">{{ album.id }}</div>
+    <div class="row-block">
+        <span class="album-name">{{ album.name }}</span>
+        <span class="album-ph-amount">{{ album.photos|length }}</span>
+    </div>
+    <div class="row-block">
+        {% if album.photos|length > 0 %}
+            <img src="/remont/{{ album.photos.0.photo.url }}" class="work-image-trumb"/>
+        {% else %}
+            <img src="{{ STATIC_URL }}remont/images/question.jpg" class="work-image-trumb"/>
+        {% endif %}
+    </div>
+</div>

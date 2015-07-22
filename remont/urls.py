@@ -26,6 +26,8 @@ urlpatterns = patterns('',
     url(r'^send_text_mesaage/$', views.send_text_mesaage, name='send_text_mesaage'),
     url(r'^confirm_registration/$', views.confirm_registration, name='confirm_registration'),
     url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
+    url(r'^upload_work_photos/$', views.upload_work_photos, name='upload_work_photos'),
+    url(r'^create_photo_album/$', views.create_photo_album, name='create_photo_album'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 
