@@ -28,6 +28,7 @@ urlpatterns = patterns('',
     url(r'^edit_profile/$', views.edit_profile, name='edit_profile'),
     url(r'^upload_work_photos/$', views.upload_work_photos, name='upload_work_photos'),
     url(r'^create_photo_album/$', views.create_photo_album, name='create_photo_album'),
+    url(r'^edit_album/$', views.edit_album, name='edit_album'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 

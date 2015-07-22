@@ -404,3 +404,9 @@ def create_photo_album(request):
     response_data = {"id": album.id, "name": album.name, "photos": []}
     return JsonResponse(response_data, safe=False)
 
+
+# Редактирование фотоальбома организации 
+def edit_album(request):
+    album_id = request.GET["album_id"]
+    print("Editting album with id: {0}".format(album_id))
+

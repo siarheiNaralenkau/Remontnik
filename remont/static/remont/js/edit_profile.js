@@ -62,8 +62,15 @@ $(function() {
     function showAlbumCreateDialog() {        
         createAlbumDialog.dialog("open");
     }
+
+    function editAlbum() {
+        var albumIdDiv = $(this).children(".album-id")[0];
+        var albumId = $(albumIdDiv).html();
+        window.location.replace("/remont/edit_album?album_id=" + albumId);
+    }
     
     $("#uploadPhoto").change(handlePhotoSelection);
     $("#cancelImgBtn").click(cancelFileUpload);
     $("#btnCreateAlbum").click(showAlbumCreateDialog);
+    $(".album-trumb").click(editAlbum);
 });
