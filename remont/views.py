@@ -389,10 +389,17 @@ def upload_work_photos(request):
     org = OrganizationProfile.objects.filter(account = request.user).first()
     if request.method == "POST":
         files_to_upload = request.FILES.getlist("uploadPhoto")
-        for f in files_to_upload:            
-            photo_obj = WorkPhoto(organization=org, photo=f)
-            photo_obj.save()
-        return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
+        album_id = request.POST["albumId"]
+        if album_id:
+            for f in files_to_upload:            
+                photo_obj = WorkPhoto(organization=org, photo=f, album=WorkPhotoAlbum.objects.filter(id=int(album_id)).first())
+                photo_obj.save()
+            return redirect("/remont/edit_album?album_id=" + album_id)
+        else:
+            for f in files_to_upload:            
+                photo_obj = WorkPhoto(organization=org, photo=f)
+                photo_obj.save()
+            return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
 
 
 # Создание нового фотоальбома
@@ -408,5 +415,14 @@ def create_photo_album(request):
 # Редактирование фотоальбома организации 
 def edit_album(request):
     album_id = request.GET["album_id"]
-    print("Editting album with id: {0}".format(album_id))
+    album = WorkPhotoAlbum.objects.filter(id=int(album_id)).first()
+    photos = WorkPhoto.objects.filter(album=album)    
+    return render(request, "remont/edit_album.html", {"album": album, "photos": photos})
 
+
+# Удаление фотографии
+@csrf_exempt
+def delete_photo(request):
+    photo_id = request.POST["photo_id"]
+    WorkPhoto.objects.filter(id=int(photo_id)).delete()
+    return JsonResponse({"photoId": photo_id}, safe=False)
