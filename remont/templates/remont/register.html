@@ -12,7 +12,7 @@
     {% include "remont/top_page_template.html" %}
     <h1>Регистрация на сайте</h1>
     <div class="create-organization-container">
-        <form action="../create_organization/" method="post" novalidate>
+        <form action="../create_organization/" enctype="multipart/form-data" method="post" novalidate>
             {{ reg_form.non_field_errors }}
             {% csrf_token %}
             {% for field in reg_form %}

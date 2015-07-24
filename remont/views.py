@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
@@ -140,7 +140,7 @@ def get_job_types_by_category(request):
 @csrf_exempt
 def create_organization(request):
     if request.method == "POST":
-        reg_form = RegisterForm(request.POST)
+        reg_form = RegisterForm(request.POST, request.FILES)
         if reg_form.is_valid():
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
@@ -159,12 +159,20 @@ def create_organization(request):
             org.login = reg_form.cleaned_data["login"]
             password = reg_form.cleaned_data["password"]
             password_repeat = reg_form.cleaned_data["password_repeat"]
-            org.password = password
-
-            work_cities = reg_form.cleaned_data["work_cities"]            
-            job_types = reg_form.cleaned_data["job_types"]            
+            org.password = password                        
             
             org.save()
+
+            # Save Work in cities.
+            work_cities = reg_form.cleaned_data["work_cities"]
+            for c in work_cities:
+                org.work_cities.add(c)
+
+            # Save job types
+            job_types = reg_form.cleaned_data["job_types"]
+            for jt in job_types:
+                org.job_types.add(jt)
+
             send_confirm_registration(org.email, org.account.id)
             return render(request, 'remont/confirm_registration.html', {})
         else:            
@@ -352,13 +360,20 @@ def confirm_registration(request):
 
     return redirect("/remont")
 
+
 # Редактируем профайл организации
-def edit_profile(request):
-    user_id = request.GET["user_id"]        
-    if user_id:
-        user = User.objects.filter(id=int(user_id)).first()
-        org = OrganizationProfile.objects.filter(account=user).first()
-        if user and org:            
+@csrf_exempt
+def edit_organization(request, id=None):
+    if id:        
+        user = get_object_or_404(User, pk=id)        
+        org = get_object_or_404(OrganizationProfile, account=user)
+
+        if request.POST:
+            profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)            
+            if profile_form.is_valid():
+                profile_form.save()
+                return redirect('/remont/edit_organization/' + str(id))
+        else:
             profile_form = OrganizationEditForm(instance=org)
             photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
             grouped_photos = []
@@ -381,7 +396,6 @@ def edit_profile(request):
                                                                 "work_photos": grouped_photos, 
                                                                 "photos_amount": photos_amount,
                                                                 "photo_formset": photo_formset})
-
 
 # Загрузка фотографий выполненных работ
 @csrf_exempt

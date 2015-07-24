@@ -4,7 +4,7 @@ from django import forms
 from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
-from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple
+from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple, HiddenInput
 
 def get_cities():
     cities_choices = []
@@ -41,7 +41,7 @@ class RegisterForm(forms.Form):
     mobile_phone2 = forms.CharField(label=u"Второй мобильный телефон", max_length=30, required=False)
     fax = forms.CharField(label=u"Номер факса", max_length=40, required=False)
     web_site = forms.URLField(label=u"Домашняя страница", max_length=100, required=False)
-    email = forms.EmailField(label=u"Электронная почта", max_length=100, required=True)
+    email = forms.EmailField(label=u"Электронная почта", max_length=100, required=True, error_messages={"required": u"Укажите электронную почту"})
 
     login = forms.CharField(label=u"Логин на сайте", 
                             max_length=100, 
@@ -89,7 +89,25 @@ class OrganizationEditForm(forms.ModelForm):
   class Meta:
     model = OrganizationProfile
     fields = ('name', 'logo', 'city', 'address', 'description',  'landline_phone', 'mobile_phone',
-              'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'password', 'work_cities', 'job_types')
+              'mobile_phone2', 'fax', 'web_site', 'email', 'login', 'work_cities', 'job_types')
+    labels = {'web_site': u'Домашняя страница', 'email': u'Электронная почта', 'work_cities': u'Города, где работаете'}
+    error_messages = {
+      'name': {
+        'required': u"Укажите название организации"
+      },
+      'email': {
+        'required': u'Укажите электронную почту'
+      },
+      'login': {
+        'required': u'Укажите логин аккаунта организации'
+      },
+      'work_cities': {
+        'required': u'Укажите города, в которых работаете'
+      },
+      'job_types': {
+        'required': u'Укажите виды выполняемых работ'
+      }
+    }
     widgets = {
         'job_types': CustomCheckBoxSelectMultiple(),
         'address': Textarea(attrs={'cols': 60, 'rows': 3}),

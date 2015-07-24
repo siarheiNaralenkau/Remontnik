@@ -153,7 +153,7 @@ $(function() {
     }
 
     function editProfile() {
-        window.location.replace("/remont/edit_profile?user_id=" + $("#userId").text());
+        window.location.replace("/remont/edit_organization/" + $("#userId").text());
     }
 
     $("#loginLink").on('click', showLoginDialog);

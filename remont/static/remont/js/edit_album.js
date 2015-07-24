@@ -28,8 +28,8 @@ $(function() {
         var element = this;
         var photoId = $(this).attr("data-photo-id");
         $.post("/remont/delete_photo/", {"photo_id": photoId}, function(data) {                    
-            $(element.parentNode).remove();
-        });        
+            $(element.parentNode).remove()
+;        });        
     }
 
     function uploadPhotos() {

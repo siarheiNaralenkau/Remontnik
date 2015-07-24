@@ -11,9 +11,9 @@
     {% include "remont/top_page_template.html" %}
     <div class="main-container">  
         <div class="profile-container">
-            <form action="../create_organization/" method="post" novalidate>            
+            <form action="/remont/edit_organization/{{user.id}}/" enctype="multipart/form-data" method="post" novalidate>            
                 {% csrf_token %}
-                {% for field in profile_form %}
+                {% for field in profile_form %}                    
                     <div class="profile-field">                
                         <label class="profile-label">
                             {{ field.label }}:
