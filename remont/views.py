@@ -218,28 +218,6 @@ def site_logout(request):
     logout(request)
     return redirect("/remont")    
 
-# Установка пароля для организации при первом входе
-@csrf_exempt
-def set_password(request):
-    print 'Defining password for organization...'
-    response_data = {}
-    org_login = request.POST["login"]
-    password = request.POST["password"]
-    org = OrganizationProfile.objects.filter(name=org_login).first()
-    if not org:
-        response_data["status"] = "fail"
-        response_data["error"] = "Организации " + org_login + " не существует!"
-    else:
-        org.password = password
-        try:
-            org.save()
-            response_data["status"] = "success"
-            response_data["org_id"] = org.id
-        except Exception as e:
-            response_data["error"] = e
-    response = JsonResponse(response_data, safe=False)
-    return response
-
 
 # Получаем фотографии из альбома.
 def get_album_photos(request):
@@ -440,3 +418,16 @@ def delete_photo(request):
     photo_id = request.POST["photo_id"]
     WorkPhoto.objects.filter(id=int(photo_id)).delete()
     return JsonResponse({"photoId": photo_id}, safe=False)
+
+
+# Изменение пароля акканта организации
+@csrf_exempt
+def change_password(request):
+    response_data = {}
+    if request.method == "POST":
+        old_pass = request.POST["old_password"]
+        new_pass = request.POST["new_password"]
+        new_pass_confirm = request.POST["confirm_new_passsword"]
+
+        # TODO change password functionality.
+        return JsonResponse(response_data, safe=False)
