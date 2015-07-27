@@ -2,19 +2,20 @@
 <html>
 <head lang="en">
     <meta charset="UTF-8">
-    <title>Редактирование профайла организации</title>    
+    <title>Редактирование профайла организации</title>
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
     <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/edit_profile.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
     <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
 </head>
 <body>
     {% include "remont/top_page_template.html" %}
-    <div class="main-container">  
+    <div class="main-container">
         <div class="profile-container">
-            <form action="/remont/edit_organization/{{user.id}}/" enctype="multipart/form-data" method="post" novalidate>            
+            <form action="/remont/edit_organization/{{user.id}}/" enctype="multipart/form-data" method="post" novalidate>
                 {% csrf_token %}
-                {% for field in profile_form %}                    
-                    <div class="profile-field">                
+                {% for field in profile_form %}
+                    <div class="profile-field">
                         <label class="profile-label">
                             {{ field.label }}:
                         </label>
@@ -23,7 +24,7 @@
                         {% else %}
                             <span>
                         {% endif %}
-                            {{field}}                
+                            {{field}}
                         </span>
                         {{field.errors}}
                     </div>
@@ -36,38 +37,59 @@
             </form>
         </div>
         <div class="additional-container">
-            <p>Фотографии выполненных работ</p>
-            <span>Альбомов: {{work_photos|length}}</span>
-            <span>Фотографий: {{photos_amount}}</span>
-            <div class="albums-list" id="albumsList">
-                {% for album in work_photos %}
-                    {% include "remont/blocks/album_preview_template.html" %}
-                {% endfor %}
+            <div>
+              <div class="div-link" id="changePasswordLink">Изменить пароль</div>
+              <div class="hidden-el" id="changePassword">
+                <span class="error-msg" id="errPass"></span>
+                <div class="div-text-input">
+                  <label for="oldPassword">Текущий пароль:</label>
+                  <input type="password" id="oldPassword"/>
+                </div>
+                <div class="div-text-input">
+                  <label for="newPassword">Новый пароль</label>
+                  <input type="password" id="newPassword"/>
+                </div>
+                <div class="div-text-input">
+                  <label for="confirmNewPassword">Повторите новый пароль</label>
+                  <input type="password" id="confirmNewPassword"/>
+                </div>
+                <input type="button" id="savePassword" disabled value="Сохранить"/>
+              </div>
             </div>
-            <div class="photo-uploader">
-                <form name="uploadPhotoForm" action="../upload_work_photos/" enctype="multipart/form-data" method="POST">                    
-                    <label class="select-photo-btn">
-                        Добавить фотографии
-                        <input id="uploadPhoto" name="uploadPhoto" multiple type="file" class="hidden-input"/>
-                    </label>
-                    <label class="select-photo-btn" id="btnCreateAlbum">Создать альбом</label>
-                    <div id="photosPreview"></div>
-                    <input type="submit" value="Сохранить фотографии" class="hidden-input" id="saveImgBtn"/>
-                    <input type="button" value="Отмена" class="hidden-input" id="cancelImgBtn"/>
-                </form>
+            <div>
+              <p>Фотографии выполненных работ</p>
+              <span>Альбомов: {{work_photos|length}}</span>
+              <span>Фотографий: {{photos_amount}}</span>
+              <div class="albums-list" id="albumsList">
+                  {% for album in work_photos %}
+                      {% include "remont/blocks/album_preview_template.html" %}
+                  {% endfor %}
+              </div>
+              <div class="photo-uploader">
+                  <form name="uploadPhotoForm" action="../upload_work_photos/" enctype="multipart/form-data" method="POST">
+                      <label class="select-photo-btn">
+                          Добавить фотографии
+                          <input id="uploadPhoto" name="uploadPhoto" multiple type="file" class="hidden-input"/>
+                      </label>
+                      <label class="select-photo-btn" id="btnCreateAlbum">Создать альбом</label>
+                      <div id="photosPreview"></div>
+                      <input type="submit" value="Сохранить фотографии" class="hidden-input" id="saveImgBtn"/>
+                      <input type="button" value="Отмена" class="hidden-input" id="cancelImgBtn"/>
+                  </form>
+              </div>
             </div>
             <!-- <p>Видео выполненных работ</p> -->
         </div>
-    </div>   
+    </div>
 
     <div style="display: none" id="createAlbumDialog">
         <form name="createAlbumForm">
             <div>
                 <label for="newAlbumName">Название альбома:</label>
                 <input type="text" name="albumName" id="newAlbumName"/>
-            </div>        
+            </div>
         </form>
-    </div> 
+    </div>
 
     <div id="albumTemplate" style="display: none">
         <div class='album-trumb'>
@@ -76,11 +98,11 @@
                 <span class='album-name'>{1}</span>
                 <span class='album-ph-amount'>{2}</span>
             </div>
-            <div class='row-block'>                    
-                <img src='{{ STATIC_URL }}remont/images/question.jpg' class='work-image-trumb'/> 
+            <div class='row-block'>
+                <img src='{{ STATIC_URL }}remont/images/question.jpg' class='work-image-trumb'/>
             </div>
         </div>
-    </div>    
+    </div>
 
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
     <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
