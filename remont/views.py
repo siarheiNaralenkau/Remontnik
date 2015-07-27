@@ -444,3 +444,17 @@ def change_password(request):
       res = HttpResponse("Unautorized")
       res.status_code = 401
       return res
+
+
+# Каталог работ
+def jobs_list(request):
+  work_types = WorkType.objects.order_by("category")
+  types_data = {}
+  for wt in work_types:
+    if wt.category in types_data:
+      types_data[wt.category].append(wt)
+    else:
+      types_data[wt.category] = [wt]
+
+  print("Categories amount: {0}".format(len(types_data)))
+  return render(request, "remont/jobs_list.html", {"job_types": types_data})
