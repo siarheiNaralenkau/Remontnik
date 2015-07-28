@@ -1,16 +1,13 @@
 # -*- coding: utf-8 -*-
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, get_object_or_404
 from django.http import HttpResponse
 from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
-from rem_forms import SuggestJobForm
-
-# Главная страница приложения
-from remont.rem_forms import RegisterForm, OrganizationProfileModelForm
+from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review
 
@@ -19,6 +16,13 @@ from lastActivityDate.users_activity_service import get_last_visit
 from django.conf import settings
 from django.contrib.auth import authenticate, login, logout
 
+from remont.mail_sending_service import send_confirm_registration
+
+from django.forms.formsets import formset_factory
+
+from  django.contrib.auth.hashers import check_password
+
+# Главная страница приложения
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
     job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
@@ -27,23 +31,18 @@ def index(request):
     suggest_job_form = SuggestJobForm()
     response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
     # Check if user is logged in.
-    if request.user.is_authenticated():        
+    if request.user.is_authenticated():
         response_data["logged_in"] = True
         newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
-        print "New messages amount: {0}".format(len(newMessages))
         response_data["newMesagesAmount"] = len(newMessages)
 
     return render(request, 'remont/index.html', response_data)
 
+
 # Регистрация пользователя
 def register(request):
-    reg_form = OrganizationProfileModelForm()
+    reg_form = RegisterForm()
     return render(request, "remont/register.html", {"reg_form": reg_form})
-
-
-# Личный кабинет пользователя
-def profile(request, user_id):
-    return HttpResponse(u"Кабинет пользователя %s" % user_id)
 
 
 # Страница предложения о работе.
@@ -127,23 +126,6 @@ def organizations_list(request):
     return render(request, 'remont/organizations_list.html', {"organizatins": organizations})
 
 
-# Отображает подробную информацию о конкретной организации.
-def org_profile(request):
-    org_id = request.REQUEST["org"]
-    print "Organization id: {0}".format(org_id)
-    organization_details = OrganizationProfile.objects.get(id=org_id)
-    # Загружаем фото работ организации
-    photos = []
-    albums = WorkPhotoAlbum.objects.filter(organization=organization_details)
-    for cur_album in albums:
-        album_photos = WorkPhoto.objects.filter(album=cur_album)
-        if len(album_photos) > 0:
-            photos.append({'id': cur_album.id, 'name': cur_album.name, 'photos_amount': len(album_photos), 'title_photo': album_photos[0]})
-    return render(request, 'remont/organization_details.html', {"organization_details": organization_details,
-                                                                "work_photos": photos,
-                                                                "mediaRoot": settings.MEDIA_ROOT})
-
-
 # Получает список видо работ по категории
 def get_job_types_by_category(request):
     category_id = request.GET["category_id"]
@@ -157,18 +139,17 @@ def get_job_types_by_category(request):
 
 
 # Создает новую организацию на основе заполненной пользователем формы.
+@csrf_exempt
 def create_organization(request):
     if request.method == "POST":
-        reg_form = RegisterForm(request.POST)
+        reg_form = RegisterForm(request.POST, request.FILES)
         if reg_form.is_valid():
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
-            org.city = City.objects.get(id=int(reg_form.cleaned_data["reg_city"]))
-            org.address = reg_form.cleaned_data["reg_address"]
-            job_types = reg_form.cleaned_data["job_types"]
-            for j_type in job_types:
-                org.job_types.add(j_type)
             org.logo = reg_form.cleaned_data["logo"]
+            city_id = int(reg_form.cleaned_data["city"])
+            org.city = City.objects.filter(id=city_id).first()
+            org.address = reg_form.cleaned_data["address"]
             org.description = reg_form.cleaned_data["description"]
             org.landline_phone = reg_form.cleaned_data["landing_phone"]
             org.mobile_phone = reg_form.cleaned_data["mobile_phone"]
@@ -176,21 +157,41 @@ def create_organization(request):
             org.fax = reg_form.cleaned_data["fax"]
             org.web_site = reg_form.cleaned_data["web_site"]
             org.email = reg_form.cleaned_data["email"]
-            org.work_cities = reg_form.cleaned_data["work_cities"]
+
+            org.login = reg_form.cleaned_data["login"]
+            password = reg_form.cleaned_data["password"]
+            password_repeat = reg_form.cleaned_data["password_repeat"]
+            org.password = password
+
             org.save()
+
+            # Save Work in cities.
+            work_cities = reg_form.cleaned_data["work_cities"]
+            for c in work_cities:
+                org.work_cities.add(c)
+
+            # Save job types
+            job_types = reg_form.cleaned_data["job_types"]
+            for jt in job_types:
+                org.job_types.add(jt)
+
+            send_confirm_registration(org.email, org.account.id)
+            return render(request, 'remont/confirm_registration.html', {})
+        else:
+            return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Вход на сайт
 @csrf_exempt
-def site_login(request):    
+def site_login(request):
     response_data = {}
     uname = request.POST["login"]
     passwd = request.POST["password"]
     user = authenticate(username=uname, password=passwd)
-    
+
     response_data = {}
 
-    if user is None: 
+    if user is None:
         # Попытка авторизации, используя имя организации
         org = OrganizationProfile.objects.filter(name=uname).first()
         if org:
@@ -198,8 +199,8 @@ def site_login(request):
             user = authenticate(username=uname, password=passwd)
 
     if user is not None:
-        if user.is_active:            
-            login(request, user)                        
+        if user.is_active:
+            login(request, user)
             response_data["status"] = "success"
             return JsonResponse(response_data, safe=False)
         else:
@@ -217,29 +218,7 @@ def site_login(request):
 @csrf_exempt
 def site_logout(request):
     logout(request)
-    return redirect("/remont")    
-
-# Установка пароля для организации при первом входе
-@csrf_exempt
-def set_password(request):
-    print 'Defining password for organization...'
-    response_data = {}
-    org_login = request.POST["login"]
-    password = request.POST["password"]
-    org = OrganizationProfile.objects.filter(name=org_login).first()
-    if not org:
-        response_data["status"] = "fail"
-        response_data["error"] = "Организации " + org_login + " не существует!"
-    else:
-        org.password = password
-        try:
-            org.save()
-            response_data["status"] = "success"
-            response_data["org_id"] = org.id
-        except Exception as e:
-            response_data["error"] = e
-    response = JsonResponse(response_data, safe=False)
-    return response
+    return redirect("/remont")
 
 
 # Получаем фотографии из альбома.
@@ -266,9 +245,9 @@ def view_profile(request):
 
 # Получаем информацию об организации в формате JSON
 def get_profile_info(request):
-    org_id = request.GET["org_id"]    
+    org_id = request.GET["org_id"]
     org_profile = OrganizationProfile.objects.filter(id=org_id).first()
-    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
+    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name,
                     "address": org_profile.address, "rating": 3.5}
 
     if org_profile.logo:
@@ -286,7 +265,7 @@ def get_profile_info(request):
             colleg_item["logo_url"] = ""
         collegs_array.append(colleg_item)
     profile_json["collegues"] = collegs_array
-    
+
     job_types = [job.name for job in org_profile.job_types.all()]
     profile_json["job_types"] = job_types
 
@@ -310,7 +289,7 @@ def get_profile_info(request):
     profile_json["about"] = org_profile.description
 
     photos = WorkPhoto.objects.filter(organization=org_profile)
-    
+
     profile_json["photos"] = [p.photo.url for p in photos]
 
     if org_profile.account:
@@ -333,7 +312,7 @@ def send_text_mesaage(request):
     sender = None
     receiver_id = request.POST["org_id"]
     receiver_org = OrganizationProfile.objects.filter(id=receiver_id).first()
-    if receiver_org.account:        
+    if receiver_org.account:
         message_text = request.POST["message"]
         if request.user.is_authenticated():
             print 'User is authenticated!'
@@ -348,3 +327,134 @@ def send_text_mesaage(request):
         response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
 
     return JsonResponse(response_data, safe=False)
+
+
+# Подтверждение пользователем своей регистрации
+def confirm_registration(request):
+    user_id = request.GET["user_id"]
+    if user_id:
+        account = User.objects.filter(id=user_id).first()
+        account.is_active = True
+        account.save()
+        print "Account was activated successfully!"
+
+    return redirect("/remont")
+
+
+# Редактируем профайл организации
+@csrf_exempt
+def edit_organization(request, id=None):
+    if id:
+        user = get_object_or_404(User, pk=id)
+        org = get_object_or_404(OrganizationProfile, account=user)
+
+        if request.POST:
+            profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)
+            if profile_form.is_valid():
+                profile_form.save()
+                return redirect('/remont/edit_organization/' + str(id))
+        else:
+            profile_form = OrganizationEditForm(instance=org)
+            photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
+            grouped_photos = []
+            photos_amount = 0
+            for ph_album in photo_albums:
+                photos = WorkPhoto.objects.filter(album=ph_album)
+                photos_amount += len(photos)
+                album_info = {"id": ph_album.id, "name": ph_album.name, "photos": photos}
+                grouped_photos.append(album_info)
+            ungrouped_photos = WorkPhoto.objects.filter(organization=org, album__isnull=True)
+            photos_amount += len(ungrouped_photos)
+            if len(ungrouped_photos) > 0:
+                unnamed_album = {"id": 0, "name": u"Другие фотографии", "photos": ungrouped_photos}
+                grouped_photos.append(unnamed_album)
+
+            UploadPhotoFormSet = formset_factory(UploadPhotoForm)
+            photo_formset = UploadPhotoFormSet()
+
+            return render(request, "remont/edit_profile.html", {"profile_form": profile_form,
+                                                                "work_photos": grouped_photos,
+                                                                "photos_amount": photos_amount,
+                                                                "photo_formset": photo_formset})
+
+# Загрузка фотографий выполненных работ
+@csrf_exempt
+def upload_work_photos(request):
+    org = OrganizationProfile.objects.filter(account = request.user).first()
+    if request.method == "POST":
+        files_to_upload = request.FILES.getlist("uploadPhoto")
+        album_id = request.POST["albumId"]
+        if album_id:
+            for f in files_to_upload:
+                photo_obj = WorkPhoto(organization=org, photo=f, album=WorkPhotoAlbum.objects.filter(id=int(album_id)).first())
+                photo_obj.save()
+            return redirect("/remont/edit_album?album_id=" + album_id)
+        else:
+            for f in files_to_upload:
+                photo_obj = WorkPhoto(organization=org, photo=f)
+                photo_obj.save()
+            return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
+
+
+# Создание нового фотоальбома
+@csrf_exempt
+def create_photo_album(request):
+    org = OrganizationProfile.objects.filter(account = request.user).first()
+    album = WorkPhotoAlbum(organization=org, name=request.POST["albumName"])
+    album.save()
+    response_data = {"id": album.id, "name": album.name, "photos": []}
+    return JsonResponse(response_data, safe=False)
+
+
+# Редактирование фотоальбома организации
+def edit_album(request):
+    album_id = request.GET["album_id"]
+    album = WorkPhotoAlbum.objects.filter(id=int(album_id)).first()
+    photos = WorkPhoto.objects.filter(album=album)
+    return render(request, "remont/edit_album.html", {"album": album, "photos": photos})
+
+
+# Удаление фотографии
+@csrf_exempt
+def delete_photo(request):
+    photo_id = request.POST["photo_id"]
+    WorkPhoto.objects.filter(id=int(photo_id)).delete()
+    return JsonResponse({"photoId": photo_id}, safe=False)
+
+
+# Изменение пароля акканта организации
+@csrf_exempt
+def change_password(request):
+  if request.method == "POST":
+    response_data = {}
+    old_pass = request.POST["old_password"]
+    new_pass = request.POST["new_password"]
+
+    if request.user.is_authenticated():
+      if check_password(old_pass, request.user.password):
+        request.user.set_password(new_pass)
+        request.user.save()
+        response_data["status"] = "success"
+      else:
+        response_data["status"] = "failure"
+        response_data["error"] = "Неправильный текущий пароль"
+
+      return JsonResponse(response_data, safe=False)
+    else:
+      res = HttpResponse("Unautorized")
+      res.status_code = 401
+      return res
+
+
+# Каталог работ
+def jobs_list(request):
+  work_types = WorkType.objects.order_by("category")
+  types_data = {}
+  for wt in work_types:
+    if wt.category in types_data:
+      types_data[wt.category].append(wt)
+    else:
+      types_data[wt.category] = [wt]
+
+  print("Categories amount: {0}".format(len(types_data)))
+  return render(request, "remont/jobs_list.html", {"job_types": types_data})

@@ -32,6 +32,11 @@ def save_work_photo(instance, filename):
     return storage_path
 
 
+def save_work_video(instance, filename):
+    storage_path = str(instance.organization.id) + "/video/" + filename
+    return storage_path    
+
+
 def save_job_icon(instance, filename):
     storage_path = "icons/" + filename
     return storage_path
@@ -137,6 +142,7 @@ class OrganizationProfile(models.Model):
                 account = User.objects.create_user(self.login, self.email, self.password)
                 account.first_name = self.name
                 account.email = self.email
+                account.is_active = False
                 account.save()
                 self.account = account                
             super(OrganizationProfile, self).save(*args, **kwargs)
@@ -249,6 +255,15 @@ class WorkPhoto(models.Model):
 
     def __unicode__(self):
         return self.photo.url
+
+
+class WorkVideo(models.Model):
+    class Meta:
+        verbose_name = u"Видео выполненной работы"
+        verbose_name_plural = u"Видео выполненных работ"
+
+    organization = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=True)
+    video = models.FileField(u"Видео сделанной работы", upload_to=save_work_video)
 
 
 class Article(models.Model):

@@ -119,7 +119,7 @@ $(function() {
             'login': $("#login").val(),
             'password': $("#password").val()
         };
-        $.post("/remont/site_login/", data, loginResult);                
+        $.post("/remont/site_login/", data, loginResult);
     }
 
     function sendSetPasswordRequest() {
@@ -131,14 +131,14 @@ $(function() {
     }
 
     function loginResult(responseData, textStatus, jqXHR) {
-        console.log("Login status: " + responseData.status); 
+        console.log("Login status: " + responseData.status);
         if(responseData.status === "success") {
             loginDialog.dialog("close");
             $("#loginError").text("");
             window.location.replace("/remont");
         } else {
             $("#loginError").text(responseData.error_message);
-        }        
+        }
     }
 
     function setPasswordResult(responseData, textStatus, jqXHR) {
@@ -152,6 +152,11 @@ $(function() {
         window.location.replace("/remont/site_logout");
     }
 
+    function editProfile() {
+        window.location.replace("/remont/edit_organization/" + $("#userId").text());
+    }
+
     $("#loginLink").on('click', showLoginDialog);
     $("#exitBtn").on('click', logout);
+    $("#editProfileBtn").on('click', editProfile);
 });

@@ -34,8 +34,8 @@ $(function() {
             horizontal: true
         });
 
-        
-        $("#lastVisit").text(data.last_visit);        
+
+        $("#lastVisit").text(data.last_visit);
         $("#reviewsAmount").text("Отзывы " + data.reviews_amount);
         $("#collegsAmount").text(data.collegues.length + " партнеров");
 
@@ -46,18 +46,18 @@ $(function() {
             var collegItem = document.createElement("li");
             collegItem.setAttribute("class", "colleg-item");
             collegItem.setAttribute("data-orgid", data.collegues[i].id);
-            
+
             var collegImg = document.createElement("img");
             collegImg.setAttribute("src", "/remont/" + data.collegues[i].logo_url);
             collegImg.setAttribute("class", "colleg-logo");
             collegItem.appendChild(collegImg);
-            
+
             var collegName = document.createElement("span");
             collegName.setAttribute("class", "colleg-name");
             collegName.innerHTML = data.collegues[i].name;
-            collegItem.appendChild(collegName);         
+            collegItem.appendChild(collegName);
 
-            $(collegItem).click(viewFriendOrg);   
+            $(collegItem).click(viewFriendOrg);
 
             collegsFragment.appendChild(collegItem);
         }
@@ -73,7 +73,7 @@ $(function() {
             if(i >= 3) {
                 $(jobItem).addClass("hidden");
             }
-            jobsFragment.appendChild(jobItem);            
+            jobsFragment.appendChild(jobItem);
         }
         if(data.job_types.length > 3) {
             var showMore = document.createElement("span");
@@ -84,7 +84,7 @@ $(function() {
         }
         jobTypesDiv[0].appendChild(jobsFragment);
 
-        // Fill contacts info        
+        // Fill contacts info
         var contactsFragment = document.createDocumentFragment();
         for(var i = 0; i < data.contacts.length; i++) {
             var contactItem = document.createElement("li");
@@ -106,19 +106,19 @@ $(function() {
             var imgLink = document.createElement("a");
             $(imgLink).attr("href", "/remont/" + data.photos[i]);
             var photoImg = document.createElement("img");
-            $(photoImg).attr("src", "/remont/" + data.photos[i]);            
-            $(photoImg).addClass("work-image");                  
-            imgLink.appendChild(photoImg);      
+            $(photoImg).attr("src", "/remont/" + data.photos[i]);
+            $(photoImg).addClass("work-image");
+            imgLink.appendChild(photoImg);
             photoFragment.appendChild(imgLink);
         }
-        $("#photos")[0].appendChild(photoFragment);        
+        $("#photos")[0].appendChild(photoFragment);
     }, "json");
 
-    function showMoreJobs() {        
+    function showMoreJobs() {
         $("#jobTypes > span.job-type").each(function() {
             $(this).removeClass("hidden");
         });
-        $(".show-more-jobs").text("Свернуть");        
+        $(".show-more-jobs").text("Свернуть");
         $(".show-more-jobs").unbind();
         $(".show-more-jobs").click(collapseJobs);
     }
@@ -129,7 +129,7 @@ $(function() {
                 $(this).addClass("hidden");
             }
         });
-        $(".show-more-jobs").text("подробнее..");        
+        $(".show-more-jobs").text("подробнее..");
         $(".show-more-jobs").unbind();
         $(".show-more-jobs").click(showMoreJobs);
     }
@@ -150,7 +150,7 @@ $(function() {
                     center: coordinates,
                     zoom: 12
                 });
-                var placemark = new ymaps.Placemark(coordinates, 
+                var placemark = new ymaps.Placemark(coordinates,
                     {balloonContent: address},
                     {preset: 'islands#dotIcon', iconColor: '#735184'}
                 );
@@ -159,7 +159,7 @@ $(function() {
             function (err) {
                 console.log("Не удалось получить координаты объекта по адресу: " + address);
             }
-        );        
+        );
     }
 
     function showMap() {

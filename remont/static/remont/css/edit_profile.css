@@ -1,24 +1,24 @@
-.register-field {
+.profile-field {
     display: block; 
-    width: 800px; 
+    width: 100%; 
     padding-bottom: 20px;
     clear: both;
 }
 
-.register-label {
+.profile-label {
     font-weight: 800; 
     margin-left: 20px; 
-    width: 250px; 
+    width: 30%; 
     float: left;
 }
 
 .submit-btn-div {
-    width: 30%;
+    width: 35%;
     margin: 0 auto;
 }
 
 input[type="text"], input[type="url"], input[type="email"], input[type="password"], select {
-    width: 250px;
+    width: 30%;
 }
 
 #id_work_cities {
@@ -49,10 +49,60 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
     background-image: url("/static/remont/images/field-required.png")
 }
 
-.create-organization-container {
+.main-container {
+    float: left;
+    width: 100%;
+}
+
+.profile-container {
     border: 1px solid black;
     display: block;
-    width: 810px;
+    width: 40%;
+    float: left;
+}
+
+.additional-container {
+    border: 1px solid black;
+    display: block;
+    width: 59%;    
+    float: left;    
+}
+
+.select-photo-btn {
+    display: inline-block;
+    margin-left: 30px;
+    width: 165px;
+    height: 20px;
+    cursor: pointer;
+    background-color: #A2A3A3;
+    border-radius: 5px;
+}
+
+.hidden-input {
+    display: none;
+}
+
+.row-block {
+    display: table-row;
+}
+
+.album-trumb {
+    display: inline-block;
+    cursor: pointer;
+    margin-top: 10px;
+    margin-left: 10px;
+}
+
+.work-image-trumb {
+    width: 100px; 
+    height: 100px;
+}
+
+.album-name {    
+}
+
+.album-ph-amount {    
+    margin-left: 10px;
 }
 
 /*Styles for file upload field*/
