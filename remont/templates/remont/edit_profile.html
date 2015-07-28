@@ -56,7 +56,7 @@
                 <input type="button" id="savePassword" disabled value="Сохранить"/>
               </div>
             </div>
-            <div>
+            <div class="photos-container">
               <p>Фотографии выполненных работ</p>
               <span>Альбомов: {{work_photos|length}}</span>
               <span>Фотографий: {{photos_amount}}</span>
@@ -66,19 +66,30 @@
                   {% endfor %}
               </div>
               <div class="photo-uploader">
-                  <form name="uploadPhotoForm" action="../upload_work_photos/" enctype="multipart/form-data" method="POST">
-                      <label class="select-photo-btn">
-                          Добавить фотографии
-                          <input id="uploadPhoto" name="uploadPhoto" multiple type="file" class="hidden-input"/>
-                      </label>
-                      <label class="select-photo-btn" id="btnCreateAlbum">Создать альбом</label>
-                      <div id="photosPreview"></div>
-                      <input type="submit" value="Сохранить фотографии" class="hidden-input" id="saveImgBtn"/>
-                      <input type="button" value="Отмена" class="hidden-input" id="cancelImgBtn"/>
-                  </form>
+                <form name="uploadPhotoForm" action="../upload_work_photos/" enctype="multipart/form-data" method="POST">
+                  <div class="add-photo-buttons">
+                    <label class="select-photo-btn">
+                      Добавить фотографии
+                      <input id="uploadPhoto" name="uploadPhoto" multiple type="file" class="hidden-input"/>
+                    </label>
+                    <label class="select-photo-btn" id="btnCreateAlbum">Создать альбом</label>
+                  </div>
+                  <div id="photosPreview" class="photos-preview"></div>
+                  <div class="photo-action-buttons">
+                    <input type="submit" value="Сохранить фотографии" class="hidden-input" id="saveImgBtn"/>
+                    <input type="button" value="Отмена" class="hidden-input" id="cancelImgBtn"/>
+                  </div>
+                </form>
               </div>
             </div>
             <!-- <p>Видео выполненных работ</p> -->
+            <div class="partners-container">
+              <a href="#" id="btnPartnersSearch">Добавить партнеров</a>
+              <div class="hidden-el partners-search ui-widget" id="partnersSearch">
+                <label for="searchInput">Введите назване организации</label>
+                <input type="text" maxlength="80" class="search-input" id="searchInput"/>
+              </div>
+            </div>
         </div>
     </div>
 

@@ -109,12 +109,52 @@ $(function() {
       }
     }
 
+    function showPartnersSearch() {
+      $("#partnersSearch").removeClass("hidden-el");
+    }
+
+    function findOrganizations(request, response) {
+      $.ajax({
+        url: "/remont/search_organizations",
+        data: {
+          q: request.term
+        },
+        success: function(result) {
+          console.log(result);
+          response(result);
+        }
+      });
+    }
+
     $("#uploadPhoto").change(handlePhotoSelection);
     $("#cancelImgBtn").click(cancelFileUpload);
     $("#btnCreateAlbum").click(showAlbumCreateDialog);
     $(".album-trumb").click(editAlbum);
     $("#changePasswordLink").click(showChangePassword);
     $("#savePassword").click(changePassword);
-
     $("#oldPassword, #newPassword, #confirmNewPassword").keyup(enableChange);
+    $("#btnPartnersSearch").click(showPartnersSearch);
+
+    $("#searchInput").autocomplete({
+      source: findOrganizations,
+      minLength: 3,
+      select: function(event, ui) {
+        console.log("Selected organization: " + ui);
+      }
+    }).
+    autocomplete("instance")._renderItem = function(ul, item) {
+      var result = $("<li class='search-item'>")
+        .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
+        .append("<img class='search-img' src='" + item.logo + "'/>")
+        .append("<span class='search-name'>" + item.name + "</span>")
+        .append("</a></li>");
+      return result.appendTo(ul);
+      // return
+        // $("<li class='search-item'>")
+        // .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
+        // .append("<img class='search-img' src='" + item.logo + "'/>")
+        // .append("<span class='search-name'>" + item.name + "</span>")
+        // .append("</a></li>")
+        // .appendTo(ul);
+    };
 });
