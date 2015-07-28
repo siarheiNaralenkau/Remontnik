@@ -20,6 +20,8 @@ from remont.mail_sending_service import send_confirm_registration
 
 from django.forms.formsets import formset_factory
 
+from  django.contrib.auth.hashers import check_password
+
 # Главная страница приложения
 def index(request):
     top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -29,9 +31,9 @@ def index(request):
     suggest_job_form = SuggestJobForm()
     response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
     # Check if user is logged in.
-    if request.user.is_authenticated():        
+    if request.user.is_authenticated():
         response_data["logged_in"] = True
-        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)        
+        newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
         response_data["newMesagesAmount"] = len(newMessages)
 
     return render(request, 'remont/index.html', response_data)
@@ -53,37 +55,46 @@ def suggest_job(request):
 
 # Сохранение предложения о работе
 def suggest_job_save(request):
-    contact_person = unicode(request.REQUEST["contactPerson"])
-    work_type = request.REQUEST["workType"]
-    description = unicode(request.REQUEST["description"])
-    phone = request.REQUEST["phone"]
-    mail = request.REQUEST["mail"]
-    header = request.REQUEST["shortHeader"]
+  contact_person = unicode(request.REQUEST["contactPerson"])
+  work_type = request.REQUEST["workType"]
+  description = unicode(request.REQUEST["description"])
+  phone = request.REQUEST["phone"]
+  mail = request.REQUEST["mail"]
+  header = request.REQUEST["shortHeader"]
 
-    job_type = WorkType.objects.get(pk=int(work_type))
-    job = JobSuggestion(contact_name=contact_person, job_type=job_type, description=description,
-                        phone=phone, email=mail, short_header=header)
-    job.save()
-    return redirect("/remont")
+  job_type = WorkType.objects.get(pk=int(work_type))
+  job = JobSuggestion(contact_name=contact_person, job_type=job_type, description=description,
+                      phone=phone, email=mail, short_header=header)
+  job.save()
+  return redirect("/remont")
 
 
 # Поиск организации по ключевым словам
 def search_organizations(request):
-    key_phrase = request.REQUEST["q"]
-    response_data = []
-    # 1) Поиск по имени организации
-    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
-    for org in orgs_by_name:
-        response_data.append({'label': org.name, 'value': org.id})
+  key_phrase = request.REQUEST["q"]
+  response_data = []
+  # 1) Поиск по имени организации
+  orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+  for org in orgs_by_name:
+    if org.logo:
+        logo_url = "/remont/" + org.logo.url
+    else:
+        logo_url = "/static/remont/images/question.jpg"
+    response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
 
-    # 2) Поиск по типу выполняемых работ.
-    orgs_by_job_type = OrganizationProfile.objects.all()
-    for org in orgs_by_job_type:
-        job_types = org.job_types.all()
-        for job_type in job_types:
-            if key_phrase in job_type.name:
-                response_data.append({'label': org.name, 'value': org.id})
-                break
+  # 2) Поиск по типу выполняемых работ.
+  orgs_by_job_type = OrganizationProfile.objects.all()
+  for org in orgs_by_job_type:
+    job_types = org.job_types.all()
+    for job_type in job_types:
+      if key_phrase in job_type.name:
+        if org.logo:
+          logo_url = "/remont/" + org.logo.url
+        else:
+          logo_url = "/remont/static/remont/images/question.jpg"
+        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+        break
+
     print "Found {0} organizations: ".format(len(response_data))
     response = JsonResponse(response_data, safe=False)
     return response
@@ -159,8 +170,8 @@ def create_organization(request):
             org.login = reg_form.cleaned_data["login"]
             password = reg_form.cleaned_data["password"]
             password_repeat = reg_form.cleaned_data["password_repeat"]
-            org.password = password                        
-            
+            org.password = password
+
             org.save()
 
             # Save Work in cities.
@@ -175,21 +186,21 @@ def create_organization(request):
 
             send_confirm_registration(org.email, org.account.id)
             return render(request, 'remont/confirm_registration.html', {})
-        else:            
+        else:
             return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
 # Вход на сайт
 @csrf_exempt
-def site_login(request):    
+def site_login(request):
     response_data = {}
     uname = request.POST["login"]
     passwd = request.POST["password"]
     user = authenticate(username=uname, password=passwd)
-    
+
     response_data = {}
 
-    if user is None: 
+    if user is None:
         # Попытка авторизации, используя имя организации
         org = OrganizationProfile.objects.filter(name=uname).first()
         if org:
@@ -197,8 +208,8 @@ def site_login(request):
             user = authenticate(username=uname, password=passwd)
 
     if user is not None:
-        if user.is_active:            
-            login(request, user)                        
+        if user.is_active:
+            login(request, user)
             response_data["status"] = "success"
             return JsonResponse(response_data, safe=False)
         else:
@@ -216,7 +227,7 @@ def site_login(request):
 @csrf_exempt
 def site_logout(request):
     logout(request)
-    return redirect("/remont")    
+    return redirect("/remont")
 
 
 # Получаем фотографии из альбома.
@@ -243,9 +254,9 @@ def view_profile(request):
 
 # Получаем информацию об организации в формате JSON
 def get_profile_info(request):
-    org_id = request.GET["org_id"]    
+    org_id = request.GET["org_id"]
     org_profile = OrganizationProfile.objects.filter(id=org_id).first()
-    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name, 
+    profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name,
                     "address": org_profile.address, "rating": 3.5}
 
     if org_profile.logo:
@@ -263,7 +274,7 @@ def get_profile_info(request):
             colleg_item["logo_url"] = ""
         collegs_array.append(colleg_item)
     profile_json["collegues"] = collegs_array
-    
+
     job_types = [job.name for job in org_profile.job_types.all()]
     profile_json["job_types"] = job_types
 
@@ -287,7 +298,7 @@ def get_profile_info(request):
     profile_json["about"] = org_profile.description
 
     photos = WorkPhoto.objects.filter(organization=org_profile)
-    
+
     profile_json["photos"] = [p.photo.url for p in photos]
 
     if org_profile.account:
@@ -310,7 +321,7 @@ def send_text_mesaage(request):
     sender = None
     receiver_id = request.POST["org_id"]
     receiver_org = OrganizationProfile.objects.filter(id=receiver_id).first()
-    if receiver_org.account:        
+    if receiver_org.account:
         message_text = request.POST["message"]
         if request.user.is_authenticated():
             print 'User is authenticated!'
@@ -342,12 +353,12 @@ def confirm_registration(request):
 # Редактируем профайл организации
 @csrf_exempt
 def edit_organization(request, id=None):
-    if id:        
-        user = get_object_or_404(User, pk=id)        
+    if id:
+        user = get_object_or_404(User, pk=id)
         org = get_object_or_404(OrganizationProfile, account=user)
 
         if request.POST:
-            profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)            
+            profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)
             if profile_form.is_valid():
                 profile_form.save()
                 return redirect('/remont/edit_organization/' + str(id))
@@ -370,8 +381,8 @@ def edit_organization(request, id=None):
             UploadPhotoFormSet = formset_factory(UploadPhotoForm)
             photo_formset = UploadPhotoFormSet()
 
-            return render(request, "remont/edit_profile.html", {"profile_form": profile_form, 
-                                                                "work_photos": grouped_photos, 
+            return render(request, "remont/edit_profile.html", {"profile_form": profile_form,
+                                                                "work_photos": grouped_photos,
                                                                 "photos_amount": photos_amount,
                                                                 "photo_formset": photo_formset})
 
@@ -383,12 +394,12 @@ def upload_work_photos(request):
         files_to_upload = request.FILES.getlist("uploadPhoto")
         album_id = request.POST["albumId"]
         if album_id:
-            for f in files_to_upload:            
+            for f in files_to_upload:
                 photo_obj = WorkPhoto(organization=org, photo=f, album=WorkPhotoAlbum.objects.filter(id=int(album_id)).first())
                 photo_obj.save()
             return redirect("/remont/edit_album?album_id=" + album_id)
         else:
-            for f in files_to_upload:            
+            for f in files_to_upload:
                 photo_obj = WorkPhoto(organization=org, photo=f)
                 photo_obj.save()
             return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
@@ -396,7 +407,7 @@ def upload_work_photos(request):
 
 # Создание нового фотоальбома
 @csrf_exempt
-def create_photo_album(request):    
+def create_photo_album(request):
     org = OrganizationProfile.objects.filter(account = request.user).first()
     album = WorkPhotoAlbum(organization=org, name=request.POST["albumName"])
     album.save()
@@ -404,11 +415,11 @@ def create_photo_album(request):
     return JsonResponse(response_data, safe=False)
 
 
-# Редактирование фотоальбома организации 
+# Редактирование фотоальбома организации
 def edit_album(request):
     album_id = request.GET["album_id"]
     album = WorkPhotoAlbum.objects.filter(id=int(album_id)).first()
-    photos = WorkPhoto.objects.filter(album=album)    
+    photos = WorkPhoto.objects.filter(album=album)
     return render(request, "remont/edit_album.html", {"album": album, "photos": photos})
 
 
@@ -423,11 +434,36 @@ def delete_photo(request):
 # Изменение пароля акканта организации
 @csrf_exempt
 def change_password(request):
+  if request.method == "POST":
     response_data = {}
-    if request.method == "POST":
-        old_pass = request.POST["old_password"]
-        new_pass = request.POST["new_password"]
-        new_pass_confirm = request.POST["confirm_new_passsword"]
+    old_pass = request.POST["old_password"]
+    new_pass = request.POST["new_password"]
 
-        # TODO change password functionality.
-        return JsonResponse(response_data, safe=False)
+    if request.user.is_authenticated():
+      if check_password(old_pass, request.user.password):
+        request.user.set_password(new_pass)
+        request.user.save()
+        response_data["status"] = "success"
+      else:
+        response_data["status"] = "failure"
+        response_data["error"] = "Неправильный текущий пароль"
+
+      return JsonResponse(response_data, safe=False)
+    else:
+      res = HttpResponse("Unautorized")
+      res.status_code = 401
+      return res
+
+
+# Каталог работ
+def jobs_list(request):
+  work_types = WorkType.objects.order_by("category")
+  types_data = {}
+  for wt in work_types:
+    if wt.category in types_data:
+      types_data[wt.category].append(wt)
+    else:
+      types_data[wt.category] = [wt]
+
+  print("Categories amount: {0}".format(len(types_data)))
+  return render(request, "remont/jobs_list.html", {"job_types": types_data})

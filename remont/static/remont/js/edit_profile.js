@@ -1,4 +1,4 @@
-$(function() {    
+$(function() {
     var createAlbumDialog;
     createAlbumDialog = $("#createAlbumDialog").dialog({
         autoOpen: false,
@@ -44,7 +44,7 @@ $(function() {
     function cancelFileUpload() {
         $("#photosPreview").html("");
         $("#saveImgBtn").addClass("hidden-input");
-        $("#cancelImgBtn").addClass("hidden-input");   
+        $("#cancelImgBtn").addClass("hidden-input");
     }
 
     function createAlbum() {
@@ -52,14 +52,14 @@ $(function() {
             "albumName": $("#newAlbumName").val()
         };
         $.post("/remont/create_photo_album/", data, function(data, textStatus, jqXHR) {
-            var album = $("#albumTemplate").html();                
+            var album = $("#albumTemplate").html();
             album = album.format(data.id, data.name, data.photos.length);
             $("#albumsList")[0].innerHTML += album;
             createAlbumDialog.dialog("close");
-        });        
+        });
     }
 
-    function showAlbumCreateDialog() {        
+    function showAlbumCreateDialog() {
         createAlbumDialog.dialog("open");
     }
 
@@ -68,9 +68,93 @@ $(function() {
         var albumId = $(albumIdDiv).html();
         window.location.replace("/remont/edit_album?album_id=" + albumId);
     }
-    
+
+    function showChangePassword() {
+        $("#changePassword").removeClass("hidden-el");
+        $("#changePasswordLink").text("Свернуть");
+        $("#changePasswordLink").unbind("click");
+        $("#changePasswordLink").click(hideChangePassword);
+    }
+
+    function hideChangePassword() {
+        $("#changePassword").addClass("hidden-el");
+        $("#changePasswordLink").text("Изменить пароль");
+        $("#changePasswordLink").unbind("click");
+        $("#changePasswordLink").click(showChangePassword);
+    }
+
+    function changePassword() {
+      pass_data = {
+        "old_password": $("#oldPassword").val(),
+        "new_password": $("#newPassword").val()
+      }
+      $.post("/remont/change_password/", pass_data, function(data, textStatus) {
+        if(data.status === "success") {
+          hideChangePassword();
+          $("#errPass").html("");
+        } else {
+          $("#errPass").html(data.error);
+        }
+      });
+    }
+
+    function enableChange() {
+      var oldPass = $("#oldPassword").val();
+      var newPass = $("#newPassword").val();
+      var confirmNewPass = $("#confirmNewPassword").val();
+      if( (oldPass && newPass && confirmNewPassword) && (newPass === confirmNewPass) ) {
+        $("#savePassword").prop("disabled", false);
+      } else {
+        $("#savePassword").prop("disabled", true);
+      }
+    }
+
+    function showPartnersSearch() {
+      $("#partnersSearch").removeClass("hidden-el");
+    }
+
+    function findOrganizations(request, response) {
+      $.ajax({
+        url: "/remont/search_organizations",
+        data: {
+          q: request.term
+        },
+        success: function(result) {
+          console.log(result);
+          response(result);
+        }
+      });
+    }
+
     $("#uploadPhoto").change(handlePhotoSelection);
     $("#cancelImgBtn").click(cancelFileUpload);
     $("#btnCreateAlbum").click(showAlbumCreateDialog);
     $(".album-trumb").click(editAlbum);
+    $("#changePasswordLink").click(showChangePassword);
+    $("#savePassword").click(changePassword);
+    $("#oldPassword, #newPassword, #confirmNewPassword").keyup(enableChange);
+    $("#btnPartnersSearch").click(showPartnersSearch);
+
+    $("#searchInput").autocomplete({
+      source: findOrganizations,
+      minLength: 3,
+      select: function(event, ui) {
+        console.log("Selected organization: " + ui);
+      }
+    }).
+    autocomplete("instance")._renderItem = function(ul, item) {
+      var result = $("<li class='search-item'>")
+        .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
+        .append("<img class='search-img' src='" + item.logo + "'/>")
+        .append("<span class='search-name'>" + item.name + "</span>")
+        .append("</a></li>");
+      return result.appendTo(ul);
+      // return
+        // $("<li class='search-item'>")
+        // .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
+        // .append("<img class='search-img' src='" + item.logo + "'/>")
+        // .append("<span class='search-name'>" + item.name + "</span>")
+        // .append("</a></li>")
+        // .appendTo(ul);
+    };
 });

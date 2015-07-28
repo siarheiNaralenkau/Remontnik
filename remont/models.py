@@ -24,7 +24,7 @@ def save_media_file(instance, filename):
 
 
 # Сохранение фотографии работы
-def save_work_photo(instance, filename):    
+def save_work_photo(instance, filename):
     storage_path = str(instance.organization.id)
     if instance.album:
         storage_path = storage_path + "/" + str(instance.album.id)
@@ -34,7 +34,7 @@ def save_work_photo(instance, filename):
 
 def save_work_video(instance, filename):
     storage_path = str(instance.organization.id) + "/video/" + filename
-    return storage_path    
+    return storage_path
 
 
 def save_job_icon(instance, filename):
@@ -86,8 +86,7 @@ class WorkSpec(models.Model):
 
     WORK_SPEC = (
         (u'industrial', u'Промышленное строительство'),
-        (u'individual', u'Частное строительство'),
-        (u'all', u'Все')
+        (u'individual', u'Частное строительство')
     )
 
     class Meta:
@@ -100,7 +99,7 @@ class WorkSpec(models.Model):
     name = models.CharField(u"Специализация", max_length=50, choices=WORK_SPEC)
 
 
-class OrganizationProfile(models.Model):    
+class OrganizationProfile(models.Model):
 
     class Meta:
         verbose_name = u'Организация'
@@ -111,7 +110,7 @@ class OrganizationProfile(models.Model):
     address = models.CharField(u'Адрес', max_length=180, blank=True)
     job_types = models.ManyToManyField(WorkType, verbose_name=u"Виды выполняемых работ")
     logo = models.ImageField(u'Логотип организации', upload_to=save_organization_logo, blank=True, default=None)
-    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=u'Все')
+    spec = models.ManyToManyField(WorkSpec, verbose_name=u"Специализация", default=u'')
     description = models.TextField(u"Обшая информация об организации", blank=True)
     landline_phone = models.CharField(u"Стационарный телефон", max_length=30, blank=True, default='')
     mobile_phone = models.CharField(u"Мобильный телефон", max_length=30, blank=True, default='')
@@ -136,17 +135,17 @@ class OrganizationProfile(models.Model):
                 OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
                 OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
             ]))
-        else:                        
-            # Создаем аккаунт пользователя для организации, если указан логин           
-            if self.login and not self.account:                                
+        else:
+            # Создаем аккаунт пользователя для организации, если указан логин
+            if self.login and not self.account:
                 account = User.objects.create_user(self.login, self.email, self.password)
                 account.first_name = self.name
                 account.email = self.email
                 account.is_active = False
                 account.save()
-                self.account = account                
+                self.account = account
             super(OrganizationProfile, self).save(*args, **kwargs)
-            
+
 
     def clean(self):
         if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -205,7 +204,7 @@ class JobSuggestion(models.Model):
     job_spec = models.ForeignKey(WorkSpec, verbose_name=u"Специализация", null=True, default="")
 
     def __unicode__(self):
-        return self.short_header    
+        return self.short_header
 
 
 # Фото/Видео ресурсы пользователей
@@ -236,10 +235,10 @@ class WorkPhotoAlbum(models.Model):
     def save(self, *args, **kwargs):
         super(WorkPhotoAlbum, self).save(*args, **kwargs)
         album_folder = settings.MEDIA_ROOT + str(self.organization.id) + "//" + str(self.id)
-        print album_folder      
+        print album_folder
         if not os.path.exists(album_folder):
-            os.makedirs(album_folder)                
-        
+            os.makedirs(album_folder)
+
     def __unicode__(self):
         return self.name
 
@@ -300,8 +299,8 @@ class Message(models.Model):
         verbose_name_plural = u"Сообщения"
 
     msg_to = models.ForeignKey(User, verbose_name=u"Получатель сообщения", null=False, blank=False, default=None, related_name='receiver')
-    msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, related_name='sender')    
-    text = models.CharField(u"Сообщение", max_length=1000)    
+    msg_from = models.ForeignKey(User, verbose_name=u"Автор сообщения", null=True, blank=True, related_name='sender')
+    text = models.CharField(u"Сообщение", max_length=1000)
     was_written = models.DateTimeField(verbose_name=u"Дата создания сообщения", auto_now_add=True, null=True)
     was_read = models.DateTimeField(verbose_name=u"Дата прочтения сообщения", null=True, default=None)
 
@@ -323,5 +322,5 @@ class JobPrice(models.Model):
 
     org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация", null=False, blank=False)
     desc = models.CharField(u"Описание работы", max_length=200)
-    price = models.IntegerField(u"Цена") 
-    cur = models.ForeignKey(Currency, verbose_name=u"Валюта", null=True, blank=True)   
+    price = models.IntegerField(u"Цена")
+    cur = models.ForeignKey(Currency, verbose_name=u"Валюта", null=True, blank=True)

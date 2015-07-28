@@ -2,7 +2,9 @@
 2) Activate python virtual environment: source ./remontnik/bin/activate
 3) cd ./app/remontnik
 4) Remove compiled python files: find . -name "*.pyc" -type f -delete
-5) Commit the changes: git add .; git commit -m 'pyc files were removed'
+5) Commit the changes: 
+	git add .; 
+	git commit -m 'pyc files were removed'
 6) Checkout latest changes: git pull
 7) Install Pillow dependencies:
 	sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk

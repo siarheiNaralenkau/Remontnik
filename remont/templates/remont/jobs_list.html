@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Каталог работ</title>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/jobs_list.css">
+</head>
+<body>
+    <p class="page-header">Каталог типов работ</p>
+    <div class="categories-cont">
+    {% for cat, jobs in job_types.items %}
+      <div class="category-info" data-categoryId="{{cat.id}}">
+        <!-- <p class="category-icon">
+          {% if cat.icon %}
+            <img class="category-icon" src="/remont/{{cat.icon.url}}"/>
+          {% else %}
+            <img class="category-icon" src="{{ STATIC_URL }}remont/images/question.jpg"/>
+          {% endif %}
+        </p> -->
+        <p class="category-header">{{ cat.name }}</p>
+        <ul class="category-jobs-list">
+          {% for job in jobs %}
+            <li class="job-type-label" data-jobId="{{job.id}}">{{ job.name }}</li>
+          {% endfor %}
+        </ul>
+      </div>
+    {% endfor %}
+    </div>
+</body>
+</html>
