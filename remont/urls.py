@@ -31,6 +31,7 @@ urlpatterns = patterns('',
     url(r'^edit_organization/(?P<id>\d+)/$', views.edit_organization, name='edit_organization'),
     url(r'^change_password/$', views.change_password, name='change_password'),
     url(r'^jobs_list/$', views.jobs_list, name='jobs_list'),
+    url(r'^search_orgs_html/$', views.search_orgs_html, name='search_orgs_html'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 

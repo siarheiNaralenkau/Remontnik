@@ -1,14 +1,14 @@
 .profile-field {
-    display: block; 
-    width: 100%; 
+    display: block;
+    width: 100%;
     padding-bottom: 20px;
     clear: both;
 }
 
 .profile-label {
-    font-weight: 800; 
-    margin-left: 20px; 
-    width: 30%; 
+    font-weight: 800;
+    margin-left: 20px;
+    width: 30%;
     float: left;
 }
 
@@ -55,17 +55,15 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
 }
 
 .profile-container {
-    border: 1px solid black;
     display: block;
     width: 40%;
     float: left;
 }
 
 .additional-container {
-    border: 1px solid black;
     display: block;
-    width: 59%;    
-    float: left;    
+    width: 59%;
+    float: left;
 }
 
 .select-photo-btn {
@@ -94,15 +92,77 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
 }
 
 .work-image-trumb {
-    width: 100px; 
+    width: 100px;
     height: 100px;
 }
 
-.album-name {    
+.albums-list {
+  width: 100%;
+  margin-top: 10px;
 }
 
-.album-ph-amount {    
+.album-name {
+}
+
+.album-ph-amount {
     margin-left: 10px;
+}
+
+.photos-container {
+    min-height: 40px;
+}
+
+.photo-uploader {
+  width: 100%;
+  min-height: 50px;
+}
+
+.add-photo-buttons {
+  width: 100%;
+  min-height: 25px;
+  margin-top: 10px;
+}
+
+.photos-preview {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 20px;
+}
+
+.photo-action-buttons {
+  width: 100%;
+  margin-top: 10px;
+  min-height: 20px;
+}
+
+.partners-container {
+    width: 100%;
+    margin-top: 20px;
+    min-height: 20px;
+}
+
+.search-item {
+  display: block;
+  overflow: auto;
+}
+
+.search-img {
+  display: inline-block;
+  margin-top: 2px;
+  margin-left: 2px;
+  width: 40px;
+  height: 40px;
+  float: left;
+}
+
+.search-name {
+  display: inline-block;
+  margin-left: 10px;
+  margin-top: 10px;
+  font-size: 0.9em;
+  font-weight: 800;
+  color: #00F;
+  float: left;
 }
 
 /*Styles for file upload field*/
@@ -150,8 +210,8 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
 }
 
 .thumb {
-    height: 100px;
-    width: 100px;
+    height: 87px;
+    width: 130px;
     border: 1px solid #000;
     margin: 10px 5px 0 0;
 }

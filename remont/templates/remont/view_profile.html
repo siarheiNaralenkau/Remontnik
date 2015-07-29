@@ -47,6 +47,9 @@
                     <span class="about-company-header">О Компании</span>
                     <div class="about-company" id="aboutCompany"></div>
                 </div>
+                {% if user.is_authenticated %}
+                    <div class="add-to-partners-btn">Добавить в "Партнеры"</div>
+                {% endif %}
             </div>
         </div>
     </div>

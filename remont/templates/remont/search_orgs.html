@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Список организаций</title>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/edit_profile.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
+</head>
+<body>
+  <ul class="orgs-list">
+    {% for org in organizatins %}
+      <li class='search-item' data-orgId="{{org.id}}">
+        <img class='search-img' src='{{org.logo}}'/>
+        <span class='search-name'>{{org.name}}</span>
+      </li>
+    {% endfor %}
+  </ul>
+</body>
+</html>

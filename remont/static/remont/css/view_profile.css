@@ -10,7 +10,7 @@
     width: 100%;
     height: 50px;
     margin-top: 10px;
-    background-color: #9999CC;  
+    background-color: #9999CC;
 }
 
 .org-name {
@@ -36,7 +36,7 @@
     display: block;
     float: left;
     margin-left: 1%;
-    width: 27%;        
+    width: 27%;
 }
 
 .logo-container {
@@ -71,9 +71,22 @@
     cursor: pointer;
 }
 
+.add-to-partners-btn {
+    margin-left: 7px;
+    margin-bottom: 7px;
+    margin-top: 10px;
+    width: 150px;
+    height: 55px;
+    text-align: center;
+    background-color: #9999CC;
+    font-size: 1.25em;
+    cursor: pointer;
+    border-radius: 8px;
+}
+
 .org-logo {
     width: 100%;
-    height: 100%;    
+    height: 100%;
 }
 
 .collegs-container {
@@ -102,7 +115,7 @@ div.collegs-list {
     margin-left: 1%;
     margin-right: 1%;
     overflow: hidden;
-    margin-top: 10px;          
+    margin-top: 10px;
 }
 
 .colleg-item {
@@ -111,17 +124,17 @@ div.collegs-list {
     line-height: 1.5em;
     float: left;
     display: inline;
-    width: 31%;    
+    width: 31%;
     cursor: pointer;
 }
 
-.colleg-logo {    
+.colleg-logo {
     width: 100%;
     height: 50px;
 }
 
 .colleg-name {
-    word-break: break-all;    
+    word-break: break-all;
     font-size: 12px;
     width: 90%;
 }
@@ -130,11 +143,11 @@ div.collegs-list {
     display: block;
     float: left;
     margin-left: 2%;
-    width: 69%;            
+    width: 69%;
 }
 
 .job-types {
-    width: 100%;    
+    width: 100%;
 }
 
 .job-type {
@@ -197,7 +210,7 @@ div.collegs-list {
     font-size: 22px;
 }
 
-.about-company {    
+.about-company {
     text-align: justify;
     margin-top: 10px;
     width: 100%;
@@ -220,11 +233,11 @@ div.collegs-list {
     text-decoration: italic
 }
 
-.work-image {    
+.work-image {
     float: left;
     display: inline;
-    width: 120px;   
-    height: 120px;  
+    width: 120px;
+    height: 120px;
     margin-right: 1%;
     margin-bottom: 1%;
 }

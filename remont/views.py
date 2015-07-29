@@ -55,40 +55,77 @@ def suggest_job(request):
 
 # Сохранение предложения о работе
 def suggest_job_save(request):
-    contact_person = unicode(request.REQUEST["contactPerson"])
-    work_type = request.REQUEST["workType"]
-    description = unicode(request.REQUEST["description"])
-    phone = request.REQUEST["phone"]
-    mail = request.REQUEST["mail"]
-    header = request.REQUEST["shortHeader"]
+  contact_person = unicode(request.REQUEST["contactPerson"])
+  work_type = request.REQUEST["workType"]
+  description = unicode(request.REQUEST["description"])
+  phone = request.REQUEST["phone"]
+  mail = request.REQUEST["mail"]
+  header = request.REQUEST["shortHeader"]
 
-    job_type = WorkType.objects.get(pk=int(work_type))
-    job = JobSuggestion(contact_name=contact_person, job_type=job_type, description=description,
-                        phone=phone, email=mail, short_header=header)
-    job.save()
-    return redirect("/remont")
+  job_type = WorkType.objects.get(pk=int(work_type))
+  job = JobSuggestion(contact_name=contact_person, job_type=job_type, description=description,
+                      phone=phone, email=mail, short_header=header)
+  job.save()
+  return redirect("/remont")
 
 
 # Поиск организации по ключевым словам
 def search_organizations(request):
-    key_phrase = request.REQUEST["q"]
-    response_data = []
-    # 1) Поиск по имени организации
-    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
-    for org in orgs_by_name:
-        response_data.append({'label': org.name, 'value': org.id})
+  key_phrase = request.REQUEST["q"]
+  response_data = []
+  # 1) Поиск по имени организации
+  orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+  for org in orgs_by_name:
+    if org.logo:
+        logo_url = "/remont/" + org.logo.url
+    else:
+        logo_url = "/static/remont/images/question.jpg"
+    response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
 
-    # 2) Поиск по типу выполняемых работ.
-    orgs_by_job_type = OrganizationProfile.objects.all()
-    for org in orgs_by_job_type:
-        job_types = org.job_types.all()
-        for job_type in job_types:
-            if key_phrase in job_type.name:
-                response_data.append({'label': org.name, 'value': org.id})
-                break
+  # 2) Поиск по типу выполняемых работ.
+  orgs_by_job_type = OrganizationProfile.objects.all()
+  for org in orgs_by_job_type:
+    job_types = org.job_types.all()
+    for job_type in job_types:
+      if key_phrase in job_type.name:
+        if org.logo:
+          logo_url = "/remont/" + org.logo.url
+        else:
+          logo_url = "/remont/static/remont/images/question.jpg"
+        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+        break
+
     print "Found {0} organizations: ".format(len(response_data))
     response = JsonResponse(response_data, safe=False)
     return response
+
+def search_orgs_html(request):
+  key_phrase = request.REQUEST["q"]
+  response_data = []
+  # 1) Поиск по имени организации
+  orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+  for org in orgs_by_name:
+    if org.logo:
+        logo_url = "/remont/" + org.logo.url
+    else:
+        logo_url = "/static/remont/images/question.jpg"
+    response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+
+  # 2) Поиск по типу выполняемых работ.
+  orgs_by_job_type = OrganizationProfile.objects.all()
+  for org in orgs_by_job_type:
+    job_types = org.job_types.all()
+    for job_type in job_types:
+      if key_phrase in job_type.name:
+        if org.logo:
+          logo_url = "/remont/" + org.logo.url
+        else:
+          logo_url = "/remont/static/remont/images/question.jpg"
+        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+        break
+
+    print "Found {0} organizations: ".format(len(response_data))
+    return render(request, 'remont/search_orgs.html', {"organizatins": response_data})
 
 
 @csrf_exempt
@@ -253,7 +290,7 @@ def get_profile_info(request):
     if org_profile.logo:
         profile_json["logo_url"] = org_profile.logo.url
     else:
-        profile_json["logo_url"] = ""
+        profile_json["logo_url"] = "/remont/static/remont/images/question.jpg"
 
     collegs = org_profile.collegues.all()
     collegs_array = []

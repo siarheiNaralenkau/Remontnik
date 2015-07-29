@@ -32,7 +32,7 @@ class RegisterForm(forms.Form):
                            widget=forms.TextInput(attrs={}),
                            error_messages={"required": u"Укажите название организации"})
     logo = forms.ImageField(label="Логотип организации", widget=SingleImageInput(), required=False)
-    city = forms.ChoiceField(choices=get_cities(), label=u"Город регистрации", required=False)
+    city = forms.ModelChoiceField(queryset=City.objects.order_by("name"), label=u"Город регистрации", required=False)
     address = forms.CharField(label="Адрес", max_length=180, required=False, widget=Textarea(attrs={'cols': 60, 'rows': 3}))
     description = forms.CharField(label=u"Обшая информация об организации", required=False, widget=forms.Textarea(attrs={"rows": 8, "cols": 60}))
     
