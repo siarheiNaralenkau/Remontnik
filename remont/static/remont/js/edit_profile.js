@@ -139,7 +139,8 @@ $(function() {
       source: findOrganizations,
       minLength: 3,
       select: function(event, ui) {
-        console.log("Selected organization: " + ui);
+        var profileUrl = "/remont/view_profile?org_id=" + ui.item.id;
+        window.location.href = profileUrl;
       }
     }).
     autocomplete("instance")._renderItem = function(ul, item) {
@@ -149,12 +150,5 @@ $(function() {
         .append("<span class='search-name'>" + item.name + "</span>")
         .append("</a></li>");
       return result.appendTo(ul);
-      // return
-        // $("<li class='search-item'>")
-        // .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
-        // .append("<img class='search-img' src='" + item.logo + "'/>")
-        // .append("<span class='search-name'>" + item.name + "</span>")
-        // .append("</a></li>")
-        // .appendTo(ul);
     };
 });
