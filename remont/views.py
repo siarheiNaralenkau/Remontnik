@@ -184,8 +184,9 @@ def create_organization(request):
             org = OrganizationProfile()
             org.name = reg_form.cleaned_data["name"]
             org.logo = reg_form.cleaned_data["logo"]
-            city_id = int(reg_form.cleaned_data["city"])
-            org.city = City.objects.filter(id=city_id).first()
+            # city_id = int(reg_form.cleaned_data["city"])
+            # org.city = City.objects.filter(id=city_id).first()
+            org.city = reg_form.cleaned_data["city"]
             org.address = reg_form.cleaned_data["address"]
             org.description = reg_form.cleaned_data["description"]
             org.landline_phone = reg_form.cleaned_data["landing_phone"]
