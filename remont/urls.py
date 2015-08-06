@@ -32,6 +32,7 @@ urlpatterns = patterns('',
     url(r'^change_password/$', views.change_password, name='change_password'),
     url(r'^jobs_list/$', views.jobs_list, name='jobs_list'),
     url(r'^search_orgs_html/$', views.search_orgs_html, name='search_orgs_html'),
+    url(r'^get_orgs_by_job_type/$', views.get_orgs_by_job_type, name='get_orgs_by_job_type'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 

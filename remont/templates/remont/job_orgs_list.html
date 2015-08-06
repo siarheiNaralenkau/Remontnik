@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title>Организации, выполняющие работу</title>
+    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/job_orgs_list.css">
+</head>
+<body>
+    <p class="page-header">Оргинзации, выполняющие работу: {{job_type.name}}</p>
+    <div class="orgs-list">
+    {% for org in orgs_list %}
+      <a href="/remont/view_profile?org_id={{org.id}}">
+        <div class="org-info" data-categoryId="{{org.id}}">
+          {% if org.logo %}
+            <img class="org-logo" src="/remont/{{org.logo.url}}"/>
+          {% else %}
+            <img class="org-logo" src="{{ STATIC_URL }}remont/images/info_empty.jpg"/>
+          {% endif %}
+          <br/>
+          <span class="org-header">{{ org.name }}</span>
+        </div>
+      </a>
+    {% endfor %}
+    </div>
+</body>
+</html>

@@ -496,3 +496,12 @@ def jobs_list(request):
 
   print("Categories amount: {0}".format(len(types_data)))
   return render(request, "remont/jobs_list.html", {"job_types": types_data})
+
+
+# Получаем список организаций, выполняющий определенный вид работ
+def get_orgs_by_job_type(request):
+  job_type_id = request.GET["jobId"]
+  job_type = WorkType.objects.filter(id=job_type_id).first()
+  orgs_list = OrganizationProfile.objects.filter(job_types__id__exact=job_type_id)
+  print("Organizations list length: {0}".format(len(orgs_list)))
+  return render(request, "remont/job_orgs_list.html", {"orgs_list": orgs_list, "job_type": job_type})
