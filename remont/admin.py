@@ -22,7 +22,8 @@ class OrganizationProfileAdmin(admin.ModelAdmin):
     list_display = ('name', 'get_spec', 'city', 'address')
     list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
     search_fields = ['name']
-    form = OrganizationProfileModelForm    
+    form = OrganizationProfileModelForm
+    exclude = ('collegues',)
 
 
 class ArticleAdmin(admin.ModelAdmin):
