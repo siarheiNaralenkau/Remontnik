@@ -33,6 +33,10 @@ urlpatterns = patterns('',
     url(r'^jobs_list/$', views.jobs_list, name='jobs_list'),
     url(r'^search_orgs_html/$', views.search_orgs_html, name='search_orgs_html'),
     url(r'^get_orgs_by_job_type/$', views.get_orgs_by_job_type, name='get_orgs_by_job_type'),
+    url(r'^add_partner_request/$', views.add_partner_request, name='add_partner_request'),
+    url(r'^approve_partner/$', views.approve_partner, name='approve_partner'),
+    url(r'^reject_partner/$', views.reject_partner, name='reject_partner'),
+    url(r'^get_partner_requests_json/$', views.get_partner_requests_json, name='get_partner_requests_json'),
     (r'^ckeditor/', include('ckeditor.urls')),
 )
 

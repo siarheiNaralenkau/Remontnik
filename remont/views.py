@@ -9,7 +9,8 @@ from django.core import serializers
 
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto, Message, Review
+                          WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
+from remont.utils import get_pending_partner_requests
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -35,6 +36,7 @@ def index(request):
         response_data["logged_in"] = True
         newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
         response_data["newMesagesAmount"] = len(newMessages)
+        response_data["partner_request"] = get_pending_partner_requests(request.user)
 
     return render(request, 'remont/index.html', response_data)
 
@@ -494,7 +496,6 @@ def jobs_list(request):
     else:
       types_data[wt.category] = [wt]
 
-  print("Categories amount: {0}".format(len(types_data)))
   return render(request, "remont/jobs_list.html", {"job_types": types_data})
 
 
@@ -503,5 +504,65 @@ def get_orgs_by_job_type(request):
   job_type_id = request.GET["jobId"]
   job_type = WorkType.objects.filter(id=job_type_id).first()
   orgs_list = OrganizationProfile.objects.filter(job_types__id__exact=job_type_id)
-  print("Organizations list length: {0}".format(len(orgs_list)))
   return render(request, "remont/job_orgs_list.html", {"orgs_list": orgs_list, "job_type": job_type})
+
+
+# Создание запроса на добавление в партнеры
+def add_partner_request(request):
+  if request.user.is_authenticated():
+    sender = OrganizationProfile.objects.filter(account=request.user).first()
+    recipient_id = request.POST["recipientId"]
+    recipient = OrganizationProfile.objects.filter(account=recipient).first()
+    partner_request = PartnerRequest(org_from=sender, org_to=recipient)
+    partner_request.save()
+    return JsonResponse({"status": "succcss"}, safe=False)
+  else:
+    res = HttpResponse("Unautorized")
+    res.status_code = 401
+    return res
+
+
+# Подтверждение партнерства
+def approve_partner(request):
+  if request.user.is_authenticated():
+    sender_id = request.POST["senderId"]
+    sender = OrganizationProfile.objects.filter(id=sender_id).first()
+    recipient = OrganizationProfile.objects.filter(account=request.user).first()
+
+    partner_request = PartnerRequest.objects.filter(org_from=sender, org_to=recipient)
+    partner_request.approved = True
+    partner_request.save()
+
+    recipient.collegues.add(sender)
+    recipient.save()
+    return JsonResponse({"status": "succcss"}, safe=False)
+  else:
+    res = HttpResponse("Unautorized")
+    res.status_code = 401
+    return res
+
+
+# Отказ от партнерства
+def reject_partner(request):
+  if request.user.is_authenticated():
+    sender_id = request.POST["senderId"]
+    sender = OrganizationProfile.objects.filter(id=sender_id).first()
+    recipient = OrganizationProfile.objects.filter(account=request.user).first()
+
+    partner_request = PartnerRequest.objects.filter(org_from=sender, org_to=recipient).delete()
+    return JsonResponse({"status": "succcss"}, safe=False)
+  else:
+    res = HttpResponse("Unautorized")
+    res.status_code = 401
+    return res
+
+
+# Список новых предложений о партнерстве
+def get_partner_requests_json(request):
+  if request.user.is_authenticated():
+    response_data = get_pending_partner_requests(request.user)
+    return JsonResponse(response_data, false)
+  else:
+    res = HttpResponse("Unautorized")
+    res.status_code = 401
+    return res
