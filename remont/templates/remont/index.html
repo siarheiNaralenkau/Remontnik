@@ -8,13 +8,14 @@
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
   <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
 </head>
 
 <body>
   {% if user.is_authenticated %}
     <div class="logged-user-info">
-      <div class="hidden" id="userId">{{user.id}}</div>
+      <div class="hidden-el" id="userId">{{user.id}}</div>
       <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
       <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>
       <div class="new-partners">
@@ -67,7 +68,7 @@
       </div>
     </div>
 
-    <div style="display: none" id="loginDialog" title="Вход">
+    <div class="hidden-el" id="loginDialog" title="Вход">
       <form name="loginForm" action="site_login">
         <div class="login-fields-div">
           <label class="login-label" for="login">Название организации/Логин:</label>
@@ -85,7 +86,7 @@
       </form>
     </div>
 
-    <div style="display: none" id="setPasswordDialog">
+    <div class="hidden-el" id="setPasswordDialog">
       <form name="createPassword" action="createPassword">
         <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
         <div class="login-fields-div">
@@ -98,15 +99,29 @@
       </form>
     </div>
 
-    <div class="hidden" id="partnersRequestDialog">
+    <div class="hidden-el" id="partnersRequestDialog">
       <ul>
         {% for pr in partner_requests %}
-          <li class="partner-req" id="{{pr.org_id}}">
-            <div style="height: 50px; width: 400px;">
-              <img src="{{pr.logo}}" width="50px; height: 50px; float: left"/>
-              <div style="float: left">{{pr.org_name}}</div>
-              <div style="float: left" class="button-div">Подтвердить</div>
-              <div style="float: left" class="button-div">Отказать</div>
+          <li class="no-marker" id="{{pr.org_id}}">
+            <div class="partner-container">
+              <div class="cell-div">
+                <a href="/remont/view_profile?org_id={{pr.org_id}}">
+                  <img src="{{pr.org_logo}}" class="logo-small"/>
+                </a>
+              </div>
+              <div class="cell-div">
+                <div class="org-link">
+                  <a href="/remont/view_profile?org_id={{pr.org_id}}">
+                    <span class="org-name">{{pr.org_name}}</span>
+                  </a>
+                </div>
+                <div class="div-btn-medium add-partner" data-orgId="{{pr.org_id}}">
+                  <span>Добавить в партнеры</span>
+                </div>
+              </div>
+              <div class="cell-div-right reject-partner clickable" data-orgId="{{pr.org_id}}" title="Удалить">
+                <img src="{{ STATIC_URL }}remont/images/delete.jpg" class="icon-small"/>
+              </div>
             </div>
           </li>
         {% endfor %}

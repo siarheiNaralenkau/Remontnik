@@ -514,7 +514,7 @@ def add_partner_request(request):
     sender = OrganizationProfile.objects.filter(account=request.user).first()
     recipient_id = request.POST["recipientId"]
     recipient = OrganizationProfile.objects.filter(id=recipient_id).first()
-    print("Sending partner request to {0}".format(recipient.name))
+    print("Sending partner request to {0}".format(recipient.id))
     partner_request = PartnerRequest(org_from=sender, org_to=recipient)
     partner_request.save()
     return JsonResponse({"status": "succcss"}, safe=False)
@@ -529,10 +529,10 @@ def add_partner_request(request):
 def approve_partner(request):
   if request.user.is_authenticated():
     sender_id = request.POST["senderId"]
-    sender = OrganizationProfile.objects.filter(id=sender_id).first()
+    sender = OrganizationProfile.objects.filter(id=int(sender_id)).first()
     recipient = OrganizationProfile.objects.filter(account=request.user).first()
 
-    partner_request = PartnerRequest.objects.filter(org_from=sender, org_to=recipient)
+    partner_request = PartnerRequest.objects.filter(org_from=sender, org_to=recipient).first()
     partner_request.approved = True
     partner_request.save()
 

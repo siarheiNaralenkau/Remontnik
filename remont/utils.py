@@ -11,7 +11,7 @@ def get_pending_partner_requests(user):
     if pr.org_from.logo:
       logo = pr.org_from.logo.url
     else:
-      logo = "/remont/static/remont/images/info_empty.jpg"
+      logo = "/static/remont/images/info_empty.jpg"
     response_data.append({"org_id": pr.org_from.id, "org_name": pr.org_from.name, "org_logo": logo})
 
   return response_data
