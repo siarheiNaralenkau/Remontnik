@@ -49,7 +49,7 @@ function mainMenuClick(url) {
 }
 
 $(function() {
-    var loginDialog, setPasswordDialog;
+    var loginDialog, setPasswordDialog, partnersRequestDialog;
 
     $("#job_category").change(categoryChanged);
     $(".place-job-request-btn").click(saveJobRequest);
@@ -109,9 +109,22 @@ $(function() {
         }
     });
 
+    partnersRequestDialog = $("#partnersRequestDialog").dialog({
+        autoOpen: false,
+        resizable: false,
+        modal: true,
+        title: "Запросы на добавление в партнеры",
+        height: 400,
+        width: 500
+    });
+
     // Функция отображает диалог для ввода логина и пароля.
     function showLoginDialog() {
         loginDialog.dialog("open");
+    }
+
+    function showPartnersDialog() {
+        partnersRequestDialog.dialog("open");
     }
 
     function sendLoginRequest() {
@@ -159,4 +172,5 @@ $(function() {
     $("#loginLink").on('click', showLoginDialog);
     $("#exitBtn").on('click', logout);
     $("#editProfileBtn").on('click', editProfile);
+    $(".new-partners").on('click', showPartnersDialog);
 });

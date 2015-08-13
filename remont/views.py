@@ -36,7 +36,7 @@ def index(request):
         response_data["logged_in"] = True
         newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
         response_data["newMesagesAmount"] = len(newMessages)
-        response_data["partner_request"] = get_pending_partner_requests(request.user)
+        response_data["partner_requests"] = get_pending_partner_requests(request.user)
 
     return render(request, 'remont/index.html', response_data)
 
@@ -508,11 +508,13 @@ def get_orgs_by_job_type(request):
 
 
 # Создание запроса на добавление в партнеры
+@csrf_exempt
 def add_partner_request(request):
   if request.user.is_authenticated():
     sender = OrganizationProfile.objects.filter(account=request.user).first()
     recipient_id = request.POST["recipientId"]
-    recipient = OrganizationProfile.objects.filter(account=recipient).first()
+    recipient = OrganizationProfile.objects.filter(id=recipient_id).first()
+    print("Sending partner request to {0}".format(recipient.name))
     partner_request = PartnerRequest(org_from=sender, org_to=recipient)
     partner_request.save()
     return JsonResponse({"status": "succcss"}, safe=False)
@@ -523,6 +525,7 @@ def add_partner_request(request):
 
 
 # Подтверждение партнерства
+@csrf_exempt
 def approve_partner(request):
   if request.user.is_authenticated():
     sender_id = request.POST["senderId"]
@@ -543,6 +546,7 @@ def approve_partner(request):
 
 
 # Отказ от партнерства
+@csrf_exempt
 def reject_partner(request):
   if request.user.is_authenticated():
     sender_id = request.POST["senderId"]

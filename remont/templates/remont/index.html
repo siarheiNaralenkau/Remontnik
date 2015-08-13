@@ -1,97 +1,116 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
+  <meta charset="UTF-8">
+  <title></title>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
 </head>
 
 <body>
-    {% if user.is_authenticated %}
-        <div class="logged-user-info">
-            <div class="hidden" id="userId">{{user.id}}</div>
-            <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
-            <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>                            
-            <div class="top-btn" id="editProfileBtn">Редактировать профайл</div>
-            <div class="top-btn" id="exitBtn">Выход</div>
-        </div>
-    {% endif %}
-    <div class="topPage">        
-        <div id="sectionLogo" class="sectionLogo">
-            <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
-        </div>
-        <div id="sectionBanner" class="sectionBanner">
-            <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
-        </div>
-        <div id="sectionRegister" class="sectionRegister">
-            {% if not user.is_authenticated %}
-                <div class="center-hor">
-                    <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
-                </div>
-            {% endif %}
-            <!-- <div class="center-hor margin-top20">
-                <span>Тип работ</span>
-                <select name="jobTypes" id="jobTypes">
-                    <option value="1">Промышленные</option>
-                    <option value="2">Индивидуальные</option>
-                    <option value="0">Все</option>
-                </select>
-            </div> -->
-        </div>
+  {% if user.is_authenticated %}
+    <div class="logged-user-info">
+      <div class="hidden" id="userId">{{user.id}}</div>
+      <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
+      <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>
+      <div class="new-partners">
+        <img src="{{ STATIC_URL }}remont/images/partners.png" class="partners-img"/>
+        <div class="partners-amount">{{ partner_requests|length }}</div>
+      </div>
+      <div class="top-btn" id="editProfileBtn">Редактировать профайл</div>
+      <div class="top-btn" id="exitBtn">Выход</div>
+    </div>
+  {% endif %}
+    <div class="topPage">
+      <div id="sectionLogo" class="sectionLogo">
+        <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
+      </div>
+      <div id="sectionBanner" class="sectionBanner">
+        <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
+      </div>
+      <div id="sectionRegister" class="sectionRegister">
+        {% if not user.is_authenticated %}
+          <div class="center-hor">
+            <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
+          </div>
+        {% endif %}
+        <!-- <div class="center-hor margin-top20">
+          <span>Тип работ</span>
+          <select name="jobTypes" id="jobTypes">
+              <option value="1">Промышленные</option>
+              <option value="2">Индивидуальные</option>
+              <option value="0">Все</option>
+          </select>
+        </div> -->
+      </div>
     </div>
 
     {# Split page into 2 sections: 25 and 75 % width #}
     <div class="main-div">
-        <div class="menu-div">
-            <div class="menu">
-                {% include "remont/main_menu.html" %}
-            </div>
-            <div class="how-site-works">
-                {% include "remont/how_site_works.html" %}
-            </div>
+      <div class="menu-div">
+        <div class="menu">
+          {% include "remont/main_menu.html" %}
         </div>
-        <div class="content-div">
-            {% include "remont/top_orgs_template.html" %}
-            {% include "remont/search_template.html" %}
-            {% include "remont/add_work_template.html" %}
-            {% include "remont/job_suggestions.html" %}
+        <div class="how-site-works">
+          {% include "remont/how_site_works.html" %}
         </div>
+      </div>
+      <div class="content-div">
+        {% include "remont/top_orgs_template.html" %}
+        {% include "remont/search_template.html" %}
+        {% include "remont/add_work_template.html" %}
+        {% include "remont/job_suggestions.html" %}
+      </div>
     </div>
 
     <div style="display: none" id="loginDialog" title="Вход">
-        <form name="loginForm" action="site_login">
-            <div class="login-fields-div">
-                <label class="login-label" for="login">Название организации/Логин:</label>
-                <input type="text" name="login" id="login" value="" class="login-fields-input"/>
-            </div>
-            <div class="login-fields-div">
-                <label for="password">Пароль:</label>
-                <input type="password" name="password" id="password" value="" class="login-fields-input"/>
-            </div>
-            <div class="login-fields-div">
-                <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
-                <a href="/remont/register" class="login-link">Регистрация</a>
-            </div>
-            <div class="error-div" id="loginError"></div>
-        </form>
+      <form name="loginForm" action="site_login">
+        <div class="login-fields-div">
+          <label class="login-label" for="login">Название организации/Логин:</label>
+          <input type="text" name="login" id="login" value="" class="login-fields-input"/>
+        </div>
+        <div class="login-fields-div">
+          <label for="password">Пароль:</label>
+          <input type="password" name="password" id="password" value="" class="login-fields-input"/>
+        </div>
+        <div class="login-fields-div">
+          <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+          <a href="/remont/register" class="login-link">Регистрация</a>
+        </div>
+        <div class="error-div" id="loginError"></div>
+      </form>
     </div>
 
     <div style="display: none" id="setPasswordDialog">
-        <form name="createPassword" action="createPassword">
-            <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
-            <div class="login-fields-div">
-                <label for="firstPassword">Введите пароль:</label>
-                <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+      <form name="createPassword" action="createPassword">
+        <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
+        <div class="login-fields-div">
+          <label for="firstPassword">Введите пароль:</label>
+          <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+        </div>
+        <div class="login-fields-div">
+          <span class="help-text">Пароль должен быть не короче 6 символов</span>
+        </div>
+      </form>
+    </div>
+
+    <div class="hidden" id="partnersRequestDialog">
+      <ul>
+        {% for pr in partner_requests %}
+          <li class="partner-req" id="{{pr.org_id}}">
+            <div style="height: 50px; width: 400px;">
+              <img src="{{pr.logo}}" width="50px; height: 50px; float: left"/>
+              <div style="float: left">{{pr.org_name}}</div>
+              <div style="float: left" class="button-div">Подтвердить</div>
+              <div style="float: left" class="button-div">Отказать</div>
             </div>
-            <div class="login-fields-div">
-                <span class="help-text">Пароль должен быть не короче 6 символов</span>
-            </div>
-        </form>
+          </li>
+        {% endfor %}
+      </ul>
     </div>
 
 </body>
