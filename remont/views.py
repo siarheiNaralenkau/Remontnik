@@ -423,7 +423,7 @@ def upload_work_photos(request):
     org = OrganizationProfile.objects.filter(account = request.user).first()
     if request.method == "POST":
         files_to_upload = request.FILES.getlist("uploadPhoto")
-        album_id = request.POST["albumId"]
+        album_id = request.POST.get("albumId", False)
         if album_id:
             for f in files_to_upload:
                 photo_obj = WorkPhoto(organization=org, photo=f, album=WorkPhotoAlbum.objects.filter(id=int(album_id)).first())
@@ -433,7 +433,7 @@ def upload_work_photos(request):
             for f in files_to_upload:
                 photo_obj = WorkPhoto(organization=org, photo=f)
                 photo_obj.save()
-            return redirect("/remont/edit_profile?user_id=" + str(request.user.id))
+            return redirect("/remont/edit_organization/" + str(request.user.id))
 
 
 # Создание нового фотоальбома

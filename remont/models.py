@@ -9,6 +9,9 @@ from ckeditor.fields import RichTextField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 import os
+import os.path
+import string
+import random
 
 
 def save_user_photo(instance, filename):
@@ -25,8 +28,16 @@ def save_media_file(instance, filename):
 def save_work_photo(instance, filename):
   storage_path = str(instance.organization.id)
   if instance.album:
-      storage_path = storage_path + "/" + str(instance.album.id)
-  storage_path = storage_path + "/" + filename
+    storage_path = storage_path + "/" + str(instance.album.id)
+
+  # Generate Filename.
+  chars = string.ascii_uppercase + string.digits
+  f_name = "".join(random.choice(chars) for _ in range(12))
+  ext = os.path.splitext(filename)[1][1:].strip().lower()
+  f_name = f_name + "." + ext
+  print("Result file name: {0}".format(f_name))
+
+  storage_path = storage_path + "/" + f_name
   return storage_path
 
 
