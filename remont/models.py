@@ -35,7 +35,6 @@ def save_work_photo(instance, filename):
   f_name = "".join(random.choice(chars) for _ in range(12))
   ext = os.path.splitext(filename)[1][1:].strip().lower()
   f_name = f_name + "." + ext
-  print("Result file name: {0}".format(f_name))
 
   storage_path = storage_path + "/" + f_name
   return storage_path
