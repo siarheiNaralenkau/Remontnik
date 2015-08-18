@@ -88,7 +88,7 @@ INSTALLED_APPS = (
   'ckeditor',
   'remont',
   'lastActivityDate',
-  )
+)
 
 MIDDLEWARE_CLASSES = (
   'django.contrib.sessions.middleware.SessionMiddleware',
@@ -99,7 +99,7 @@ MIDDLEWARE_CLASSES = (
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
   'django.middleware.locale.LocaleMiddleware',
   'lastActivityDate.middleware.LastActivityMiddleware'
-  )
+)
 
 ROOT_URLCONF = 'remontnik.urls'
 
@@ -109,12 +109,12 @@ WSGI_APPLICATION = 'remontnik.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 DATABASES = {
-'default': {
-'NAME': 'remontnik',
-'ENGINE': 'django.db.backends.mysql',
-'USER': 'remontnik',
-'PASSWORD': 'remontnik',
-}
+  'default': {
+    'NAME': 'remontnik',
+    'ENGINE': 'django.db.backends.mysql',
+    'USER': 'remontnik',
+    'PASSWORD': 'remontnik',
+  }
 }
 
 if ENVIRONMENT == 'remote':
@@ -146,12 +146,12 @@ CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = STATIC_URL + "remont/js/jquery-2.1.3.min.js"
 CKEDITOR_CONFIGS = {
-'default': {
-'toolbar': 'full',
-'height': 600,
-'width': 800,
-'language': 'ru'
-},
+  'default': {
+    'toolbar': 'full',
+    'height': 600,
+    'width': 800,
+    'language': 'ru'
+  },
 }
 
 try:

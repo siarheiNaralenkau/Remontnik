@@ -18,25 +18,24 @@ class WorkTypeAdmin(admin.ModelAdmin):
   list_filter = ('category',)
 
 
-  class OrganizationProfileAdmin(admin.ModelAdmin):
-    list_display = ('name', 'get_spec', 'city', 'address')
-    list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
-    search_fields = ['name']
-    form = OrganizationProfileModelForm
-    exclude = ('collegues',)
+class OrganizationProfileAdmin(admin.ModelAdmin):
+  list_display = ('name', 'get_spec', 'city', 'address')
+  list_filter = ('city', 'job_types__category', 'spec', 'job_types', 'work_cities')
+  search_fields = ['name']
+  form = OrganizationProfileModelForm
+  exclude = ('collegues',)
 
 
-    class ArticleAdmin(admin.ModelAdmin):
-      list_display = ('name', 'date_created', 'date_modified')
+class ArticleAdmin(admin.ModelAdmin):
+  list_display = ('name', 'date_created', 'date_modified')
 
 
-      admin.site.register(WorkCategory)
-      admin.site.register(WorkType, WorkTypeAdmin)
-      admin.site.register(City)
-      admin.site.register(OrganizationProfile, OrganizationProfileAdmin)
-      admin.site.register(JobSuggestion)
-      admin.site.register(WorkSpec)
-      admin.site.register(WorkPhotoAlbum)
-      admin.site.register(WorkPhoto)
-      admin.site.register(Article, ArticleAdmin)
-
+admin.site.register(WorkCategory)
+admin.site.register(WorkType, WorkTypeAdmin)
+admin.site.register(City)
+admin.site.register(OrganizationProfile, OrganizationProfileAdmin)
+admin.site.register(JobSuggestion)
+admin.site.register(WorkSpec)
+admin.site.register(WorkPhotoAlbum)
+admin.site.register(WorkPhoto)
+admin.site.register(Article, ArticleAdmin)
