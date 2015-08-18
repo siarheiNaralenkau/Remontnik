@@ -88,7 +88,6 @@ input[type="password"] {
   width: 100%;
   text-align: center;
 }
-
 .category-header:hover {
   background-color: #D8D8D8;
   border-radius: 4px;
@@ -100,7 +99,6 @@ input[type="password"] {
   cursor: pointer;
   color: #0033CC;
 }
-
 .job-type-label:hover {
   text-decoration: underline;
   font-weight: 900;
@@ -152,7 +150,21 @@ input[type="password"] {
   height: 16px;
 }
 
+.icon-medium {
+  width: 24px;
+  height: 24px;
+}
+
+.icon-large {
+  width: 32px;
+  height: 32px;
+}
+
 .photo-trumb {
   width: 130px;
   height: 87px;
+}
+
+.center-hor {
+  margin: 0 auto;
 }

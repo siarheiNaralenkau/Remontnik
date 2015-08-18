@@ -1,19 +1,21 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/how_site_works.css">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/how_site_works.css">
 </head>
 <body>
+  <div class="how-site-works">
     <div class="video-container">
-        <p class="how-to-header">Как работает сайт</p>
-        <video class="video-how-to" poster="{{ STATIC_URL }}remont/images/logo.jpg" controls>
-            <source src="{{ STATIC_URL }}remont/video/how_site_works.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-            <source src="{{ STATIC_URL }}remont/video/how_site_works.webm" type='video/webm; codecs="vp8, vorbis"' />
-            <source src="{{ STATIC_URL }}remont/video/how_site_works.ogv" type='video/ogg; codecs="theora, vorbis"' />
-            Video tag not supported. Download the video <a href="{{ STATIC_URL }}remont/video/how_site_works.mp4">here</a>.
-        </video>
+      <p class="how-to-header">Как работает сайт</p>
+      <video class="video-how-to" poster="{{ STATIC_URL }}remont/images/logo.jpg" controls>
+        <source src="{{ STATIC_URL }}remont/video/how_site_works.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+        <source src="{{ STATIC_URL }}remont/video/how_site_works.webm" type='video/webm; codecs="vp8, vorbis"' />
+        <source src="{{ STATIC_URL }}remont/video/how_site_works.ogv" type='video/ogg; codecs="theora, vorbis"' />
+        Video tag not supported. Download the video <a href="{{ STATIC_URL }}remont/video/how_site_works.mp4">here</a>.
+      </video>
     </div>
+  </div>
 </body>
 </html>

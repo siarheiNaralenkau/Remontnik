@@ -1,8 +1,25 @@
-<div class="topPage">
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/top_page.css">
+</head>
+<body>
+  <div class="topPage">
     <div id="sectionLogo" class="sectionLogo">
-        <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
+      <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
     </div>
     <div id="sectionBanner" class="sectionBanner">
-        <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
+      <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
     </div>
-</div>
+    <div id="sectionRegister" class="sectionRegister">
+      {% if not user.is_authenticated %}
+        <div class="center-hor">
+          <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
+        </div>
+      {% endif %}
+    </div>
+  </div>
+</body>
+</html>

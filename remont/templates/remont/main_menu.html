@@ -1,14 +1,26 @@
-<ul class="main-menu-list">
-    <li class="main-menu-item">
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/menu.css">
+</head>
+<body>
+  <div class="menu">
+    <ul class="main-menu-list">
+      <li class="main-menu-item">
         <div class="action-btn" onclick="mainMenuClick('/remont/jobs_list')">Каталог работ</div>
-    </li>
-    <li class="main-menu-item">
+      </li>
+      <li class="main-menu-item">
         <div class="action-btn">Каталог товаров</div>
-    </li>
-    <li class="main-menu-item">
+      </li>
+      <li class="main-menu-item">
         <div class="action-btn">Полезные статьи</div>
-    </li>
-    <li class="main-menu-item">
+      </li>
+      <li class="main-menu-item">
         <div class="action-btn" onclick="mainMenuClick('/remont/orgs_list')">Организации</div>
-    </li>
-</ul>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>
