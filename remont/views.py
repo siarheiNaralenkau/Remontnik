@@ -31,14 +31,14 @@ def index(request):
   categories = WorkCategory.objects.all()
   suggest_job_form = SuggestJobForm()
   response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
-    # Check if user is logged in.
-    if request.user.is_authenticated():
-      response_data["logged_in"] = True
-      newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
-      response_data["newMesagesAmount"] = len(newMessages)
-      response_data["partner_requests"] = get_pending_partner_requests(request.user)
+  # Check if user is logged in.
+  if request.user.is_authenticated():
+    response_data["logged_in"] = True
+    newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
+    response_data["newMesagesAmount"] = len(newMessages)
+    response_data["partner_requests"] = get_pending_partner_requests(request.user)
 
-      return render(request, 'remont/index.html', response_data)
+  return render(request, 'remont/index.html', response_data)
 
 
 # Регистрация пользователя
@@ -50,9 +50,9 @@ def register(request):
 # Страница предложения о работе.
 def suggest_job(request):
   work_types = WorkType.objects.all()
-    # Авторизация еще не реализована
-    is_autorized = False
-    return render(request, "remont/suggest_job.html", {"is_autorized": is_autorized, "work_types": work_types})
+  # Авторизация еще не реализована
+  is_autorized = False
+  return render(request, "remont/suggest_job.html", {"is_autorized": is_autorized, "work_types": work_types})
 
 
 # Сохранение предложения о работе
