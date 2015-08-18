@@ -19,7 +19,7 @@ $(function() {
   $.get("/remont/get_profile_info", {org_id: orgId}, function(data) {
     console.log("Org profile info: ", data);
     $("#orgName").text(data.name);
-    $("#orgLogo").attr("src", "/remont/" + data.logo_url);
+    $("#orgLogo").attr("src", data.logo_url);
     $("#orgRating").jRate({
       readOnly: true,
       startColor: "orange",
@@ -48,7 +48,7 @@ $(function() {
       collegItem.setAttribute("data-orgid", data.collegues[i].id);
 
       var collegImg = document.createElement("img");
-      collegImg.setAttribute("src", "/remont/" + data.collegues[i].logo_url);
+      collegImg.setAttribute("src", data.collegues[i].logo_url);
       collegImg.setAttribute("class", "colleg-logo");
       collegItem.appendChild(collegImg);
 

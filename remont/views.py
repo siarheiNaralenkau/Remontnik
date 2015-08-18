@@ -236,6 +236,7 @@ def site_login(request):
 
   if user is None:
     # Попытка авторизации, используя имя организации
+    print("Authorization error!")
     org = OrganizationProfile.objects.filter(name=uname).first()
     if org:
       uname = org.account.username
@@ -245,13 +246,15 @@ def site_login(request):
         if user.is_active:
           login(request, user)
           response_data["status"] = "success"
-          return JsonResponse(response_data, safe=False)
         else:
           response_data["status"] = "error"
           response_data["error_message"] = u"Аккаунт пользователя {0} не активирован!".format(uname)
-      else:
-        response_data["status"] = "error"
-        response_data["error_message"] = "Неправильное имя пользователя или пароль"
+    else:
+      response_data["status"] = "error"
+      response_data["error_message"] = "Неправильное имя пользователя или пароль"
+  else:
+    login(request, user)
+    response_data["status"] = "success"
 
   response = JsonResponse(response_data, safe=False)
   return response
@@ -295,18 +298,18 @@ def get_profile_info(request):
   "address": org_profile.address, "rating": 3.5}
 
   if org_profile.logo:
-    profile_json["logo_url"] = org_profile.logo.url
+    profile_json["logo_url"] = "/remont/" + org_profile.logo.url
   else:
-    profile_json["logo_url"] = "/remont/static/remont/images/question.jpg"
+    profile_json["logo_url"] = "/static/remont/images/info_empty.jpg"
 
   collegs = org_profile.collegues.all()
   collegs_array = []
   for c in collegs:
     colleg_item = {"id": c.id, "name": c.name}
     if c.logo:
-      colleg_item["logo_url"] = c.logo.url
+      colleg_item["logo_url"] = "/remont/" + c.logo.url
     else:
-      colleg_item["logo_url"] = ""
+      colleg_item["logo_url"] = "/static/remont/images/info_empty.jpg"
     collegs_array.append(colleg_item)
 
   profile_json["collegues"] = collegs_array
@@ -339,7 +342,7 @@ def get_profile_info(request):
     print("Organization user: {0}".format(org_profile.account.id))
     profile_json["last_visit"] = get_last_visit(org_profile.account.id)
   else:
-    profile_json["last_visit"] = 'Never'
+    profile_json["last_visit"] = u"Никогда"
 
   reviews = Review.objects.filter(org=org_profile)
   profile_json["reviews_amount"] = len(reviews)
@@ -396,29 +399,27 @@ def edit_organization(request, id=None):
       if profile_form.is_valid():
         profile_form.save()
         return redirect('/remont/edit_organization/' + str(id))
-      else:
-        profile_form = OrganizationEditForm(instance=org)
-        photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
-        grouped_photos = []
-        photos_amount = 0
-        for ph_album in photo_albums:
-          photos = WorkPhoto.objects.filter(album=ph_album)
-          photos_amount += len(photos)
-          album_info = {"id": ph_album.id, "name": ph_album.name, "photos": photos}
-          grouped_photos.append(album_info)
-          ungrouped_photos = WorkPhoto.objects.filter(organization=org, album__isnull=True)
-          photos_amount += len(ungrouped_photos)
-          if len(ungrouped_photos) > 0:
-            unnamed_album = {"id": 0, "name": u"Другие фотографии", "photos": ungrouped_photos}
-            grouped_photos.append(unnamed_album)
+    else:
+      profile_form = OrganizationEditForm(instance=org)
+      photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
+      grouped_photos = []
+      photos_amount = 0
+      for ph_album in photo_albums:
+        photos = WorkPhoto.objects.filter(album=ph_album)
+        photos_amount += len(photos)
+        album_info = {"id": ph_album.id, "name": ph_album.name, "photos": photos}
+        grouped_photos.append(album_info)
+        ungrouped_photos = WorkPhoto.objects.filter(organization=org, album__isnull=True)
+        photos_amount += len(ungrouped_photos)
+        if len(ungrouped_photos) > 0:
+          unnamed_album = {"id": 0, "name": u"Другие фотографии", "photos": ungrouped_photos}
+          grouped_photos.append(unnamed_album)
 
-            UploadPhotoFormSet = formset_factory(UploadPhotoForm)
-            photo_formset = UploadPhotoFormSet()
-
-        return render(request, "remont/edit_profile.html", {"profile_form": profile_form,
-          "work_photos": grouped_photos,
-          "photos_amount": photos_amount,
-          "photo_formset": photo_formset})
+      return render(request, "remont/edit_profile.html", {
+        "profile_form": profile_form,
+        "work_photos": grouped_photos,
+        "photos_amount": photos_amount
+      })
 
 
 # Загрузка фотографий выполненных работ
