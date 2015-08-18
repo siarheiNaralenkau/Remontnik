@@ -1,67 +1,67 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <style>
-        .input-fields-div {
-            margin-top: 10px;
-            margin-left: 50px
-        }
-        .input-base {
-            border-radius: 5px
-        }
-        .action-btn {
-            width: 200px;
-            height: 40px;
-            border-radius: 8px;
-            background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));
-            font-size: 18px;
-            font-weight: 700;
-        }
-        .action-btn:hover {
-            background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
-        }
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .input-fields-div {
+      margin-top: 10px;
+      margin-left: 50px
+    }
+    .input-base {
+      border-radius: 5px
+    }
+    .action-btn {
+      width: 200px;
+      height: 40px;
+      border-radius: 8px;
+      background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));
+      font-size: 18px;
+      font-weight: 700;
+    }
+    .action-btn:hover {
+      background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+    }
 
-    </style>
+  </style>
 </head>
 <body>
-    <div class="placeJobOrder" style="width: 600px; margin: 0 auto; border: 1px solid black; border-radius: 5px">
-        <form action="../suggest_job_save/" method="post">
-            <div class="input-fields-div">
-                <input type="text" name="job_header" placeholder="Краткий заголовок заявки" style="width: 500px;" class="input-base">
-            </div>
-            <div class="input-fields-div">
-                <select name="job_category" id="job_category" style="width: 220px" class="input-base">
-                    <option value="" disabled selected>Категория работ</option>
-                    <option>Категория 1</option>
-                    <option>Категория 2</option>
-                    <option>Категория 3</option>
-                </select>
+  <div class="placeJobOrder" style="width: 600px; margin: 0 auto; border: 1px solid black; border-radius: 5px">
+    <form action="../suggest_job_save/" method="post">
+      <div class="input-fields-div">
+        <input type="text" name="job_header" placeholder="Краткий заголовок заявки" style="width: 500px;" class="input-base">
+      </div>
+      <div class="input-fields-div">
+        <select name="job_category" id="job_category" style="width: 220px" class="input-base">
+          <option value="" disabled selected>Категория работ</option>
+          <option>Категория 1</option>
+          <option>Категория 2</option>
+          <option>Категория 3</option>
+        </select>
 
-                <select name="job_type" id="job_type" style="width: 220px; margin-left: 60px" class="input-base">
-                    <option value="" disabled selected>Вид работ</option>
-                    <option>Вид 1</option>
-                    <option>Вид 2</option>
-                    <option>Вид 3</option>
-                </select>
-            </div>
-            <div class="input-fields-div">
-                <textarea style="width: 500px; height: 120px; border-radius: 10px"
-                          placeholder="Максимально подробное описание работ(площадь, объем, сроки и т.п.)"></textarea>
-            </div>
-            <div class="input-fields-div">
-                <input type="text" placeholder="Контактное лицо" class="input-base" style="width: 220px">
-                <input type="text" placeholder="Ваш город" class="input-base" style="width: 220px; margin-left: 60px">
-            </div>
-            <div class="input-fields-div">
-                <input type="tel" placeholder="Телефон" class="input-base" style="width: 220px">
-                <input type="email" placeholder="Электронная почта" class="input-base" style="width: 220px; margin-left: 60px">
-            </div>
-            <div class="input-fields-div" style="margin-bottom: 10px">
-                <input type="button" id="placeOrderButton" value="Оставить заявку" class="action-btn" style="margin-left: 150px"/>
-            </div>
-        </form>
-    </div>
+        <select name="job_type" id="job_type" style="width: 220px; margin-left: 60px" class="input-base">
+          <option value="" disabled selected>Вид работ</option>
+          <option>Вид 1</option>
+          <option>Вид 2</option>
+          <option>Вид 3</option>
+        </select>
+      </div>
+      <div class="input-fields-div">
+        <textarea style="width: 500px; height: 120px; border-radius: 10px"
+        placeholder="Максимально подробное описание работ(площадь, объем, сроки и т.п.)"></textarea>
+      </div>
+      <div class="input-fields-div">
+        <input type="text" placeholder="Контактное лицо" class="input-base" style="width: 220px">
+        <input type="text" placeholder="Ваш город" class="input-base" style="width: 220px; margin-left: 60px">
+      </div>
+      <div class="input-fields-div">
+        <input type="tel" placeholder="Телефон" class="input-base" style="width: 220px">
+        <input type="email" placeholder="Электронная почта" class="input-base" style="width: 220px; margin-left: 60px">
+      </div>
+      <div class="input-fields-div" style="margin-bottom: 10px">
+        <input type="button" id="placeOrderButton" value="Оставить заявку" class="action-btn" style="margin-left: 150px"/>
+      </div>
+    </form>
+  </div>
 </body>
 </html>

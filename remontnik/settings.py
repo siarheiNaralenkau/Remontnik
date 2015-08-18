@@ -64,12 +64,12 @@ ALLOWED_HOSTS = []
 
 platform = sys.platform
 if sys.platform.startswith("win"):
-    MEDIA_ROOT = "c://MyDevelopment//MediaStorage//"
+  MEDIA_ROOT = "c://MyDevelopment//MediaStorage//"
 elif sys.platform.startswith("linux"):
-    MEDIA_ROOT = "/home/media/remontnik/"
+  MEDIA_ROOT = "/home/media/remontnik/"
 else:
-    MEDIA_ROOT = "/home/media/"
-MEDIA_URL = "media/"
+  MEDIA_ROOT = "/home/media/"
+  MEDIA_URL = "media/"
 
 # Environment configuration(local or remote)
 ENVIRONMENT = os.environ.get('REM_ENVIRONMENT', 'local')
@@ -78,28 +78,28 @@ ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Application definition
 
 INSTALLED_APPS = (
-    'django.contrib.admin',
-    'django.contrib.auth',
-    'django.contrib.contenttypes',
-    'django.contrib.sessions',
-    'django.contrib.messages',
-    'django.contrib.staticfiles',
-    'django.db.backends.mysql',
-    'ckeditor',
-    'remont',
-    'lastActivityDate',
-)
+  'django.contrib.admin',
+  'django.contrib.auth',
+  'django.contrib.contenttypes',
+  'django.contrib.sessions',
+  'django.contrib.messages',
+  'django.contrib.staticfiles',
+  'django.db.backends.mysql',
+  'ckeditor',
+  'remont',
+  'lastActivityDate',
+  )
 
 MIDDLEWARE_CLASSES = (
-    'django.contrib.sessions.middleware.SessionMiddleware',
-    'django.middleware.common.CommonMiddleware',
-    'django.middleware.csrf.CsrfViewMiddleware',
-    'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.messages.middleware.MessageMiddleware',
-    'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.locale.LocaleMiddleware',
-    'lastActivityDate.middleware.LastActivityMiddleware'
-)
+  'django.contrib.sessions.middleware.SessionMiddleware',
+  'django.middleware.common.CommonMiddleware',
+  'django.middleware.csrf.CsrfViewMiddleware',
+  'django.contrib.auth.middleware.AuthenticationMiddleware',
+  'django.contrib.messages.middleware.MessageMiddleware',
+  'django.middleware.clickjacking.XFrameOptionsMiddleware',
+  'django.middleware.locale.LocaleMiddleware',
+  'lastActivityDate.middleware.LastActivityMiddleware'
+  )
 
 ROOT_URLCONF = 'remontnik.urls'
 
@@ -109,18 +109,18 @@ WSGI_APPLICATION = 'remontnik.wsgi.application'
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases
 DATABASES = {
-    'default': {
-        'NAME': 'remontnik',
-        'ENGINE': 'django.db.backends.mysql',
-        'USER': 'remontnik',
-        'PASSWORD': 'remontnik',
-    }
+'default': {
+'NAME': 'remontnik',
+'ENGINE': 'django.db.backends.mysql',
+'USER': 'remontnik',
+'PASSWORD': 'remontnik',
+}
 }
 
 if ENVIRONMENT == 'remote':
-    DATABASES['default']['HOST'] = '31.130.201.148'
-    DATABASES['default']['USER'] = 'remontnik'
-    DATABASES['default']['PASSWORD'] = 'remontnik'
+  DATABASES['default']['HOST'] = '31.130.201.148'
+  DATABASES['default']['USER'] = 'remontnik'
+  DATABASES['default']['PASSWORD'] = 'remontnik'
 
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
@@ -146,19 +146,19 @@ CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
 CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_JQUERY_URL = STATIC_URL + "remont/js/jquery-2.1.3.min.js"
 CKEDITOR_CONFIGS = {
-    'default': {
-        'toolbar': 'full',
-        'height': 600,
-        'width': 800,
-        'language': 'ru'
-    },
+'default': {
+'toolbar': 'full',
+'height': 600,
+'width': 800,
+'language': 'ru'
+},
 }
 
 try:
-    HOST_NAME = socket.gethostname()
+  HOST_NAME = socket.gethostname()
 except:
-    HOST_NAME = "localhost"
-SMTP_SERVER = "smtp.gmail.com"
-SMTP_PORT = 587
-MAIL_FROM = "naralenkov2010@gmail.com"
-MAIL_PASSWORD = "qwerty12Q"
+  HOST_NAME = "localhost"
+  SMTP_SERVER = "smtp.gmail.com"
+  SMTP_PORT = 587
+  MAIL_FROM = "naralenkov2010@gmail.com"
+  MAIL_PASSWORD = "qwerty12Q"
