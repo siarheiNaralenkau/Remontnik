@@ -14,3 +14,13 @@
   margin-left: 2%;
   margin-bottom: 2%;
 }
+
+.main-div {
+  float: left;
+  width: 100%
+}
+
+.content-div {
+  float: left;
+  width: 74%;
+}

@@ -4,8 +4,6 @@
   <meta charset="UTF-8">
   <title>Информация об организации: {{ org_profile.name }}</title>
   <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/view_profile.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/top_page.css">
-  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/menu.css">
   <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
 </head>
 <body>
@@ -16,9 +14,7 @@
   <div class="main-div">
     <div class="menu-div">
       {% include "remont/main_menu.html" %}
-      <div class="how-site-works">
-        {% include "remont/how_site_works.html" %}
-      </div>
+      {% include "remont/how_site_works.html" %}
     </div>
 
     <div class="profile-container">

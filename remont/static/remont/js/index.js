@@ -44,10 +44,6 @@ function refreshJobs(data, textStatus, jqXHR) {
   $('.suggest-job-form')[0].reset();
 }
 
-function mainMenuClick(url) {
-  window.open(url, "_self");
-}
-
 $(function() {
   var loginDialog, setPasswordDialog, partnersRequestDialog;
 
