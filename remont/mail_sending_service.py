@@ -15,13 +15,13 @@ def send_confirm_registration(recipient_mail, recipient_id):
 
   text = u"Для завршения регистрации на staatix.com пройдите по ссылке:{0}".format(confirm_link)
   html = u"""
-  <html>
-  <head></head>
-  <body>
-  <p>Для завершения регистрации на staatix.com, пройдите по ссылке:</p>
-  <a href={0}>{1}</a>
-  </body>
-  </html>
+      <html>
+      <head></head>
+      <body>
+      <p>Для завершения регистрации на staatix.com, пройдите по ссылке:</p>
+      <a href={0}>{1}</a>
+      </body>
+      </html>
   """.format(confirm_link, confirm_link)
 
   part1 = MIMEText(text.encode('utf-8'), 'plain', 'utf-8')
