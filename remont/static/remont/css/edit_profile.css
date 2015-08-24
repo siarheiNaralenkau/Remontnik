@@ -7,9 +7,30 @@
 
 .profile-label {
   font-weight: 800;
-  margin-left: 20px;
+  margin-left: 3%;
   width: 30%;
   float: left;
+}
+
+.profile-label-long {
+  font-weight: 800;
+  margin-left: 3%;
+  width: 50%;
+  float: left;
+}
+
+.profile-textarea {
+  margin-top: 10px;
+  margin-left: 3%;
+  width: 60%;
+}
+
+.address-textarea {
+  height: 80px;
+}
+
+.description-textarea {
+  height: 200px;
 }
 
 .submit-btn-div {
@@ -58,11 +79,13 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
   display: block;
   width: 40%;
   float: left;
+  border-right: 2px solid gray;
 }
 
 .additional-container {
+  margin-left: 2%;
   display: block;
-  width: 59%;
+  width: 57%;
   float: left;
 }
 
@@ -163,6 +186,16 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
   font-weight: 800;
   color: #00F;
   float: left;
+}
+
+.btn-edit {
+  float: right;
+  margin-right: 10%;
+}
+
+.job-types-container {
+  margin-left: 3%;
+  width: 96%;
 }
 
 /*Styles for file upload field*/

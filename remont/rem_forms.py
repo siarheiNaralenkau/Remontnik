@@ -129,11 +129,10 @@ class OrganizationEditForm(forms.ModelForm):
     }
     widgets = {
       'job_types': CustomCheckBoxSelectMultiple(),
-      'address': Textarea(attrs={'cols': 60, 'rows': 3}),
+      'address': Textarea(attrs={'class': 'profile-textarea address-textarea'}),
       'city': Select(attrs={'style': 'width: 200px; float: none'}),
-      'description': Textarea(attrs={'cols': 60, 'rows': 8}),
+      'description': Textarea(attrs={'class': 'profile-textarea description-textarea'}),
       'logo': SingleImageInput(),
-      'collegues': CheckboxSelectMultiple(),
       'work_cities': CheckboxSelectMultiple()
     }
 

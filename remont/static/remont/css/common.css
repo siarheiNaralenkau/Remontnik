@@ -168,3 +168,7 @@ input[type="password"] {
 .center-hor {
   margin: 0 auto;
 }
+
+.margin-medium {
+  margin-top: 15px;
+}

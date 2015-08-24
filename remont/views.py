@@ -391,14 +391,18 @@ def confirm_registration(request):
 @csrf_exempt
 def edit_organization(request, id=None):
   if id:
+    print("User identifier: {0}".format(id))
     user = get_object_or_404(User, pk=id)
     org = get_object_or_404(OrganizationProfile, account=user)
 
     if request.POST:
+      print("Saving changes...")
       profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)
       if profile_form.is_valid():
         profile_form.save()
-        return redirect('/remont/edit_organization/' + str(id))
+        print("Organization changes were saved successfully!")
+        redirect_url = '/remont/edit_organization/' + str(id)
+        return redirect(redirect_url)
     else:
       profile_form = OrganizationEditForm(instance=org)
       photo_albums = WorkPhotoAlbum.objects.filter(organization=org)
@@ -421,6 +425,8 @@ def edit_organization(request, id=None):
         "photos_amount": photos_amount
       })
 
+  else:
+    print("No user id is defined!")
 
 # Загрузка фотографий выполненных работ
 @csrf_exempt
