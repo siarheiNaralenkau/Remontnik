@@ -127,6 +127,22 @@ $(function() {
     });
   }
 
+  function enableFieldEdit() {
+    var fieldId = $(this).attr("data-fieldId");
+    fieldId = "#" + fieldId;
+    if(fieldId === "#id_work_cities") {
+      $(fieldId + " :input").removeAttr("disabled");
+    } else {
+      var formField = $(fieldId);
+      $(formField).removeAttr("readonly");
+      $(formField).removeAttr("disabled");
+    }
+  }
+
+  function enableAllFieldsEdit() {
+    $(".btn-edit").trigger("click");
+  }
+
   $("#uploadPhoto").change(handlePhotoSelection);
   $("#cancelImgBtn").click(cancelFileUpload);
   $("#btnCreateAlbum").click(showAlbumCreateDialog);
@@ -135,6 +151,8 @@ $(function() {
   $("#savePassword").click(changePassword);
   $("#oldPassword, #newPassword, #confirmNewPassword").keyup(enableChange);
   $("#btnPartnersSearch").click(showPartnersSearch);
+  $(".btn-edit").click(enableFieldEdit);
+  $("#btnEdit").click(enableAllFieldsEdit);
 
   $("#searchInput").autocomplete({
     source: findOrganizations,
@@ -152,4 +170,9 @@ $(function() {
     .append("</a></li>");
     return result.appendTo(ul);
   };
+
+  $('#editOrgForm').on('submit', function() {
+    $('select, checkbox, input').attr('disabled', false);
+  });
+
 });

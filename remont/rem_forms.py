@@ -93,6 +93,17 @@ class OrganizationEditForm(forms.ModelForm):
     instance = getattr(self, 'instance', None)
     if instance and instance.pk:
       self.fields['name'].widget.attrs['readonly'] = True
+      self.fields['city'].widget.attrs['disabled'] = True
+      self.fields['address'].widget.attrs['readonly'] = True
+      self.fields['description'].widget.attrs['readonly'] = True
+      self.fields['landline_phone'].widget.attrs['readonly'] = True
+      self.fields['mobile_phone'].widget.attrs['readonly'] = True
+      self.fields['mobile_phone2'].widget.attrs['readonly'] = True
+      self.fields['fax'].widget.attrs['readonly'] = True
+      self.fields['web_site'].widget.attrs['readonly'] = True
+      self.fields['email'].widget.attrs['readonly'] = True
+      self.fields['login'].widget.attrs['readonly'] = True
+      self.fields['work_cities'].widget.attrs['disabled'] = True
 
   class Meta:
     model = OrganizationProfile

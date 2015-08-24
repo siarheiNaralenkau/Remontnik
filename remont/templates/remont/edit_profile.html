@@ -12,7 +12,7 @@
   {% include "remont/top_page_template.html" %}
   <div class="main-container">
     <div class="profile-container">
-      <form action="/remont/edit_organization/{{user.id}}/" enctype="multipart/form-data" method="post" novalidate>
+      <form action="/remont/edit_organization/{{user.id}}/" enctype="multipart/form-data" method="post" id="editOrgForm" novalidate>
         {% csrf_token %}
         {% for field in profile_form %}
         <div class="profile-field">
@@ -25,14 +25,19 @@
             <span>
           {% endif %}
               {{field}}
-              <input type="button" value="Изменить", class="btn-edit">
+              <input type="button" value="Изменить", class="btn-edit" data-fieldId="{{field.auto_id}}">
             </span>
             {{field.errors}}
           </div>
           {% endfor %}
           <div class="profile-field">
-            <div class="submit-btn-div">
-              <input type="submit" value="Сохранить изменения"/>
+          <div class="submit-btn-div">
+              <span>
+                <input type="button" id="btnEdit" value="Редактировать"/>
+              </span>
+              <span>
+                <input type="submit" value="Сохранить изменения"/>
+              </span>
             </div>
           </div>
         </form>
