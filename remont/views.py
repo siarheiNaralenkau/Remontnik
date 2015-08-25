@@ -73,6 +73,7 @@ def suggest_job_save(request):
 
 # Поиск организации по ключевым словам
 def search_organizations(request):
+  logged_org = OrganizationProfile.objects.filter(account=request.user).first()
   key_phrase = request.REQUEST["q"]
   response_data = []
   # 1) Поиск по имени организации
@@ -82,6 +83,7 @@ def search_organizations(request):
       logo_url = "/remont/" + org.logo.url
     else:
       logo_url = "/static/remont/images/question.jpg"
+    if logged_org.id != org.id:
       response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
 
   # 2) Поиск по типу выполняемых работ.
@@ -89,13 +91,13 @@ def search_organizations(request):
   for org in orgs_by_job_type:
     job_types = org.job_types.all()
     for job_type in job_types:
-      if key_phrase in job_type.name:
+      if key_phrase in job_type.name and logged_org.id != org.id:
         if org.logo:
           logo_url = "/remont/" + org.logo.url
         else:
           logo_url = "/remont/static/remont/images/question.jpg"
-          response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
-          break
+        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+        break
 
   print "Found {0} organizations: ".format(len(response_data))
   response = JsonResponse(response_data, safe=False)

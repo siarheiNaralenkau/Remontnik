@@ -6,8 +6,8 @@
 	git add .; 
 	git commit -m 'pyc files were removed'
 6) Checkout latest changes: git pull
-7) Install Pillow dependencies:
+7) Install Pillow dependencies: (Only once for new server)
 	sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
-8) Update dependencies: pip install -r requirements.pip
+8) Update dependencies: pip install -r requirements.pip (If nessessary)
 9) Run migrations: python manage.py migrate
 10) Run server: nohup python manage.py runserver 0:8000 &
