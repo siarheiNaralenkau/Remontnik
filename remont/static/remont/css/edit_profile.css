@@ -1,99 +1,122 @@
 .profile-field {
-    display: block;
-    width: 100%;
-    padding-bottom: 20px;
-    clear: both;
+  display: block;
+  width: 100%;
+  padding-bottom: 20px;
+  clear: both;
 }
 
 .profile-label {
-    font-weight: 800;
-    margin-left: 20px;
-    width: 30%;
-    float: left;
+  font-weight: 800;
+  margin-left: 3%;
+  width: 30%;
+  float: left;
+}
+
+.profile-label-long {
+  font-weight: 800;
+  margin-left: 3%;
+  width: 50%;
+  float: left;
+}
+
+.profile-textarea {
+  margin-top: 10px;
+  margin-left: 3%;
+  width: 60%;
+}
+
+.address-textarea {
+  height: 80px;
+}
+
+.description-textarea {
+  height: 200px;
 }
 
 .submit-btn-div {
-    width: 35%;
-    margin: 0 auto;
+  width: 60%;
+  margin: 0 auto;
 }
 
 input[type="text"], input[type="url"], input[type="email"], input[type="password"], select {
-    width: 30%;
+  width: 30%;
 }
 
 #id_work_cities {
-    list-style-type: none;
-    float: left;
-    margin-left: -50px;
-    margin-top: 0px;
+  list-style-type: none;
+  float: left;
+  margin-left: -50px;
+  margin-top: 0px;
 }
 
 #id_job_types {
-    float: left;
-    margin-left: -50px;
-    margin-top: 10px;
+  float: left;
+  margin-left: -50px;
+  margin-top: 10px;
 }
 
 .errorlist {
-    font-size: 14px;
-    font-weight: bold;
-    color: #FF0033;
+  font-size: 14px;
+  font-weight: bold;
+  color: #FF0033;
 }
 
 .required-field:after {
-    content: "";
-    display: inline-block;
-    height: 17px;
-    width: 17px;
-    margin: auto;
-    background-image: url("/static/remont/images/field-required.png")
+  content: "";
+  display: inline-block;
+  height: 17px;
+  width: 17px;
+  margin: auto;
+  background-image: url("/static/remont/images/field-required.png")
 }
 
 .main-container {
-    float: left;
-    width: 100%;
+  float: left;
+  width: 100%;
 }
 
 .profile-container {
-    display: block;
-    width: 40%;
-    float: left;
+  display: block;
+  width: 40%;
+  float: left;
+  border-right: 2px solid gray;
 }
 
 .additional-container {
-    display: block;
-    width: 59%;
-    float: left;
+  margin-left: 2%;
+  display: block;
+  width: 57%;
+  float: left;
 }
 
 .select-photo-btn {
-    display: inline-block;
-    margin-left: 30px;
-    width: 165px;
-    height: 20px;
-    cursor: pointer;
-    background-color: #A2A3A3;
-    border-radius: 5px;
+  display: inline-block;
+  margin-left: 30px;
+  width: 165px;
+  height: 20px;
+  cursor: pointer;
+  background-color: #A2A3A3;
+  border-radius: 5px;
 }
 
 .hidden-input {
-    display: none;
+  display: none;
 }
 
 .row-block {
-    display: table-row;
+  display: table-row;
 }
 
 .album-trumb {
-    display: inline-block;
-    cursor: pointer;
-    margin-top: 10px;
-    margin-left: 10px;
+  display: inline-block;
+  cursor: pointer;
+  margin-top: 10px;
+  margin-left: 10px;
 }
 
 .work-image-trumb {
-    width: 100px;
-    height: 100px;
+  width: 100px;
+  height: 100px;
 }
 
 .albums-list {
@@ -105,11 +128,11 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
 }
 
 .album-ph-amount {
-    margin-left: 10px;
+  margin-left: 10px;
 }
 
 .photos-container {
-    min-height: 40px;
+  min-height: 40px;
 }
 
 .photo-uploader {
@@ -136,9 +159,9 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
 }
 
 .partners-container {
-    width: 100%;
-    margin-top: 20px;
-    min-height: 20px;
+  width: 100%;
+  margin-top: 20px;
+  min-height: 20px;
 }
 
 .search-item {
@@ -165,59 +188,69 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
   float: left;
 }
 
+.btn-edit {
+  float: right;
+  margin-right: 10%;
+}
+
+.job-types-container {
+  margin-left: 3%;
+  width: 96%;
+}
+
 /*Styles for file upload field*/
 .fileform {
-    background-color: #FFFFFF;
-    border: 1px solid #CCCCCC;
-    border-radius: 2px;
-    cursor: pointer;
-    height: 26px;
-    overflow: hidden;
-    padding: 2px;
-    position: relative;
-    text-align: left;
-    vertical-align: middle;
-    width: 230px;
+  background-color: #FFFFFF;
+  border: 1px solid #CCCCCC;
+  border-radius: 2px;
+  cursor: pointer;
+  height: 26px;
+  overflow: hidden;
+  padding: 2px;
+  position: relative;
+  text-align: left;
+  vertical-align: middle;
+  width: 230px;
 }
 
 .fileform .selectbutton {
-    background-color: #A2A3A3;
-    border: 1px solid #939494;
-    border-radius: 2px;
-    color: #FFFFFF;
-    float: right;
-    font-size: 16px;
-    height: 20px;
-    line-height: 20px;
-    overflow: hidden;
-    padding: 2px 6px;
-    text-align: center;
-    vertical-align: middle;
-    width: 50px;
+  background-color: #A2A3A3;
+  border: 1px solid #939494;
+  border-radius: 2px;
+  color: #FFFFFF;
+  float: right;
+  font-size: 16px;
+  height: 20px;
+  line-height: 20px;
+  overflow: hidden;
+  padding: 2px 6px;
+  text-align: center;
+  vertical-align: middle;
+  width: 50px;
 }
 
 .fileform #id_logo{
-    position:absolute;
-    top:0;
-    left:0;
-    width:100%;
-    -moz-opacity: 0;
-    filter: alpha(opacity=0);
-    opacity: 0;
-    font-size: 150px;
-    height: 30px;
-    z-index:20;
+  position:absolute;
+  top:0;
+  left:0;
+  width:100%;
+  -moz-opacity: 0;
+  filter: alpha(opacity=0);
+  opacity: 0;
+  font-size: 150px;
+  height: 30px;
+  z-index:20;
 }
 
 .thumb {
-    height: 87px;
-    width: 130px;
-    border: 1px solid #000;
-    margin: 10px 5px 0 0;
+  height: 87px;
+  width: 130px;
+  border: 1px solid #000;
+  margin: 10px 5px 0 0;
 }
 
 .previewDiv {
-    margin-top: 10px;
-    margin-bottom: 10px;
-    display: inline-block;
+  margin-top: 10px;
+  margin-bottom: 10px;
+  display: inline-block;
 }
