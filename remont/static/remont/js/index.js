@@ -176,6 +176,7 @@ $(function() {
       };
       $.post("/remont/approve_partner/", data, function() {
         $("#" + senderId).remove();
+        updatePartnersAmount(-1);
       });
     }
 
@@ -183,7 +184,15 @@ $(function() {
       var senderId = $(this).attr("data-orgId");
       $.post("/remont/reject_partner/", {'senderId': $(this).attr("data-orgId")}, function() {
         $("#" + senderId).remove();
+        updatePartnersAmount(-1);
       });
+    }
+
+    // Function changes the label about new partner requests
+    function updatePartnersAmount(diff) {
+      var partnersAmount = parseInt($("#partnersAmount").html());
+      partnersAmount = partnersAmount + diff;
+      $("#partnersAmount").html(partnersAmount);
     }
 
     $("#loginLink").on('click', showLoginDialog);

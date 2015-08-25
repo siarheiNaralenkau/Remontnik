@@ -132,7 +132,8 @@ try:
   HOST_NAME = socket.gethostname()
 except:
   HOST_NAME = "localhost"
-  SMTP_SERVER = "smtp.gmail.com"
-  SMTP_PORT = 587
-  MAIL_FROM = "naralenkov2010@gmail.com"
-  MAIL_PASSWORD = "qwerty12Q"
+
+SMTP_SERVER = "smtp.gmail.com"
+SMTP_PORT = 587
+MAIL_FROM = "naralenkov2010@gmail.com"
+MAIL_PASSWORD = "qwerty12Q"
