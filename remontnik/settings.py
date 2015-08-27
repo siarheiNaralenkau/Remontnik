@@ -135,5 +135,5 @@ except:
 
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
-MAIL_FROM = "naralenkov2010@gmail.com"
-MAIL_PASSWORD = "qwerty12Q"
+MAIL_FROM = "staatix.gomel@gmail.com"
+MAIL_PASSWORD = "staatix2015"
