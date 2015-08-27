@@ -1,4 +1,4 @@
-1) cd var/www/
+1) cd /var/www/
 2) Activate python virtual environment: source ./remontnik/bin/activate
 3) cd ./app/remontnik
 4) Remove compiled python files: find . -name "*.pyc" -type f -delete
