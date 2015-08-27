@@ -1,10 +1,12 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
+from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple, HiddenInput
+from django.contrib.auth.models import User
+from django.core.exceptions import ValidationError
+
 from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
-
-from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple, HiddenInput
 
 def get_cities():
   cities_choices = []
@@ -26,6 +28,31 @@ class SuggestJobForm(forms.Form):
 class RegisterForm(forms.Form):
   def __init__(self, *args, **kwargs):
     super(RegisterForm, self).__init__(*args, **kwargs)
+
+  def clean_login(self):
+    login = self.cleaned_data["login"]
+    same_name_orgs = User.objects.filter(username=login)
+    if len(same_name_orgs):
+      raise ValidationError( u"Логин \"{0}\" уже используется!".format(login), code="duplicate")
+    return login
+
+  def clean_name(self):
+    org_name = self.cleaned_data["name"]
+    same_name_orgs = OrganizationProfile.objects.filter(name=org_name)
+    if len(same_name_orgs):
+      raise ValidationError( u"Организация с названием \"{0}\" уже зарегистрирована!".format(org_name), code="duplicate")
+    return org_name
+
+  def clean(self):
+    cleaned_data = super(RegisterForm, self).clean()
+    if not cleaned_data.get("landline_phone") and not cleaned_data.get("mobile_phone") and not cleaned_data.get("mobile_phone2") and not cleaned_data.get("fax"):
+      raise ValidationError(u"Заполните хотя бы одно из полей: " + ", ".join([
+          OrganizationProfile._meta.get_field_by_name('landline_phone')[0].verbose_name,
+          OrganizationProfile._meta.get_field_by_name('mobile_phone')[0].verbose_name,
+          OrganizationProfile._meta.get_field_by_name('mobile_phone2')[0].verbose_name,
+          OrganizationProfile._meta.get_field_by_name('fax')[0].verbose_name,
+      ]))
+    return self.cleaned_data
 
   name = forms.CharField(max_length=100,
    label=u'Название организации',

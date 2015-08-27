@@ -1,4 +1,4 @@
-# -*- coding: utf-8 -*-
+# -*- encoding: utf-8 -*-
 
 from django.db import models
 from django.contrib.auth.models import User
@@ -146,6 +146,11 @@ class OrganizationProfile(models.Model):
     else:
       # Создаем аккаунт пользователя для организации, если указан логин
       if self.login and not self.account:
+        # TODO Проверяем, сушествует ли пользователь с таким именем.
+        same_login_accounts = User.objects.filter(username=self.login)
+        if same_login_accounts:
+          error_msg = u"Организация с логином " + self.login + u" уже зарегистрирована. Укажите другой логин."
+          raise ValidationError(error_msg)
         account = User.objects.create_user(self.login, self.email, self.password)
         account.first_name = self.name
         account.email = self.email
