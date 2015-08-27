@@ -129,7 +129,7 @@ CKEDITOR_CONFIGS = {
 }
 
 try:
-  HOST_NAME = socket.gethostname()
+  HOST_NAME = socket.gethostbyname(socket.gethostname())
 except:
   HOST_NAME = "localhost"
 

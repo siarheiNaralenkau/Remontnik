@@ -7,6 +7,8 @@ from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
 
+from smtplib import SMTPAuthenticationError
+
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
 WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
@@ -220,7 +222,10 @@ def create_organization(request):
       for jt in job_types:
         org.job_types.add(jt)
 
-      send_confirm_registration(org.email, org.account.id)
+      try:
+        send_confirm_registration(org.email, org.account.id)
+      except SMTPAuthenticationError as e:
+        print("Unable to send registration confirmation mail! Account activation should be done manually by site admin.")
       return render(request, 'remont/confirm_registration.html', {})
     else:
       return render(request, "remont/register.html", {"reg_form": reg_form})
