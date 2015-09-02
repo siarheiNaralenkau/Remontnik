@@ -188,7 +188,7 @@ div.collegs-list {
 
 .contacts-item {
   font-weight: 800;
-  font-size: 22px;
+  font-size: 1.05em;
 }
 
 .contacts-list {
@@ -196,7 +196,7 @@ div.collegs-list {
 }
 
 .org-address {
-  font-size: 18px;
+  font-size: 1.1em;
   font-weight: 700;
   color: #0033CC;
 }
@@ -204,7 +204,7 @@ div.collegs-list {
 .show-map {
   cursor: pointer;
   color: #0033CC;
-  font-size: 14px;
+  font-size: 1.1em;
 }
 
 .address-map {
