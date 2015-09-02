@@ -1,5 +1,6 @@
 .menu-div {
-  width: 17%;
+  width: 14%;
+  margin-left: 1%;
   height: 100%;
   display: block;
   float: left;
@@ -13,6 +14,8 @@
 
 .menu-div .main-menu-list {
   width: 90%;
+  padding: 0;
+  text-decoration: underline;
 }
 
 .menu-div .main-menu-item {

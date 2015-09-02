@@ -1,1 +1,2 @@
 http://ansciath.tumblr.com/post/7347495869/css-aspect-ratio
+https://learn.javascript.ru/css-units
