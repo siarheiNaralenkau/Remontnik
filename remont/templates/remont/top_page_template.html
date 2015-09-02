@@ -14,11 +14,14 @@
       <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
     </div>
     <div id="sectionRegister" class="sectionRegister">
-        <div class="center-hor">
-          {% if not user.is_authenticated %}
-            <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
-          {% endif %}
+      {% if not user.is_authenticated %}
+        <div class="reg-login-cont">
+          <div class="action-btn">Регистрация</div>
+          <div class="slash-sep">/</div>
+          <div class="action-btn" id="loginLink">Вход</div>
+          <!-- <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a> -->
         </div>
+      {% endif %}
     </div>
   </div>
 </body>
