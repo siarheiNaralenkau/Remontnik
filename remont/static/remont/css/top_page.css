@@ -68,3 +68,7 @@
 .topPage .slash-sep {
   display: table-cell;
 }
+
+.site-logo {
+  cursor: pointer;
+}

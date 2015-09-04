@@ -28,11 +28,38 @@ from  django.contrib.auth.hashers import check_password
 # Главная страница приложения
 def index(request):
   top10 = {'top10 masters': 'top10 masters should be displayed here'}
+
+  # Получаем выбранную специализацию
+  sel_spec = request.session.get("sel_spec")
+
   job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
+  work_specs = []
+  work_specs.append({"id": 0, "value": "", "selected": False})
+  work_specs.append({"id": -1,  "value": u"Все", "selected": False})
+  for spec in WorkSpec.objects.all():
+    work_specs.append({"id": spec.id, "value": spec.get_name_display(), "selected": False})
+
+  if sel_spec:
+    for spec in work_specs:
+      if spec["id"] == sel_spec:
+        print("Selected spec is: {0}".format(sel_spec))
+        spec["selected"] = True
+        break
+  else:
+    work_specs[0]["selected"] = True
+    request.session["sel_spec"] = work_specs[0]["id"]
+
   suggest_job_form = SuggestJobForm()
-  response_data = {"jobSuggestions": job_suggestions, "cities": cities, "logged_in": False, "categories": categories, "suggest_job_form": suggest_job_form}
+  response_data = {
+      "jobSuggestions": job_suggestions,
+      "cities": cities,
+      "logged_in": False,
+      "categories": categories,
+      "suggest_job_form": suggest_job_form,
+      "work_specs": work_specs
+  }
   # Check if user is logged in.
   if request.user.is_authenticated():
     response_data["logged_in"] = True
@@ -588,3 +615,11 @@ def get_partner_requests_json(request):
     res = HttpResponse("Unautorized")
     res.status_code = 401
     return res
+
+
+# Меняем фильтр специализации работ
+@csrf_exempt
+def change_spec_filter(request):
+  new_spec = request.POST["spec"]
+  request.session["sel_spec"] = int(new_spec)
+  return JsonResponse({"status": "success"})
