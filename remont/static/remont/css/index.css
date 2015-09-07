@@ -241,3 +241,8 @@
   width: 50px;
   height: 50px;
 }
+
+.select-spec-cont {
+  width: 70%;
+  margin: 0 auto;
+}
