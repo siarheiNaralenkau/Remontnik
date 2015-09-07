@@ -1,36 +1,36 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <style>
-        .searchButton {
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .font13 {
-            font-size: 13px
-        }
-        .align-middle {
-            display: inline-block;
-            vertical-align: middle;
-            font-size: 13px !important;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title></title>
+  <style>
+    .searchButton {
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .font13 {
+      font-size: 13px
+    }
+    .align-middle {
+      display: inline-block;
+      vertical-align: middle;
+      font-size: 13px !important;
+    }
+  </style>
 </head>
 <body>
-    <div class="searchCompany ui-widget">
-        <input type="text" maxlength="80" class="searchInput" name="searchKeyword">
-        <button class="searchButton">Поиск</button>
-        <select name="city" class="align-middle">
-            <optgroup class="font13">
-                {% for city in cities %}
-                    <option value="{{ city.id }}">
-                        <span>{{ city.name }}</span>
-                    </option>
-                {% endfor %}
-            </optgroup>
-        </select>
-    </div>
+  <div class="searchCompany ui-widget">
+    <input type="text" maxlength="80" class="searchInput" name="searchKeyword">
+    <button class="searchButton">Поиск</button>
+    <select name="city" class="align-middle">
+      <optgroup class="font13">
+        {% for city in cities %}
+        <option value="{{ city.id }}">
+          <span>{{ city.name }}</span>
+        </option>
+        {% endfor %}
+      </optgroup>
+    </select>
+  </div>
 </body>
 </html>

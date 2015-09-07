@@ -1,342 +1,243 @@
-.topPage {
-    display: table;    
-    width: 100%;
-    height: 100px;
-    table-layout: fixed;
-    border-spacing: 10px;
-}
-
 .topCompanySection {
-    border:solid 5px lightblue;
-    border-radius: 5px;
-    float:left;
-    height:90px;
-    margin-top: 4px;
-    margin-left:1%;
-    width:8.5%;
+  border:solid 5px lightblue;
+  border-radius: 5px;
+  float:left;
+  height:90px;
+  margin-top: 4px;
+  margin-left:1%;
+  width:8.5%;
 }
 
 .topCompanyCell {
-    border:solid 5px lightblue;
-    border-radius: 5px;
-    float:left;
-    height:90px;
-    margin-top: 4px;
-    margin-left:1%;
-    width: 10%;
-}
-
-.sectionLogo {        
-    height: 90px;
-    width: 15%;    
-    margin-top: 4px;
-    margin-left: 1%;
-    display: table-cell;
-}
-
-.sectionBanner {    
-    display: table-cell;
-    border: solid 1px #999;
-    height: 90px;
-    width: 34%;
-    float: left;
-    margin-top: 4px;
-    margin-left: 17%;
-}
-
-.sectionRegister {   
-    display: table-cell; 
-    height: 90px;
-    width: 15%;
-    float: right;
-    margin-right: 1%;
-    margin-top: 4px;
-    border-radius: 2px;    
+  border:solid 5px lightblue;
+  border-radius: 5px;
+  float:left;
+  height:90px;
+  margin-top: 4px;
+  margin-left:1%;
+  width: 10%;
 }
 
 .top10Companies {
-    width: 90%;
-    height: 100px;
-    margin-top: 3%;
-    margin-left: 5%;
-    margin-bottom: 20px;
+  width: 90%;
+  height: 100px;
+  margin-top: 3%;
+  margin-left: 5%;
+  margin-bottom: 20px;
 }
 
 .searchCompany {
-    height: 50px;
-    width: 90%;
-    margin: 0 auto;
-    text-align: center;
-    white-space: nowrap;
-    line-height: 50px;
-    overflow: hidden;
+  height: 50px;
+  width: 90%;
+  margin: 0 auto;
+  text-align: center;
+  white-space: nowrap;
+  line-height: 50px;
+  overflow: hidden;
 }
 
 .searchInput {
-    width: 40%;
-    display: inline-block;
-    vertical-align: middle;
+  width: 40%;
+  display: inline-block;
+  vertical-align: middle;
 
-    *display: inline;
-    *margin: 0 20px 0 20px;
+  *display: inline;
+  *margin: 0 20px 0 20px;
 }
 
 .top10Inner {
-    margin: auto
+  margin: auto
 }
 
 .mainMiddle {
-    width:100%;
-    margin-top: 5px;
+  width:100%;
+  margin-top: 5px;
 }
 
 .howSiteWorks {
-    margin-left: 2%;
-    width: 30%;
-    height: 250px;
-    background-color: bisque;
-    float: left;
-    margin-top: 4px;
-    border: 1px solid black;
+  margin-left: 2%;
+  width: 30%;
+  height: 250px;
+  background-color: bisque;
+  float: left;
+  margin-top: 4px;
+  border: 1px solid black;
 }
 
 .mainMenu {
-    width: 90%;
-    height: 60px;
-    float: left;
-    margin-left: 5%;
-    margin-bottom: 5px;
+  width: 90%;
+  height: 60px;
+  float: left;
+  margin-left: 5%;
+  margin-bottom: 5px;
 }
 
 .menuItemOuter {
-    float:left;
-    height:50px;
-    margin-top: 4px;
-    margin-left:2%;
-    width:23%;
-    display: table;
-    overflow: hidden;
+  float:left;
+  height:50px;
+  margin-top: 4px;
+  margin-left:2%;
+  width:23%;
+  display: table;
+  overflow: hidden;
 }
 
 .menuItemInner {
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .suggestJob {
-    width: 40%;
-    height: 60px;
-    margin: auto;
-    display: table;
-    overflow: hidden;
+  width: 40%;
+  height: 60px;
+  margin: auto;
+  display: table;
+  overflow: hidden;
 }
 
 .suggestJobButton {
-    display: table-cell;
-    vertical-align: middle;
-    width: 100%;
-    margin: 0 auto;
-    text-align: center;
+  display: table-cell;
+  vertical-align: middle;
+  width: 100%;
+  margin: 0 auto;
+  text-align: center;
 }
 
 .jobsSuggestions {
-    width: 60%;
-    margin: 0 auto;
-    /*background-color: rgb(245, 245, 245);*/
-    border-radius: 4px;
-    overflow-y: auto;
+  width: 60%;
+  margin: 0 auto;
+  /*background-color: rgb(245, 245, 245);*/
+  border-radius: 4px;
+  overflow-y: auto;
 }
 
 .suggestionsHeader {
-    margin: 0 auto;
-    border-radius: 4px;
-}
-
-.simple-list {
-    list-style-type: none;
+  margin: 0 auto;
+  border-radius: 4px;
 }
 
 .details-label {
-    font-weight: 700;
-    margin-right: 10px;
+  font-weight: 700;
+  margin-right: 10px;
 }
 
 .org-details {
-    margin-top: 10px;
-    border-bottom: 1px dotted black;
+  margin-top: 10px;
+  border-bottom: 1px dotted black;
 }
 
 .job-request-div {
-    margin-left: 10px;
-    margin-top: 10px;
-    margin-right: 20px;
-    padding: 10px;
-    background-color: #ffffff;
-    border: 1px solid darkgray;
+  margin-left: 10px;
+  margin-top: 10px;
+  margin-right: 20px;
+  padding: 10px;
+  background-color: #ffffff;
+  border: 1px solid darkgray;
 }
 
 /*Стили для формы оставления заявки о работе*/
 .placeJobOrder {
-    width: 850px;
-    margin: 0 auto;
-    border-radius: 4px;
-    /*background-color: rgb(245, 245, 245);*/
+  width: 850px;
+  margin: 0 auto;
+  border-radius: 4px;
+  /*background-color: rgb(245, 245, 245);*/
 }
 
 .input-fields-div {
-    margin-top: 10px;
-    margin-left: 50px
+  margin-top: 10px;
+  margin-left: 50px
 }
+
 .input-base {
-    border-radius: 4px
-}
-.action-btn {
-    height: 40px;
-    border-radius: 4px;
-    /*background: linear-gradient(rgb(40, 149, 230), rgb(17, 87, 138));*/
-    font-size: 18px;
-    font-weight: 700;
-    text-align: left;
-    line-height: 40px;
-    padding-left: 15px;
-}
-.action-btn:hover {
-    background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
-    cursor: pointer;
+  border-radius: 4px
 }
 
 .place-job-request-btn {
-    text-align: center;
+  text-align: center;
 }
 
 .btn-show-more {
-    cursor: pointer;
-    font-size: 18px;
-    font-weight: 700;
-    text-decoration: underline;
-    padding-top: 15px;
-    padding-bottom: 10px;
+  cursor: pointer;
+  font-size: 18px;
+  font-weight: 700;
+  text-decoration: underline;
+  padding-top: 15px;
+  padding-bottom: 10px;
 }
 
 .btn-show-more:hover {
-    color: #003eff;
+  color: #003eff;
 }
 
 .width100p {
-    width: 100%
+  width: 100%
 }
 
 .btn-show-more {
-    display: table-cell;
-    margin-top: 10px
+  display: table-cell;
+  margin-top: 10px
 }
 
 .div-show-more {
-    display: table;
-    margin: 0 auto
-}
-
-.img_auto_100p {
-    width: 100%;
-    height: 100%
-}
-
-.center-hor {
-    margin: 0 auto;
+  display: table;
+  margin: 0 auto
 }
 
 .login-fields-div {
-    width: 450px;
-    margin-bottom: 20px;
-    display: block;
+  width: 450px;
+  margin-bottom: 20px;
+  display: block;
 }
 
 .login-field-label {
-    float: left;
+  float: left;
 }
 
 .login-label {
-    font-size: 12px;
+  font-size: 12px;
 }
 
 .login-fields-input {
-    width: 220px;
-    float: right;
+  width: 220px;
+  float: right;
 }
 
 .login-link {
-    margin-left: 30px;
-}
-
-.main-menu-list {
-    width: 90%;
-}
-
-.main-menu-item {
-    width: 90%;
-    list-style-type: none;
-    margin-top: 10px;
+  margin-left: 30px;
 }
 
 .main-div {
-    float: left;
-    width: 100%
-}
-
-.menu-div {
-    width: 17%;
-    height: 100%;
-    display: block;
-    float: left;
-    border-right: 2px solid #CCC;
-    padding-right: 10px;
-}
-
-.menu {
-    border-bottom: 1px solid #CCC;
-}
-
-.how-site-works {
-    padding-top: 20px;
-    padding-bottom: 20px;
-    border-bottom: 1px solid #CCC;
+  float: left;
+  width: 100%
 }
 
 .content-div {
-    float: left;
-    width: 74%;
+  float: left;
+  width: 74%;
 }
 
 .error-div {
-    color: #FF0000;
-    font-size: 12px;
-    font-weight: 800;
+  color: #FF0000;
+  font-size: 12px;
+  font-weight: 800;
 }
 
-.logged-user-info {
-    background-color: #FFFFCC;    
-    width: 100%;
-    height: 25px;
+.partner-container {
+  display: block;
+  width: 400px;
+  height: 60px;
+  border-top: 1px solid black;
 }
 
-.welcome-message {
-    float: left;    
-    margin-left: 50%;
+.org-link {
+  margin-bottom: 5px;
 }
 
-.new-messages {
-    float: left;    
-    margin-left: 2%;
-}
-
-.exit-btn {
-    float: left;    
-    margin-left: 2%;
-    cursor: pointer;
-    background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
-    border-radius: 4px;
-    padding: 5px;
+.logo-small {
+  margin-top: 5px;
+  width: 50px;
+  height: 50px;
 }

@@ -1,0 +1,39 @@
+.menu-div {
+  width: 14%;
+  margin-left: 1%;
+  height: 100%;
+  display: block;
+  float: left;
+  border-right: 2px solid #CCC;
+  padding-right: 10px;
+}
+
+.menu-div .menu {
+  border-bottom: 1px solid #CCC;
+}
+
+.menu-div .main-menu-list {
+  width: 90%;
+  padding: 0;
+  text-decoration: underline;
+}
+
+.menu-div .main-menu-item {
+  width: 90%;
+  list-style-type: none;
+  margin-top: 10px;
+}
+
+.menu-div .action-btn {
+  height: 40px;
+  border-radius: 4px;
+  font-size: 1.15;
+  font-weight: 700;
+  text-align: left;
+  line-height: 40px;
+  padding-left: 15px;
+}
+.menu-div .action-btn:hover {
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  cursor: pointer;
+}

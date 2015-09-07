@@ -1,0 +1,45 @@
+.logged-user-info {
+  background-color: #FFFFCC;
+  width: 100%;
+  height: 36px;
+}
+
+.logged-user-info .welcome-message {
+  float: left;
+  margin-left: 30%;
+}
+
+.logged-user-info .new-messages {
+  float: left;
+  margin-left: 2%;
+}
+
+.logged-user-info .new-partners {
+  float: left;
+  margin-left: 2%;
+  height: 32px;
+  cursor: pointer;
+}
+
+.logged-user-info .partners-img {
+  width: 32px;
+  height: 32px;
+  float: left;
+}
+
+.logged-user-info .partners-amount {
+  background-color: #F00;
+  float: left;
+  padding-left: 5px;
+  padding-right: 5px;
+  font-weight: 900;
+}
+
+.logged-user-info .top-btn {
+  float: left;
+  margin-left: 2%;
+  cursor: pointer;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  border-radius: 4px;
+  padding: 5px;
+}

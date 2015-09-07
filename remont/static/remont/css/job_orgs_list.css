@@ -1,0 +1,26 @@
+.org-logo {
+  width: 120px;
+  height: 120px;
+}
+
+.orgs-list {
+  margin-left: 10%;
+  margin-top: 2%;
+  width: 80%;
+}
+
+.org-info {
+  display: inline-block;
+  margin-left: 2%;
+  margin-bottom: 2%;
+}
+
+.main-div {
+  float: left;
+  width: 100%
+}
+
+.content-div {
+  float: left;
+  width: 74%;
+}

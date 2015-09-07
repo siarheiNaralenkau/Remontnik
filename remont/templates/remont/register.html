@@ -1,39 +1,41 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title>Регистрация на сайте</title>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/register.js"></script>
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/register.css">
+  <meta charset="UTF-8">
+  <title>Регистрация на сайте</title>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/register.js"></script>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/register.css">
 </head>
 <body>
-    {% include "remont/top_page_template.html" %}
-    <h1>Регистрация на сайте</h1>
-    <form action="../create_organization/" method="post" novalidate>
-        {{ reg_form.non_field_errors }}
-        {% csrf_token %}
-        {% for field in reg_form %}
-            <div class="register-field">                
-                <label class="register-label">
-                    {{ field.label }}:
-                </label>
-                {% if field.field.required %}
-                    <span class="required-field">
-                {% else %}
-                    <span>
-                {% endif %}
-                    {{field}}                
-                </span>
-                {{field.errors}}
-            </div>
+  {% include "remont/top_page_template.html" %}
+  <h1>Регистрация на сайте</h1>
+  <div class="create-organization-container">
+    <form action="../create_organization/" enctype="multipart/form-data" method="post" novalidate>
+      {{ reg_form.non_field_errors }}
+      {% csrf_token %}
+      {% for field in reg_form %}
+      <div class="register-field">
+        <label class="register-label">
+          {{ field.label }}:
+        </label>
+        {% if field.field.required %}
+        <span class="required-field">
+          {% else %}
+          <span>
+            {% endif %}
+            {{field}}
+          </span>
+          {{field.errors}}
+        </div>
         {% endfor %}
         <div class="register-field">
-            <div class="submit-btn-div">
-                <input type="submit" value="Зарегистрироваться"/>
-            </div>
+          <div class="submit-btn-div">
+            <input type="submit" value="Зарегистрироваться"/>
+          </div>
         </div>
-    </form>
-</body>
-</html>
+      </form>
+    </div>
+  </body>
+  </html>

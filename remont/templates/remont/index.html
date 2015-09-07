@@ -1,96 +1,109 @@
 <!DOCTYPE html>
 <html>
 <head lang="en">
-    <meta charset="UTF-8">
-    <title></title>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
-    <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
-    <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
-    <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/index.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/add_work_template.css">
 </head>
 
 <body>
-    {% if user.is_authenticated %}
-        <div class="logged-user-info">
-            <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
-            <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>                
-            <div class="exit-btn" id="exitBtn">Выход</div>
-        </div>
-    {% endif %}
-    <div class="topPage">        
-        <div id="sectionLogo" class="sectionLogo">
-            <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p">
-        </div>
-        <div id="sectionBanner" class="sectionBanner">
-            <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
-        </div>
-        <div id="sectionRegister" class="sectionRegister">
-            {% if not user.is_authenticated %}
-                <div class="center-hor">
-                    <a href="/remont/register">Регистрация</a>/<a href="#" id="loginLink">Вход</a>
-                </div>
+  {% if user.is_authenticated %}
+    {% include "remont/logged_user_info_template.html" %}
+  {% endif %}
+  {% include "remont/top_page_template.html" %}
+
+  {# Split page into 2 sections: 25 and 75 % width #}
+  <div class="main-div">
+    <div class="menu-div">
+      {% include "remont/main_menu.html" %}
+      {% include "remont/how_site_works.html" %}
+    </div>
+    <div class="content-div">
+      <div class="select-spec-cont">
+        <label for="workSpec">Специализация работ:</label>
+        <select id="workSpec">
+          {% for spec in work_specs %}
+            {% if spec.selected %}
+              <option value="{{spec.id}}" selected="selected">{{spec.value}}</option>
+            {% else %}
+              <option value="{{spec.id}}">{{spec.value}}</option>
             {% endif %}
-            <!-- <div class="center-hor margin-top20">
-                <span>Тип работ</span>
-                <select name="jobTypes" id="jobTypes">
-                    <option value="1">Промышленные</option>
-                    <option value="2">Индивидуальные</option>
-                    <option value="0">Все</option>
-                </select>
-            </div> -->
-        </div>
+          {% endfor %}
+        </select>
+      </div>
+      {% include "remont/top_orgs_template.html" %}
+      {% include "remont/search_template.html" %}
+      {% include "remont/add_work_template.html" %}
+      {% include "remont/job_suggestions.html" %}
     </div>
+  </div>
 
-    {# Split page into 2 sections: 25 and 75 % width #}
-    <div class="main-div">
-        <div class="menu-div">
-            <div class="menu">
-                {% include "remont/main_menu.html" %}
-            </div>
-            <div class="how-site-works">
-                {% include "remont/how_site_works.html" %}
-            </div>
-        </div>
-        <div class="content-div">
-            {% include "remont/top_orgs_template.html" %}
-            {% include "remont/search_template.html" %}
-            {% include "remont/add_work_template.html" %}
-            {% include "remont/job_suggestions.html" %}
-        </div>
-    </div>
+  <div class="hidden-el" id="loginDialog" title="Вход">
+    <form name="loginForm" action="site_login">
+      <div class="login-fields-div">
+        <label class="login-label" for="login">Название организации/Логин:</label>
+        <input type="text" name="login" id="login" value="" class="login-fields-input"/>
+      </div>
+      <div class="login-fields-div">
+        <label for="password">Пароль:</label>
+        <input type="password" name="password" id="password" value="" class="login-fields-input"/>
+      </div>
+      <div class="login-fields-div">
+        <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+        <a href="/remont/register" class="login-link">Регистрация</a>
+      </div>
+      <div class="error-div" id="loginError"></div>
+    </form>
+  </div>
 
-    <div style="display: none" id="loginDialog" title="Вход">
-        <form name="loginForm" action="site_login">
-            <div class="login-fields-div">
-                <label class="login-label" for="login">Название организации/Логин:</label>
-                <input type="text" name="login" id="login" value="" class="login-fields-input"/>
-            </div>
-            <div class="login-fields-div">
-                <label for="password">Пароль:</label>
-                <input type="password" name="password" id="password" value="" class="login-fields-input"/>
-            </div>
-            <div class="login-fields-div">
-                <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
-                <a href="/remont/register" class="login-link">Регистрация</a>
-            </div>
-            <div class="error-div" id="loginError"></div>
-        </form>
-    </div>
+  <div class="hidden-el" id="setPasswordDialog">
+    <form name="createPassword" action="createPassword">
+      <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
+      <div class="login-fields-div">
+        <label for="firstPassword">Введите пароль:</label>
+        <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+      </div>
+      <div class="login-fields-div">
+        <span class="help-text">Пароль должен быть не короче 6 символов</span>
+      </div>
+    </form>
+  </div>
 
-    <div style="display: none" id="setPasswordDialog">
-        <form name="createPassword" action="createPassword">
-            <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
-            <div class="login-fields-div">
-                <label for="firstPassword">Введите пароль:</label>
-                <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+  <div class="hidden-el" id="partnersRequestDialog">
+    <ul>
+      {% for pr in partner_requests %}
+        <li class="no-marker" id="{{pr.org_id}}">
+          <div class="partner-container">
+            <div class="cell-div">
+              <a href="/remont/view_profile?org_id={{pr.org_id}}">
+                <img src="{{pr.org_logo}}" class="logo-small"/>
+              </a>
             </div>
-            <div class="login-fields-div">
-                <span class="help-text">Пароль должен быть не короче 6 символов</span>
+            <div class="cell-div">
+              <div class="org-link">
+                <a href="/remont/view_profile?org_id={{pr.org_id}}">
+                  <span class="org-name">{{pr.org_name}}</span>
+                </a>
+              </div>
+              <div class="div-btn-medium add-partner" data-orgId="{{pr.org_id}}">
+                <span>Добавить в партнеры</span>
+              </div>
             </div>
-        </form>
-    </div>
+            <div class="cell-div-right reject-partner clickable" data-orgId="{{pr.org_id}}" title="Удалить">
+              <img src="{{ STATIC_URL }}remont/images/delete.jpg" class="icon-small"/>
+            </div>
+          </div>
+        </li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
 
 </body>
 </html>

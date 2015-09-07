@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/logged_user_info.css">
+</head>
+<body>
+  <div class="logged-user-info">
+    <div class="hidden-el" id="userId">{{user.id}}</div>
+    <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
+    <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>
+    <div class="new-partners">
+      <img src="{{ STATIC_URL }}remont/images/partners.png" class="partners-img"/>
+      <div class="partners-amount" id="partnersAmount">{{ partner_requests|length }}</div>
+    </div>
+    <div class="top-btn" id="editProfileBtn">Редактировать профайл</div>
+    <div class="top-btn" id="exitBtn">Выход</div>
+  </div>
+</body>
+</html>
