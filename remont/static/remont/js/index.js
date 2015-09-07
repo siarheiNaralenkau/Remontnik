@@ -195,10 +195,17 @@ $(function() {
       $("#partnersAmount").html(partnersAmount);
     }
 
+    function changeSpec() {
+      $.post("/remont/change_spec_filter/", {"spec": $(this).val()}, function(responseData) {
+        console.log("Job Spec filter change status: " + responseData.status);
+      });
+    }
+
     $("#loginLink").on('click', showLoginDialog);
     $("#exitBtn").on('click', logout);
     $("#editProfileBtn").on('click', editProfile);
     $(".new-partners").on('click', showPartnersDialog);
     $(".add-partner").on('click', approvePartner);
     $(".reject-partner").on('click', rejectPartner);
+    $("#workSpec").on("change", changeSpec);
   });
