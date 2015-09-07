@@ -8,7 +8,7 @@
 
 .topPage .sectionLogo {
   height: 90px;
-  width: 15%;
+  width: 14%;
   margin-top: 4px;
   margin-left: 1%;
   display: table-cell;
@@ -18,7 +18,7 @@
   display: table-cell;
   border: solid 1px #999;
   height: 90px;
-  width: 70%;
+  width: 67%;
   float: left;
   margin-top: 4px;
   margin-left: 6%;
@@ -27,9 +27,9 @@
 .topPage .sectionRegister {
   display: table-cell;
   height: 90px;
-  width: 15%;
-  float: right;
-  margin-right: 1%;
+  width: 14%;
+  float: left;
+  margin-left: 6%;
   margin-top: 4px;
   border-radius: 2px;
 }
