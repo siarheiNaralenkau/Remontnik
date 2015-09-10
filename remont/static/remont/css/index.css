@@ -37,12 +37,10 @@
 }
 
 .searchInput {
-  width: 40%;
-  display: inline-block;
+  width: 70%;
   vertical-align: middle;
-
-  *display: inline;
-  *margin: 0 20px 0 20px;
+  /**display: inline;
+  *margin: 0 20px 0 20px;*/
 }
 
 .top10Inner {

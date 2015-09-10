@@ -20,9 +20,11 @@
 </head>
 <body>
   <div class="searchCompany ui-widget">
-    <input type="text" maxlength="80" class="searchInput" name="searchKeyword">
-    <button class="searchButton">Поиск</button>
-    <select name="city" class="align-middle">
+    <label for="searchKeyword">Поиск организаций</label>
+    <input type="text" maxlength="80" class="searchInput" name="searchKeyword" id="searchKeyword"
+      placeholder="Введите название организации или тип работы">
+    <!-- <label for="orgCity">Город:</label>
+    <select name="city" class="align-middle" id="orgCity">
       <optgroup class="font13">
         {% for city in cities %}
         <option value="{{ city.id }}">
@@ -30,7 +32,7 @@
         </option>
         {% endfor %}
       </optgroup>
-    </select>
+    </select> -->
   </div>
 </body>
 </html>

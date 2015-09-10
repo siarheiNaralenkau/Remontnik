@@ -36,19 +36,19 @@ def index(request):
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
   work_specs = []
-  work_specs.append({"id": 0, "value": "", "selected": False})
-  work_specs.append({"id": -1,  "value": u"Все", "selected": False})
+  work_specs.append({"id": 0, "value": "", "selected": "", "disabled": "disabled=disabled"})
+  work_specs.append({"id": -1,  "value": u"Все", "selected": "", "disabled": ""})
   for spec in WorkSpec.objects.all():
-    work_specs.append({"id": spec.id, "value": spec.get_name_display(), "selected": False})
+    work_specs.append({"id": spec.id, "value": spec.get_name_display(), "selected": "", "disabled": ""})
 
   if sel_spec:
     for spec in work_specs:
       if spec["id"] == sel_spec:
         print("Selected spec is: {0}".format(sel_spec))
-        spec["selected"] = True
+        spec["selected"] = "selected=selected"
         break
   else:
-    work_specs[0]["selected"] = True
+    work_specs[0]["selected"] = "selected=selected"
     request.session["sel_spec"] = work_specs[0]["id"]
 
   suggest_job_form = SuggestJobForm()
@@ -100,19 +100,32 @@ def suggest_job_save(request):
   return redirect("/remont")
 
 
-# Поиск организации по ключевым словам
+# Поиск организации по ключевым словам, фильтр - промышленное, частное строительство, все.
 def search_organizations(request):
-  logged_org = OrganizationProfile.objects.filter(account=request.user).first()
+  sel_spec = request.session.get("sel_spec")
+  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
+  logged_org = ""
+
+  if request.user.is_authenticated():
+    logged_org = OrganizationProfile.objects.filter(account=request.user).first()
   key_phrase = request.REQUEST["q"]
   response_data = []
+
   # 1) Поиск по имени организации
-  orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+  if org_spec:
+    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase, spec=org_spec)
+  else:
+    orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
+
   for org in orgs_by_name:
     if org.logo:
       logo_url = "/remont/" + org.logo.url
     else:
       logo_url = "/static/remont/images/question.jpg"
-    if logged_org.id != org.id:
+    if logged_org:
+      if (logged_org.id != org.id):
+        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+    else:
       response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
 
   # 2) Поиск по типу выполняемых работ.
@@ -194,7 +207,12 @@ def suggest_job_save_ajax(request):
 def organizations_list(request):
   # city_id = request.REQUEST["city"]
   # organizations = OrganizationProfile.objects.filter(city=city_id)
-  organizations = OrganizationProfile.objects.all()
+  sel_spec = request.session.get("sel_spec")
+  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
+  if org_spec:
+    organizations = OrganizationProfile.objects.filter(spec=org_spec)
+  else:
+    organizations = OrganizationProfile.objects.all()
   return render(request, 'remont/organizations_list.html', {"organizatins": organizations})
 
 
@@ -317,7 +335,20 @@ def get_album_photos(request):
 
 # Получаем список организаций(Для страницы)
 def get_orgs_list(request):
-  orgs_list = list(OrganizationProfile.objects.all().order_by('name'))
+  # Filter by organization specialization...
+  sel_spec = request.session.get("sel_spec")
+  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
+  logged_org = ""
+
+  if request.user.is_authenticated():
+    logged_org = OrganizationProfile.objects.filter(account=request.user).first()
+
+  orgs = OrganizationProfile.objects.all().order_by('name')
+  if logged_org:
+    orgs = orgs.exclude(id=logged_org.id)
+  if org_spec:
+    orgs = orgs.filter(spec=org_spec)
+  orgs_list = list(orgs)
   print("Amount of organizations: {0}".format(len(orgs_list)))
   return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
 

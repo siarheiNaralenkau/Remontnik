@@ -164,30 +164,6 @@ input[type="text"], input[type="url"], input[type="email"], input[type="password
   min-height: 20px;
 }
 
-.search-item {
-  display: block;
-  overflow: auto;
-}
-
-.search-img {
-  display: inline-block;
-  margin-top: 2px;
-  margin-left: 2px;
-  width: 40px;
-  height: 40px;
-  float: left;
-}
-
-.search-name {
-  display: inline-block;
-  margin-left: 10px;
-  margin-top: 10px;
-  font-size: 0.9em;
-  font-weight: 800;
-  color: #00F;
-  float: left;
-}
-
 .btn-edit {
   float: right;
   margin-right: 10%;

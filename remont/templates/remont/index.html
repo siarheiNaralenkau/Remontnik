@@ -26,11 +26,7 @@
         <label for="workSpec">Специализация работ:</label>
         <select id="workSpec">
           {% for spec in work_specs %}
-            {% if spec.selected %}
-              <option value="{{spec.id}}" selected="selected">{{spec.value}}</option>
-            {% else %}
-              <option value="{{spec.id}}">{{spec.value}}</option>
-            {% endif %}
+            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
           {% endfor %}
         </select>
       </div>
@@ -72,6 +68,10 @@
     </form>
   </div>
 
+  <div class="hidden-el" id="noSpecDialog">
+    <p>Пожалуйста, укажите специализацию работ!</p>
+  </div>
+
   <div class="hidden-el" id="partnersRequestDialog">
     <ul>
       {% for pr in partner_requests %}
@@ -100,6 +100,8 @@
       {% endfor %}
     </ul>
   </div>
+
+  <span class="hidden-el" id="selSpec">{{sel_spec}}</span>
 
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>

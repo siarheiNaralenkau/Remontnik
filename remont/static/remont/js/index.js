@@ -45,14 +45,18 @@ function refreshJobs(data, textStatus, jqXHR) {
 }
 
 $(function() {
-  var loginDialog, setPasswordDialog, partnersRequestDialog;
+  var loginDialog, setPasswordDialog, partnersRequestDialog, noSpecDialog;
 
   $("#job_category").change(categoryChanged);
   $(".place-job-request-btn").click(saveJobRequest);
 
-    // Add search:
-    $(".searchInput").autocomplete({
-      source: function( request, response ) {
+  // Add search:
+  $(".searchInput").autocomplete({
+    source: function( request, response ) {
+      var selSpec = $("#selSpec").html();
+      if(!selSpec) {
+        noSpecDialog.dialog("open");
+      } else {
         $.ajax({
           url: "/remont/search_organizations",
           data: {
@@ -63,149 +67,169 @@ $(function() {
             response(result);
           }
         });
-      },
-      minLength: 3,
-      select: function(event, ui) {
-            // Forward to organization profile review...
-            console.log("Selected: " + ui);
-            window.open("/remont/org_profile?org=" + ui.item.value, "_blank");
-          }
-        });
-
-    loginDialog = $("#loginDialog").dialog({
-      autoOpen: false,
-      resizable: false,
-      modal: true,
-      title: "Вход",
-      height: 300,
-      width: 500,
-      buttons: {
-        "Войти": sendLoginRequest,
-        "Отмена": function() {
-          loginDialog.dialog( "close" );
-        }
-      },
-      close: function() {
-        document.forms["loginForm"].reset();
       }
-    });
+    },
+    minLength: 3,
+    select: function(event, ui) {
+      // Forward to organization profile review...
+      console.log("Selected: " + ui);
+      window.open("/remont/org_profile?org=" + ui.item.value, "_blank");
+    }
+  }).
+  autocomplete("instance")._renderItem = function(ul, item) {
+    var result = $("<li class='search-item'>")
+    .append("<a href='/remont/view_profile?org_id=" + item.id + "'>")
+    .append("<img class='search-img' src='" + item.logo + "'/>")
+    .append("<span class='search-name'>" + item.name + "</span>")
+    .append("</a></li>");
+    return result.appendTo(ul);
+  };
 
-    setPasswordDialog = $("#setPasswordDialog").dialog({
-      autoOpen: false,
-      resizable: false,
-      modal: true,
-      title: "Создание пароля",
-      height: 270,
-      width: 500,
-      buttons: {
-        "Сохранить пароль": sendSetPasswordRequest
-      },
-      close: function() {
-        document.forms["createPassword"].reset();
+  loginDialog = $("#loginDialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    title: "Вход",
+    height: 300,
+    width: 500,
+    buttons: {
+      "Войти": sendLoginRequest,
+      "Отмена": function() {
+        loginDialog.dialog( "close" );
       }
-    });
-
-    partnersRequestDialog = $("#partnersRequestDialog").dialog({
-      autoOpen: false,
-      resizable: false,
-      modal: true,
-      title: "Запросы на добавление в партнеры",
-      height: 400,
-      width: 500
-    });
-
-    // Функция отображает диалог для ввода логина и пароля.
-    function showLoginDialog() {
-      loginDialog.dialog("open");
+    },
+    close: function() {
+      document.forms["loginForm"].reset();
     }
-
-    function showPartnersDialog() {
-      partnersRequestDialog.dialog("open");
-    }
-
-    function sendLoginRequest() {
-      var data = {
-        'login': $("#login").val(),
-        'password': $("#password").val()
-      };
-      $.post("/remont/site_login/", data, loginResult);
-    }
-
-    function sendSetPasswordRequest() {
-      var data = {
-        'login': $("#passwordOrgName").val(),
-        'password': $("#firstPassword").val()
-      };
-      $.post("/remont/set_password/", data, setPasswordResult);
-    }
-
-    function loginResult(responseData, textStatus, jqXHR) {
-      console.log("Login status: " + responseData.status);
-      if(responseData.status === "success") {
-        loginDialog.dialog("close");
-        $("#loginError").text("");
-        window.location.replace("/remont");
-      } else {
-        $("#loginError").text(responseData.error_message);
-      }
-    }
-
-    function setPasswordResult(responseData, textStatus, jqXHR) {
-      console.log(responseData);
-      if(responseData.status == "success") {
-        window.location.replace("/remont/org_profile?org=" + responseData.org_id);
-      }
-    }
-
-    function logout() {
-      window.location.replace("/remont/site_logout");
-    }
-
-    function editProfile() {
-      window.location.replace("/remont/edit_organization/" + $("#userId").text());
-    }
-
-    function logSuccess(responseData, textStatus) {
-      console.log("Response status: " + responseData.status);
-    }
-
-    function approvePartner() {
-      var senderId = $(this).attr("data-orgId");
-      var data = {
-        'senderId': senderId
-      };
-      $.post("/remont/approve_partner/", data, function() {
-        $("#" + senderId).remove();
-        updatePartnersAmount(-1);
-      });
-    }
-
-    function rejectPartner() {
-      var senderId = $(this).attr("data-orgId");
-      $.post("/remont/reject_partner/", {'senderId': $(this).attr("data-orgId")}, function() {
-        $("#" + senderId).remove();
-        updatePartnersAmount(-1);
-      });
-    }
-
-    // Function changes the label about new partner requests
-    function updatePartnersAmount(diff) {
-      var partnersAmount = parseInt($("#partnersAmount").html());
-      partnersAmount = partnersAmount + diff;
-      $("#partnersAmount").html(partnersAmount);
-    }
-
-    function changeSpec() {
-      $.post("/remont/change_spec_filter/", {"spec": $(this).val()}, function(responseData) {
-        console.log("Job Spec filter change status: " + responseData.status);
-      });
-    }
-
-    $("#loginLink").on('click', showLoginDialog);
-    $("#exitBtn").on('click', logout);
-    $("#editProfileBtn").on('click', editProfile);
-    $(".new-partners").on('click', showPartnersDialog);
-    $(".add-partner").on('click', approvePartner);
-    $(".reject-partner").on('click', rejectPartner);
-    $("#workSpec").on("change", changeSpec);
   });
+
+  setPasswordDialog = $("#setPasswordDialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    title: "Создание пароля",
+    height: 270,
+    width: 500,
+    buttons: {
+      "Сохранить пароль": sendSetPasswordRequest
+    },
+    close: function() {
+      document.forms["createPassword"].reset();
+    }
+  });
+
+  partnersRequestDialog = $("#partnersRequestDialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    title: "Запросы на добавление в партнеры",
+    height: 400,
+    width: 500
+  });
+
+  noSpecDialog = $("#noSpecDialog").dialog({
+    autoOpen: false,
+    resizable: false,
+    modal: true,
+    title: "Не выбрана специализация работ",
+    height: 320,
+    width: 480
+  });
+
+  // Функция отображает диалог для ввода логина и пароля.
+  function showLoginDialog() {
+    loginDialog.dialog("open");
+  }
+
+  function showPartnersDialog() {
+    partnersRequestDialog.dialog("open");
+  }
+
+  function sendLoginRequest() {
+    var data = {
+      'login': $("#login").val(),
+      'password': $("#password").val()
+    };
+    $.post("/remont/site_login/", data, loginResult);
+  }
+
+  function sendSetPasswordRequest() {
+    var data = {
+      'login': $("#passwordOrgName").val(),
+      'password': $("#firstPassword").val()
+    };
+    $.post("/remont/set_password/", data, setPasswordResult);
+  }
+
+  function loginResult(responseData, textStatus, jqXHR) {
+    console.log("Login status: " + responseData.status);
+    if(responseData.status === "success") {
+      loginDialog.dialog("close");
+      $("#loginError").text("");
+      window.location.replace("/remont");
+    } else {
+      $("#loginError").text(responseData.error_message);
+    }
+  }
+
+  function setPasswordResult(responseData, textStatus, jqXHR) {
+    console.log(responseData);
+    if(responseData.status == "success") {
+      window.location.replace("/remont/org_profile?org=" + responseData.org_id);
+    }
+  }
+
+  function logout() {
+    window.location.replace("/remont/site_logout");
+  }
+
+  function editProfile() {
+    window.location.replace("/remont/edit_organization/" + $("#userId").text());
+  }
+
+  function logSuccess(responseData, textStatus) {
+    console.log("Response status: " + responseData.status);
+  }
+
+  function approvePartner() {
+    var senderId = $(this).attr("data-orgId");
+    var data = {
+      'senderId': senderId
+    };
+    $.post("/remont/approve_partner/", data, function() {
+      $("#" + senderId).remove();
+      updatePartnersAmount(-1);
+    });
+  }
+
+  function rejectPartner() {
+    var senderId = $(this).attr("data-orgId");
+    $.post("/remont/reject_partner/", {'senderId': $(this).attr("data-orgId")}, function() {
+      $("#" + senderId).remove();
+      updatePartnersAmount(-1);
+    });
+  }
+
+  // Function changes the label about new partner requests
+  function updatePartnersAmount(diff) {
+    var partnersAmount = parseInt($("#partnersAmount").html());
+    partnersAmount = partnersAmount + diff;
+    $("#partnersAmount").html(partnersAmount);
+  }
+
+  function changeSpec() {
+    $.post("/remont/change_spec_filter/", {"spec": $(this).val()}, function(responseData) {
+      console.log("Job Spec filter change status: " + responseData.status);
+      var selectedSpec = $("#workSpec").val();
+      $("#selSpec").html(selectedSpec);
+    });
+  }
+
+  $("#loginLink").on('click', showLoginDialog);
+  $("#exitBtn").on('click', logout);
+  $("#editProfileBtn").on('click', editProfile);
+  $(".new-partners").on('click', showPartnersDialog);
+  $(".add-partner").on('click', approvePartner);
+  $(".reject-partner").on('click', rejectPartner);
+  $("#workSpec").on("change", changeSpec);
+});
