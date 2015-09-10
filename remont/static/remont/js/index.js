@@ -3,52 +3,8 @@ String.prototype.format = function () {
   return this.replace(/\{(\d+)\}/g, function (m, n) { return args[n]; });
 }
 
-function categoryChanged() {
-  var categoryId = $(this).val();
-  $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
-    function(data) {
-      console.log(data);
-      $('#job_type').children('option:not(:first)').remove();
-      for(var i = 0; i < data.length; i++) {
-        $('#job_type')
-        .append($("<option></option>")
-         .attr("value",data[i].id)
-         .text(data[i].name));
-      }
-    }
-    );
-}
-
-function saveJobRequest() {
-  var data = {
-    'job_header': $(".job_header").first().val(),
-    'job_category': $(".job_category").first().val(),
-    'job_type': $(".job_type").first().val(),
-    'job_description': $(".job_description").first().val(),
-    'contact_name': $(".contact_name").first().val(),
-    'job_city': $(".job_city").first().val(),
-    'contact_phone': $(".contact_phone").first().val(),
-    'contact_mail': $(".contact_mail").first().val(),
-    'job_spec': $("#jobTypes").val()
-  };
-  $.post('/remont/suggest_job_save_ajax/', data, refreshJobs);
-}
-
-function refreshJobs(data, textStatus, jqXHR) {
-  var jobRequestsList = $('.job-requests-list').first()
-  var jobsHtml = jobRequestsList.html()
-  var newSuggestionHtml = '<li><div class="job-request-div"><h3>{0}</h3><h5>{1}</h5><div><span>{2}</span><p>{3}</p></div></div></li>'
-  .format(data.header, data.type_name, data.date_created, data.description)
-  var newHtml = newSuggestionHtml + jobsHtml;
-  jobRequestsList.html(newHtml);
-  $('.suggest-job-form')[0].reset();
-}
-
 $(function() {
   var loginDialog, setPasswordDialog, partnersRequestDialog, noSpecDialog;
-
-  $("#job_category").change(categoryChanged);
-  $(".place-job-request-btn").click(saveJobRequest);
 
   // Add search:
   $(".searchInput").autocomplete({
@@ -135,6 +91,26 @@ $(function() {
     height: 320,
     width: 480
   });
+
+  // Создание нового предложения по работе.
+  function saveJobRequest() {
+    var selSpec = $("#selSpec").html();
+    if(!selSpec) {
+      noSpecDialog.dialog("open");
+    } else {
+      var data = {
+        'job_header': $(".job_header").first().val(),
+        'job_category': $(".job_category").first().val(),
+        'job_type': $(".job_type").first().val(),
+        'job_description': $(".job_description").first().val(),
+        'contact_name': $(".contact_name").first().val(),
+        'job_city': $(".job_city").first().val(),
+        'contact_phone': $(".contact_phone").first().val(),
+        'contact_mail': $(".contact_mail").first().val()
+      };
+      $.post('/remont/suggest_job_save_ajax/', data, refreshJobs);
+    }
+  }
 
   // Функция отображает диалог для ввода логина и пароля.
   function showLoginDialog() {
@@ -225,6 +201,29 @@ $(function() {
     });
   }
 
+  function refreshJobs(data, textStatus, jqXHR) {
+    var jobRequestsList = $('.job-requests-list').first()
+    var jobsHtml = jobRequestsList.html()
+    var newSuggestionHtml = '<li><div class="job-request-div"><h3>{0}</h3><h5>{1}</h5><div><span>{2}</span><p>{3}</p></div></div></li>'
+        .format(data.header, data.type_name, data.date_created, data.description)
+    var newHtml = newSuggestionHtml + jobsHtml;
+    jobRequestsList.html(newHtml);
+    $('.suggest-job-form')[0].reset();
+  }
+
+  function categoryChanged() {
+    var categoryId = $(this).val();
+    $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
+      function(data) {
+        console.log(data);
+        $('#job_type').children('option:not(:first)').remove();
+        for(var i = 0; i < data.length; i++) {
+          $('#job_type').append($("<option></option>").attr("value",data[i].id).text(data[i].name));
+        }
+      }
+    );
+  }
+
   $("#loginLink").on('click', showLoginDialog);
   $("#exitBtn").on('click', logout);
   $("#editProfileBtn").on('click', editProfile);
@@ -232,4 +231,7 @@ $(function() {
   $(".add-partner").on('click', approvePartner);
   $(".reject-partner").on('click', rejectPartner);
   $("#workSpec").on("change", changeSpec);
+  $("#job_category").change(categoryChanged);
+  $(".place-job-request-btn").on('click', saveJobRequest);
+
 });

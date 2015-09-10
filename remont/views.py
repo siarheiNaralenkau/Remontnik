@@ -176,31 +176,34 @@ def search_orgs_html(request):
 
 
 @csrf_exempt
+# Создание предложения по работе.
 def suggest_job_save_ajax(request):
   job_type_id = request.POST["job_type"]
   if job_type_id:
     job_type = WorkType.objects.filter(id=job_type_id).first()
   else:
     job_type = None
-    job = JobSuggestion(contact_name=request.POST["contact_name"],
-      job_type=job_type,
-      description=request.POST["job_description"],
-      phone=request.POST["contact_phone"],
-      email=request.POST["contact_mail"],
-      short_header=request.POST["job_header"])
-    job_spec = request.POST["job_spec"]
-    work_spec = WorkSpec.objects.get(id=int(job_spec))
-    job.job_spec = work_spec
-    job.save()
+
+  job = JobSuggestion(contact_name=request.POST["contact_name"],
+    job_type=job_type,
+    description=request.POST["job_description"],
+    phone=request.POST["contact_phone"],
+    email=request.POST["contact_mail"],
+    short_header=request.POST["job_header"])
+  job_spec = request.session.get("sel_spec")
+  work_spec = WorkSpec.objects.get(id=int(job_spec))
+  job.job_spec = work_spec
+  job.save()
 
   if job_type:
     type_name = job_type.name
   else:
     type_name = u''
-    response_data = {'header': job.short_header, 'type_name': type_name,
-    'date_created': job.date_created, 'description': job.description}
-    response = JsonResponse(response_data, safe=False)
-    return response
+
+  response_data = {'header': job.short_header, 'type_name': type_name,
+      'date_created': job.date_created, 'description': job.description}
+  response = JsonResponse(response_data, safe=False)
+  return response
 
 
 # Отображает список организаций
