@@ -12,7 +12,7 @@ from smtplib import SMTPAuthenticationError
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
 WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
-from remont.utils import get_pending_partner_requests
+from remont.utils import get_pending_partner_requests, get_top_orgs
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -58,7 +58,8 @@ def index(request):
       "logged_in": False,
       "categories": categories,
       "suggest_job_form": suggest_job_form,
-      "work_specs": work_specs
+      "work_specs": work_specs,
+      "top8_orgs": get_top_orgs()
   }
   # Check if user is logged in.
   if request.user.is_authenticated():
@@ -657,3 +658,8 @@ def change_spec_filter(request):
   new_spec = request.POST["spec"]
   request.session["sel_spec"] = int(new_spec)
   return JsonResponse({"status": "success"})
+
+
+# Получаем top8 организаций по рейтингу
+def top_orgs(request):
+  return JsonResponse(get_top_orgs(), safe=False)

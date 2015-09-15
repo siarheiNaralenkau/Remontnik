@@ -224,6 +224,11 @@ $(function() {
     );
   }
 
+  function viewProfile() {
+    var orgId = $(this).attr("dataOrgId");
+    window.location.replace("/remont/view_profile?org_id=" + orgId);
+  }
+
   $("#loginLink").on('click', showLoginDialog);
   $("#exitBtn").on('click', logout);
   $("#editProfileBtn").on('click', editProfile);
@@ -233,5 +238,26 @@ $(function() {
   $("#workSpec").on("change", changeSpec);
   $("#job_category").change(categoryChanged);
   $(".place-job-request-btn").on('click', saveJobRequest);
+  $(".top-orgs-child").on('click', viewProfile);
+
+  var ratings = $(".top-rating");
+  for(var i = 0; i < ratings.length; i++) {
+    var ratingEl = ratings[i];
+    var ratingValue = +$(ratingEl).attr("dataRating");
+    var ratingElId = "#" + $(ratingEl).attr("id");
+    $(ratingElId).jRate({
+      readOnly: true,
+      startColor: "orange",
+      endColor: "orange",
+      rating: ratingValue,
+      width: 16,
+      height: 16,
+      shape: 'STAR',
+      min: 0,
+      max: 5,
+      precision: 0.5,
+      horizontal: true
+    });
+  }
 
 });
