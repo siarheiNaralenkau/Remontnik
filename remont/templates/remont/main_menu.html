@@ -4,25 +4,35 @@
   <meta charset="UTF-8">
   <title></title>
   <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/menu.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
 </head>
 <body>
   <div class="menu">
     <ul class="main-menu-list">
       <li class="main-menu-item">
-        <div class="action-btn" onclick="mainMenuClick('/remont/jobs_list')">Каталог работ</div>
+        <div class="action-btn" dataLink="/remont/jobs_list">Каталог работ</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn">Каталог товаров</div>
+        <div class="action-btn" dataLink="">Каталог товаров</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn">Полезные статьи</div>
+        <div class="action-btn" dataLink="">Полезные статьи</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn" onclick="mainMenuClick('/remont/orgs_list')">Организации</div>
+        <div class="action-btn" dataLink="">Новости</div>
+      </li>
+      <li class="main-menu-item">
+        <div class="action-btn" dataLink="/remont/orgs_list">Организации</div>
       </li>
     </ul>
   </div>
 
+  <div class="hidden-el" id="noSpecDialog">
+    <p>Пожалуйста, укажите специализацию работ!</p>
+  </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/menu.js"></script>
 
 </body>

@@ -38,6 +38,7 @@ urlpatterns = patterns('',
   url(r'^reject_partner/$', views.reject_partner, name='reject_partner'),
   url(r'^get_partner_requests_json/$', views.get_partner_requests_json, name='get_partner_requests_json'),
   url(r'^change_spec_filter/$', views.change_spec_filter, name='change_spec_filter'),
+  url(r'^top_orgs/$', views.top_orgs, name='top_orgs'),
   (r'^ckeditor/', include('ckeditor.urls')),
   )
 
