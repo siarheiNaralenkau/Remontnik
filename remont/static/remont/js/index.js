@@ -247,11 +247,11 @@ $(function() {
     var ratingElId = "#" + $(ratingEl).attr("id");
     $(ratingElId).jRate({
       readOnly: true,
-      startColor: "orange",
-      endColor: "orange",
+      startColor: "#FFFF33",
+      endColor: "#FFFF33",
       rating: ratingValue,
-      width: 16,
-      height: 16,
+      width: 14,
+      height: 14,
       shape: 'STAR',
       min: 0,
       max: 5,

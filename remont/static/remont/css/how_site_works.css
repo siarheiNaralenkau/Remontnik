@@ -21,3 +21,29 @@
   font-size: 22px;
   font-weight: bold;
 }
+
+.how-site-works .banner-img {
+  width: 100%;
+  height: 100%;
+  border: 1px solid black;
+}
+
+.how-site.works .banner-container {
+  display: inline-block;
+  position: relative;
+  margin-top: 5px;
+  margin-left: 1%;
+  width: 98%;
+}
+
+.how-site.works .banner-dummy {
+  padding-top: 75%;
+}
+
+.how-site.works .banner-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
