@@ -7,3 +7,12 @@
   float: left;
   width: 74%;
 }
+
+.orgs-list-header {
+  margin-left: 50px;
+}
+
+.orgs-list {
+  list-style-type: none;
+  line-height: 2;
+}
