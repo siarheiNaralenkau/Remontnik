@@ -27,7 +27,7 @@ def get_top_orgs():
   orgs_list = OrganizationProfile.objects.all()
   index = 0
   for org in orgs_list:
-    rating = randrange(1, 11) / 2
+    rating = get_org_rating(org)
     logo = get_org_logo(org)
     top8_data.append({"id": org.id, "name": org.name, "rating": rating, "logo": logo})
     index = index + 1
@@ -43,3 +43,8 @@ def get_org_logo(org):
   else:
     logo_url = "/static/remont/images/info_empty.jpg"
   return logo_url
+
+
+def get_org_rating(org):
+  rating = randrange(1, 11) / 2
+  return rating

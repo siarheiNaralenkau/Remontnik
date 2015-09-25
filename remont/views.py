@@ -12,7 +12,7 @@ from smtplib import SMTPAuthenticationError
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
 WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
-from remont.utils import get_pending_partner_requests, get_top_orgs
+from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -352,7 +352,12 @@ def get_orgs_list(request):
     orgs = orgs.exclude(id=logged_org.id)
   if org_spec:
     orgs = orgs.filter(spec=org_spec)
-  orgs_list = list(orgs)
+  # orgs_list = list(orgs)
+  orgs_list = []
+  for org in orgs:
+    org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
+    orgs_list.append(org_data)
+
   print("Amount of organizations: {0}".format(len(orgs_list)))
   return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
 

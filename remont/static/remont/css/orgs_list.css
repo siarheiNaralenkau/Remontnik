@@ -16,3 +16,36 @@
   list-style-type: none;
   line-height: 2;
 }
+
+.orglist-container {
+  width: 100%;
+}
+
+.org-item-container {
+  width: 49%;
+  height: 100px;
+}
+
+.org-item-container:hover {
+  cursor: pointer;
+}
+
+.org-item-logo {
+  width: 33%;
+  height: 100%;
+  float: left;
+  border: 1px solid black;
+}
+
+.org-item-data {
+  width: 66%;
+  height: 100%;
+  float: left;
+  border: 1px solid black;
+}
+
+.org-logo {
+  display: inline;
+  width: 100%;
+  height: 100%;
+}
