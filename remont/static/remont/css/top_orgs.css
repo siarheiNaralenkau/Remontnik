@@ -2,7 +2,7 @@
   margin-top: 10px
 }
 .top-orgs-parent {
-  width: 80%;
+  width: 96%;
   margin: 0 auto;
   border: 1px solid black;
   text-align: center;
@@ -14,7 +14,7 @@
 }
 .top-orgs-child {
   width: 9%;
-  height: 100px;
+  height: 130px;
   border: solid 1px #ccc;
   display: inline-block;
   vertical-align: middle;
