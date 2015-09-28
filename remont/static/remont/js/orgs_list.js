@@ -12,13 +12,14 @@ $(function() {
       startColor: "#FFFF33",
       endColor: "#FFFF33",
       rating: ratingValue,
-      width: 14,
-      height: 14,
+      width: 30,
+      height: 30,
       shape: 'STAR',
       min: 0,
       max: 5,
       precision: 0.5,
-      horizontal: true
+      horizontal: true,
+      backgroundColor: "#F0F0F0"
     });
   }
 
