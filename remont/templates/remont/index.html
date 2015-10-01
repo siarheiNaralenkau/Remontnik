@@ -22,14 +22,6 @@
       {% include "remont/how_site_works.html" %}
     </div>
     <div class="content-div">
-      <div class="select-spec-cont">
-        <label for="workSpec">Специализация работ:</label>
-        <select id="workSpec">
-          {% for spec in work_specs %}
-            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
-          {% endfor %}
-        </select>
-      </div>
       {% include "remont/top_orgs_template.html" %}
       {% include "remont/search_template.html" %}
       {% include "remont/add_work_template.html" %}
@@ -66,10 +58,6 @@
         <span class="help-text">Пароль должен быть не короче 6 символов</span>
       </div>
     </form>
-  </div>
-
-  <div class="hidden-el" id="noSpecDialog">
-    <p>Пожалуйста, укажите специализацию работ!</p>
   </div>
 
   <div class="hidden-el" id="partnersRequestDialog">

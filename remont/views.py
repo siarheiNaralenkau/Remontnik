@@ -36,7 +36,7 @@ def index(request):
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
   work_specs = []
-  work_specs.append({"id": 0, "value": "", "selected": "", "disabled": "disabled=disabled"})
+  work_specs.append({"id": 0, "value": u"Специализация работ", "selected": "", "disabled": "disabled=disabled"})
   work_specs.append({"id": -1,  "value": u"Все", "selected": "", "disabled": ""})
   for spec in WorkSpec.objects.all():
     work_specs.append({"id": spec.id, "value": spec.get_name_display(), "selected": "", "disabled": ""})

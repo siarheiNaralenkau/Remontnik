@@ -21,6 +21,13 @@
           <div class="action-btn" id="loginLink">Вход</div>
         </div>
       {% endif %}
+      <div class="select-spec-cont">
+        <select id="workSpec" class="sel-work-spec">
+          {% for spec in work_specs %}
+            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
   </div>
 
