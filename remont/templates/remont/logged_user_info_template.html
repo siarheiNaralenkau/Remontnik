@@ -3,19 +3,32 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/logged_user_info.css">
 </head>
 <body>
   <div class="logged-user-info">
     <div class="hidden-el" id="userId">{{user.id}}</div>
     <div class="welcome-message">Добро пожаловать, {{ user.username }}</div>
-    <div class="new-messages">Новых сообщений: {{ newMesagesAmount }}</div>
-    <div class="new-partners">
-      <img src="{{ STATIC_URL }}remont/images/partners.png" class="partners-img"/>
-      <div class="partners-amount" id="partnersAmount">{{ partner_requests|length }}</div>
+    <div class="new-messages icon-with-amount" title="Новые сообщения">
+      <img src="{{ STATIC_URL }}remont/images/icon_message.png" class="top-icon"/>
+      <div class="new-items-amount" id="messagesAmount">{{ newMesagesAmount }}</div>
+    </div>
+    <div class="new-partners icon-with-amount" title="Предложения о партнерстве">
+      <img src="{{ STATIC_URL }}remont/images/partners.png" class="top-icon"/>
+      <div class="new-items-amount" id="partnersAmount">{{ partner_requests|length }}</div>
     </div>
     <div class="top-btn" id="editProfileBtn">Редактировать профайл</div>
     <div class="top-btn" id="exitBtn">Выход</div>
   </div>
+
+  <div class="hidden-el" id="messagesDialog">
+    <ul class="non-markered-list">
+    </ul>
+  </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/logged-user-info.js"></script>
 </body>
 </html>

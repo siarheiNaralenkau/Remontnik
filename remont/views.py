@@ -668,3 +668,20 @@ def change_spec_filter(request):
 # Получаем top8 организаций по рейтингу
 def top_orgs(request):
   return JsonResponse(get_top_orgs(), safe=False)
+
+
+# Получаем новые сообщения для пользователя.
+def get_new_messages_for_user(request):
+  new_messages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
+  new_messages_result = []
+  for msg in new_messages:
+    sender = msg.msg_from
+    sender_name = sender.username
+    sender_org = OrganizationProfile.objects.filter(account=sender).first()
+    if sender_org:
+      sender_logo = get_org_logo(sender_org)
+    else:
+      sender_logo = "/static/remont/images/info_empty.jpg"
+    new_messages_result.append({"from_name": sender_name, "from_logo": sender_logo, "msg_text": msg.text, "msg_written": msg.was_written})
+
+  return JsonResponse(new_messages_result, safe=False)
