@@ -11,7 +11,7 @@
       <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p site-logo" title="На главную страницу">
     </div>
     <div id="sectionBanner" class="sectionBanner">
-      <img src="{{ STATIC_URL }}remont/images/banner.jpg" class="img_auto_100p">
+      <img src="{{ STATIC_URL }}remont/images/banner_top.jpg" class="img_auto_100p">
     </div>
     <div id="sectionRegister" class="sectionRegister">
       {% if not user.is_authenticated %}
@@ -21,6 +21,13 @@
           <div class="action-btn" id="loginLink">Вход</div>
         </div>
       {% endif %}
+      <div class="select-spec-cont">
+        <select id="workSpec" class="sel-work-spec">
+          {% for spec in work_specs %}
+            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+          {% endfor %}
+        </select>
+      </div>
     </div>
   </div>
 

@@ -10,25 +10,32 @@
   <div class="menu">
     <ul class="main-menu-list">
       <li class="main-menu-item">
-        <div class="action-btn" dataLink="/remont/jobs_list">Каталог работ</div>
+        <div class="action-btn menu-btn" dataLink="/remont/jobs_list">Каталог работ</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn" dataLink="">Каталог товаров</div>
+        <div class="action-btn menu-btn" dataLink="">Каталог товаров</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn" dataLink="">Полезные статьи</div>
+        <div class="action-btn menu-btn" dataLink="">Полезные статьи</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn" dataLink="">Новости</div>
+        <div class="action-btn menu-btn" dataLink="">Новости</div>
       </li>
       <li class="main-menu-item">
-        <div class="action-btn" dataLink="/remont/orgs_list">Организации</div>
+        <div class="action-btn menu-btn" dataLink="/remont/orgs_list">Организации</div>
       </li>
     </ul>
   </div>
 
   <div class="hidden-el" id="noSpecDialog">
     <p>Пожалуйста, укажите специализацию работ!</p>
+    <form name="selSpecDialogForm">
+      <select id="selectSpecInDialog" class="sel-spec-in-dialog">
+        {% for spec in work_specs %}
+          <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+        {% endfor %}
+      </select>
+    </form>
   </div>
 
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>

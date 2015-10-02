@@ -22,14 +22,6 @@
       {% include "remont/how_site_works.html" %}
     </div>
     <div class="content-div">
-      <div class="select-spec-cont">
-        <label for="workSpec">Специализация работ:</label>
-        <select id="workSpec">
-          {% for spec in work_specs %}
-            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
-          {% endfor %}
-        </select>
-      </div>
       {% include "remont/top_orgs_template.html" %}
       {% include "remont/search_template.html" %}
       {% include "remont/add_work_template.html" %}
@@ -68,10 +60,6 @@
     </form>
   </div>
 
-  <div class="hidden-el" id="noSpecDialog">
-    <p>Пожалуйста, укажите специализацию работ!</p>
-  </div>
-
   <div class="hidden-el" id="partnersRequestDialog">
     <ul>
       {% for pr in partner_requests %}
@@ -106,6 +94,7 @@
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jRate.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/rem_utils.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
 
 </body>

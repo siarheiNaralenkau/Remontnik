@@ -12,7 +12,7 @@ from smtplib import SMTPAuthenticationError
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
 WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
-from remont.utils import get_pending_partner_requests, get_top_orgs
+from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -25,6 +25,8 @@ from django.forms.formsets import formset_factory
 
 from  django.contrib.auth.hashers import check_password
 
+from datetime import datetime, date, time
+
 # Главная страница приложения
 def index(request):
   top10 = {'top10 masters': 'top10 masters should be displayed here'}
@@ -36,7 +38,7 @@ def index(request):
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
   work_specs = []
-  work_specs.append({"id": 0, "value": "", "selected": "", "disabled": "disabled=disabled"})
+  work_specs.append({"id": 0, "value": u"Специализация работ", "selected": "", "disabled": "disabled=disabled"})
   work_specs.append({"id": -1,  "value": u"Все", "selected": "", "disabled": ""})
   for spec in WorkSpec.objects.all():
     work_specs.append({"id": spec.id, "value": spec.get_name_display(), "selected": "", "disabled": ""})
@@ -352,7 +354,12 @@ def get_orgs_list(request):
     orgs = orgs.exclude(id=logged_org.id)
   if org_spec:
     orgs = orgs.filter(spec=org_spec)
-  orgs_list = list(orgs)
+  # orgs_list = list(orgs)
+  orgs_list = []
+  for org in orgs:
+    org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
+    orgs_list.append(org_data)
+
   print("Amount of organizations: {0}".format(len(orgs_list)))
   return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
 
@@ -663,3 +670,47 @@ def change_spec_filter(request):
 # Получаем top8 организаций по рейтингу
 def top_orgs(request):
   return JsonResponse(get_top_orgs(), safe=False)
+
+
+# Получаем новые сообщения для пользователя.
+def get_new_messages_for_user(request):
+  new_messages = Message.objects.filter(was_read__isnull=True, msg_to=request.user).order_by("-was_written")
+  new_messages_result = {}
+  cur_datetime = datetime.now()
+  cur_date = cur_datetime.strftime("%d-%m-%Y")
+  cur_time = cur_datetime.strftime("%H:%M")
+
+  for msg in new_messages:
+    sender = msg.msg_from
+    sender_id = str(sender.id)
+    if not sender_id in new_messages_result:
+      sender_name = sender.username
+      sender_org = OrganizationProfile.objects.filter(account=sender).first()
+      if sender_org:
+        sender_logo = get_org_logo(sender_org)
+      else:
+        sender_logo = "/static/remont/images/info_empty.jpg"
+      was_written_date = msg.was_written.strftime("%d-%m-%Y")
+      was_written_time = msg.was_written.strftime("%H:%M")
+      if was_written_date == cur_date:
+        was_written = was_written_time
+      else:
+        was_written = was_written_date
+
+      msg_item = {"from_name": sender_name, "from_logo": sender_logo, "msg_text": msg.text, "msg_written": was_written, "messages_count": 1}
+      new_messages_result[sender_id] = msg_item
+    else:
+      new_messages_result[sender_id]["messages_count"] = new_messages_result[sender_id]["messages_count"] + 1
+
+  new_messages_array = []
+  for key, data in new_messages_result.iteritems():
+    new_messages_array.append({
+      "sender_id": key,
+      "from_name": data["from_name"],
+      "from_logo": data["from_logo"],
+      "msg_text": data["msg_text"],
+      "msg_written": data["msg_written"],
+      "messages_count": data["messages_count"]
+    })
+
+  return JsonResponse(new_messages_array, safe=False)

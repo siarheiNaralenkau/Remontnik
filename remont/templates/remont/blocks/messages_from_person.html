@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+    <style>
+      .person-messages-template {
+        width: 600px;
+        height: 80px;
+        border-radius: 8px;
+        background-color: #D0D0D0;
+      }
+      .logo-cont {
+        width: 15%;
+        height: 72px;
+        float: left;
+        margin-left: 1%;
+        margin-top: 4px;
+      }
+      .sender-logo {
+        width: 72px;
+        height: 72px;
+      }
+      .name-and-text {
+        float: left;
+        width: 60%;
+      }
+      .from-name {
+        font-size: 1.1em;
+        font-weight: 800;
+      }
+      .msg-text {
+        font-size: 0.85em;
+        height: 50px;
+        overflow-y: auto;
+      }
+      .written-time {
+        float: left;
+        width: 22%;
+        margin-left: 1%;
+        margin-top: 8px;
+        text-align: right;
+      }
+      .last-message-time {
+        font-size: 0.75em;
+      }
+      .undead-messages-amount {
+        font-size: 1em;
+        background-color: #FD0000;
+        width: 24px;
+        height: 24px;
+        border-radius: 5px;
+        float: right;
+        text-align: center;
+      }
+      .message-cell-item {
+        display: table-cell;
+      }
+      li.message-el {
+        margin-top: 5px;
+        cursor: pointer;
+      }
+    </style>
+  </head>
+
+  <body>
+    <div class="hidden-el">
+      <div class="msg-from-person-template" style="width: 480px">
+        <img src="../../../static/remont/images/info_empty.jpg" style="width: 15%; height: 72px; float: left"/>
+        <div class="name-and-text" style="float: left; width: 67%; margin-left: 2%">
+          <div class="from-name" style="font-size: 1.1em; font-weight: 800">Сергей</div>
+          <div class="msg-text" style="font-size: 0.85em; height: 50px; overflow-y: auto">
+            Какое-нибудь сообщение очень длинное сообщение - ну просто совсем вот длинное блин :)
+            Просто очень много текста, Lorem Ipsum в помощь, ну или копипаст нагенерить, короче скролл добавлять надо
+            Какое-нибудь сообщение очень длинное сообщение - ну просто совсем вот длинное блин :)
+            Просто очень много текста, Lorem Ipsum в помощь, ну или копипаст нагенерить, короче скролл добавлять надо
+          </div>
+        </div>
+        <div class="written-time" style="font-size: 0.8em; float: right; margin-right: 2%; margin-top: 8px">15:50</div>
+      </div>
+
+      <div id="personMsgTemplate">
+        <div class="person-messages-template">
+          <div class="logo-cont message-cell-item">
+            <img src="{0}" class="sender-logo"/>
+          </div>
+          <div class="name-and-text message-cell-item">
+            <div class="from-name">{1}</div>
+            <div class="msg-text">{2}</div>
+          </div>
+          <div class="written-time message-cell-item">
+            <div class="last-message-time">{3}</div>
+            <div class="undead-messages-amount">{4}</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
