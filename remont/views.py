@@ -354,14 +354,19 @@ def get_orgs_list(request):
     orgs = orgs.exclude(id=logged_org.id)
   if org_spec:
     orgs = orgs.filter(spec=org_spec)
-  # orgs_list = list(orgs)
+
+  nameStarts = request.GET.get("nameStarts", "")
+  if nameStarts:
+    print("Filtering orgs list by name...")
+    orgs = orgs.filter(name__icontains=nameStarts)
+
   orgs_list = []
   for org in orgs:
     org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
     orgs_list.append(org_data)
 
   print("Amount of organizations: {0}".format(len(orgs_list)))
-  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
+  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
 
 def view_profile(request):
   return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
