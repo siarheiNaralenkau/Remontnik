@@ -54,11 +54,6 @@ label {
   float: left;
 }
 
-input[type="password"] {
-  width: 150px;
-  float: left;
-}
-
 .img-thumb {
   width: 130px;
   height: 87px;

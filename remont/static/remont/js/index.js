@@ -41,7 +41,7 @@ $(function() {
     resizable: false,
     modal: true,
     title: "Вход",
-    height: 300,
+    height: 285,
     width: 500,
     buttons: {
       "Войти": sendLoginRequest,
