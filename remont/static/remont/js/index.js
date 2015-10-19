@@ -197,10 +197,13 @@ $(function() {
   }
 
   function refreshJobs(data, textStatus, jqXHR) {
-    var jobRequestsList = $('.job-requests-list').first()
-    var jobsHtml = jobRequestsList.html()
+    var jobRequestsList = $('.job-requests-list').first();
+    var jobsHtml = jobRequestsList.html();
+    var dateFormatter = new Intl.DateTimeFormat("ru",
+      {year: "numeric", month: "long", day: "numeric", hour: "numeric", minute: "numeric"});
+    var dateString = dateFormatter.format(new Date());
     var newSuggestionHtml = '<li><div class="job-request-div"><h3>{0}</h3><h5>{1}</h5><div><span>{2}</span><p>{3}</p></div></div></li>'
-        .format(data.header, data.type_name, data.date_created, data.description)
+        .format(data.header, data.type_name, dateString, data.description);
     var newHtml = newSuggestionHtml + jobsHtml;
     jobRequestsList.html(newHtml);
     $('.suggest-job-form')[0].reset();

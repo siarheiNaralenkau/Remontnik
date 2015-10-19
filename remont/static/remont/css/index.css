@@ -104,19 +104,6 @@
   text-align: center;
 }
 
-.jobsSuggestions {
-  width: 60%;
-  margin: 0 auto;
-  /*background-color: rgb(245, 245, 245);*/
-  border-radius: 4px;
-  overflow-y: auto;
-}
-
-.suggestionsHeader {
-  margin: 0 auto;
-  border-radius: 4px;
-}
-
 .details-label {
   font-weight: 700;
   margin-right: 10px;
@@ -125,15 +112,6 @@
 .org-details {
   margin-top: 10px;
   border-bottom: 1px dotted black;
-}
-
-.job-request-div {
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-right: 20px;
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid darkgray;
 }
 
 /*Стили для формы оставления заявки о работе*/

@@ -11,7 +11,7 @@ from smtplib import SMTPAuthenticationError
 
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
+                          WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
 from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
 
 from lastActivityDate.users_activity_service import get_last_visit
@@ -26,6 +26,8 @@ from django.forms.formsets import formset_factory
 from  django.contrib.auth.hashers import check_password
 
 from datetime import datetime, date, time
+
+import locale
 
 # Главная страница приложения
 def index(request):
@@ -181,19 +183,22 @@ def search_orgs_html(request):
 @csrf_exempt
 # Создание предложения по работе.
 def suggest_job_save_ajax(request):
-  job_type_id = request.POST["job_type"]
+  job_type_id = request.POST.get("job_type", False)
   if job_type_id:
     job_type = WorkType.objects.filter(id=job_type_id).first()
   else:
     job_type = None
 
-  job = JobSuggestion(contact_name=request.POST["contact_name"],
+  job = JobSuggestion(
+    contact_name=request.POST.get("contact_name", ""),
     job_type=job_type,
-    description=request.POST["job_description"],
-    phone=request.POST["contact_phone"],
-    email=request.POST["contact_mail"],
-    short_header=request.POST["job_header"])
+    description=request.POST.get("job_description", ""),
+    phone=request.POST.get("contact_phone", ""),
+    email=request.POST.get("contact_mail", ""),
+    short_header=request.POST.get("job_header", "")
+  )
   job_spec = request.session.get("sel_spec")
+  print("Work spec: {0}".format(job_spec))
   work_spec = WorkSpec.objects.get(id=int(job_spec))
   job.job_spec = work_spec
   job.save()

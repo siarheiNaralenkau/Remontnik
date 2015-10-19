@@ -99,14 +99,10 @@ if ENVIRONMENT == 'remote':
 # Internationalization
 # https://docs.djangoproject.com/en/1.6/topics/i18n/
 
-LANGUAGE_CODE = 'en-us'
-
-USE_TZ = False
-
+LANGUAGE_CODE = 'ru-RU'
+USE_TZ = True
 TIME_ZONE = 'Europe/Minsk'
-
 USE_I18N = True
-
 USE_L10N = True
 
 
