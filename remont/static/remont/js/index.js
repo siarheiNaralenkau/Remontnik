@@ -23,8 +23,8 @@ $(function() {
     minLength: 3,
     select: function(event, ui) {
       // Forward to organization profile review...
-      console.log("Selected: " + ui);
-      window.open("/remont/org_profile?org=" + ui.item.value, "_blank");
+      console.log("Selected organization: " + ui.item.name);
+      window.open("/remont/view_profile?org_id=" + ui.item.id, "_blank");
     }
   }).
   autocomplete("instance")._renderItem = function(ul, item) {
