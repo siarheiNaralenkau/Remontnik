@@ -11,7 +11,7 @@ from smtplib import SMTPAuthenticationError
 
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
+                          WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
 from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
 
 from lastActivityDate.users_activity_service import get_last_visit
@@ -26,6 +26,8 @@ from django.forms.formsets import formset_factory
 from  django.contrib.auth.hashers import check_password
 
 from datetime import datetime, date, time
+
+import locale
 
 # Главная страница приложения
 def index(request):
@@ -121,28 +123,18 @@ def search_organizations(request):
     orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
 
   for org in orgs_by_name:
-    if org.logo:
-      logo_url = "/remont/" + org.logo.url
+    if logged_org and logged_org.id != org.id:
+      response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
     else:
-      logo_url = "/static/remont/images/question.jpg"
-    if logged_org:
-      if (logged_org.id != org.id):
-        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
-    else:
-      response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+      response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
 
-  # 2) Поиск по типу выполняемых работ.
-  orgs_by_job_type = OrganizationProfile.objects.all()
-  for org in orgs_by_job_type:
-    job_types = org.job_types.all()
-    for job_type in job_types:
-      if key_phrase in job_type.name and logged_org.id != org.id:
-        if org.logo:
-          logo_url = "/remont/" + org.logo.url
-        else:
-          logo_url = "/remont/static/remont/images/question.jpg"
-        response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
-        break
+  # 2) Поиск по ключевым словам из описания организации
+  orgs_qset = OrganizationProfile.objects.filter(description__icontains=key_phrase)
+  for org in orgs_qset:
+    if logged_org and logged_org.id != org.id:
+      response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
+    else:
+      response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
 
   print "Found {0} organizations: ".format(len(response_data))
   response = JsonResponse(response_data, safe=False)
@@ -155,11 +147,7 @@ def search_orgs_html(request):
   # 1) Поиск по имени организации
   orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
   for org in orgs_by_name:
-    if org.logo:
-      logo_url = "/remont/" + org.logo.url
-    else:
-      logo_url = "/static/remont/images/question.jpg"
-      response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
+    response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
 
   # 2) Поиск по типу выполняемых работ.
   orgs_by_job_type = OrganizationProfile.objects.all()
@@ -167,12 +155,8 @@ def search_orgs_html(request):
     job_types = org.job_types.all()
     for job_type in job_types:
       if key_phrase in job_type.name:
-        if org.logo:
-          logo_url = "/remont/" + org.logo.url
-        else:
-          logo_url = "/remont/static/remont/images/question.jpg"
-          response_data.append({"id": org.id, "name": org.name, "logo": logo_url})
-          break
+        response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
+        break
 
   print "Found {0} organizations: ".format(len(response_data))
   return render(request, 'remont/search_orgs.html', {"organizatins": response_data})
@@ -181,19 +165,22 @@ def search_orgs_html(request):
 @csrf_exempt
 # Создание предложения по работе.
 def suggest_job_save_ajax(request):
-  job_type_id = request.POST["job_type"]
+  job_type_id = request.POST.get("job_type", False)
   if job_type_id:
     job_type = WorkType.objects.filter(id=job_type_id).first()
   else:
     job_type = None
 
-  job = JobSuggestion(contact_name=request.POST["contact_name"],
+  job = JobSuggestion(
+    contact_name=request.POST.get("contact_name", ""),
     job_type=job_type,
-    description=request.POST["job_description"],
-    phone=request.POST["contact_phone"],
-    email=request.POST["contact_mail"],
-    short_header=request.POST["job_header"])
+    description=request.POST.get("job_description", ""),
+    phone=request.POST.get("contact_phone", ""),
+    email=request.POST.get("contact_mail", ""),
+    short_header=request.POST.get("job_header", "")
+  )
   job_spec = request.session.get("sel_spec")
+  print("Work spec: {0}".format(job_spec))
   work_spec = WorkSpec.objects.get(id=int(job_spec))
   job.job_spec = work_spec
   job.save()
@@ -354,14 +341,19 @@ def get_orgs_list(request):
     orgs = orgs.exclude(id=logged_org.id)
   if org_spec:
     orgs = orgs.filter(spec=org_spec)
-  # orgs_list = list(orgs)
+
+  nameStarts = request.GET.get("nameStarts", "")
+  if nameStarts:
+    print("Filtering orgs list by name...")
+    orgs = orgs.filter(name__icontains=nameStarts)
+
   orgs_list = []
   for org in orgs:
     org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
     orgs_list.append(org_data)
 
   print("Amount of organizations: {0}".format(len(orgs_list)))
-  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list})
+  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
 
 def view_profile(request):
   return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
@@ -371,21 +363,15 @@ def get_profile_info(request):
   org_id = request.GET["org_id"]
   org_profile = OrganizationProfile.objects.filter(id=org_id).first()
   profile_json = {"id": org_profile.id, "name": org_profile.name, "city": org_profile.city.name,
-  "address": org_profile.address, "rating": 3.5}
+    "address": org_profile.address, "rating": 3.5}
 
-  if org_profile.logo:
-    profile_json["logo_url"] = "/remont/" + org_profile.logo.url
-  else:
-    profile_json["logo_url"] = "/static/remont/images/info_empty.jpg"
+  profile_json["logo_url"] = get_org_logo(org_profile)
 
   collegs = org_profile.collegues.all()
   collegs_array = []
   for c in collegs:
     colleg_item = {"id": c.id, "name": c.name}
-    if c.logo:
-      colleg_item["logo_url"] = "/remont/" + c.logo.url
-    else:
-      colleg_item["logo_url"] = "/static/remont/images/info_empty.jpg"
+    colleg_item["logo_url"] = get_org_logo(c)
     collegs_array.append(colleg_item)
 
   profile_json["collegues"] = collegs_array

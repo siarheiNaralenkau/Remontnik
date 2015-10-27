@@ -32,16 +32,22 @@
   <div class="hidden-el" id="loginDialog" title="Вход">
     <form name="loginForm" action="site_login">
       <div class="login-fields-div">
-        <label class="login-label" for="login">Название организации/Логин:</label>
+        <label class="login-dialog-label" for="login">Название организации/Логин:</label>
         <input type="text" name="login" id="login" value="" class="login-fields-input"/>
       </div>
       <div class="login-fields-div">
-        <label for="password">Пароль:</label>
+        <label class="login-dialog-label" for="password">Пароль:</label>
         <input type="password" name="password" id="password" value="" class="login-fields-input"/>
       </div>
       <div class="login-fields-div">
-        <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
-        <a href="/remont/register" class="login-link">Регистрация</a>
+        <table width="100%"><tr>
+          <td align="right">
+            <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+          </td>
+          <td align="left">
+            <a href="/remont/register" class="login-link">Регистрация</a>
+          </td>
+        </tr></table>
       </div>
       <div class="error-div" id="loginError"></div>
     </form>
