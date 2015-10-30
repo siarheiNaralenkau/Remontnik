@@ -683,7 +683,13 @@ def get_new_messages_for_user(request):
       else:
         was_written = was_written_date
 
-      msg_item = {"from_name": sender_name, "from_logo": sender_logo, "msg_text": msg.text, "msg_written": was_written, "messages_count": 1}
+      msg_item = {
+          "from_name": sender_name,
+          "from_logo": sender_logo,
+          "msg_text": msg.text,
+          "msg_written": was_written,
+          "messages_count": 1
+      }
       new_messages_result[sender_id] = msg_item
     else:
       new_messages_result[sender_id]["messages_count"] = new_messages_result[sender_id]["messages_count"] + 1
@@ -700,3 +706,12 @@ def get_new_messages_for_user(request):
     })
 
   return JsonResponse(new_messages_array, safe=False)
+
+
+# Обработка ответа на сообщение от пользователя или организации
+@csrf_exempt
+def answer_mesaage(request):
+  receiver_id = request.POST.get("receiver_id", False)
+  print("Receiver id: {0}".format(receiver_id))
+  answer_response = []
+  return JsonResponse(answer_response, safe=False)
