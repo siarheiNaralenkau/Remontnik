@@ -1,0 +1,72 @@
+.person-messages-template {
+  width: 600px;
+  height: 80px;
+  border-radius: 8px;
+  background-color: #D0D0D0;
+}
+.logo-cont {
+  width: 15%;
+  height: 72px;
+  float: left;
+  margin-left: 1%;
+  margin-top: 4px;
+}
+.sender-logo {
+  width: 72px;
+  height: 72px;
+}
+.name-and-text {
+  float: left;
+  width: 60%;
+}
+.from-name {
+  font-size: 1.1em;
+  font-weight: 800;
+}
+.msg-text {
+  font-size: 0.85em;
+  height: 50px;
+  overflow-y: auto;
+}
+.written-time {
+  float: left;
+  width: 22%;
+  margin-left: 1%;
+  margin-top: 8px;
+  text-align: right;
+}
+.last-message-time {
+  font-size: 0.75em;
+}
+.undead-messages-amount {
+  font-size: 1em;
+  background-color: #FD0000;
+  width: 24px;
+  height: 24px;
+  border-radius: 5px;
+  float: right;
+  text-align: center;
+}
+.message-cell-item {
+  display: table-cell;
+}
+
+.answer-btn {
+  width: 20%;
+  margin-right: 2%;
+  margin-top: 5px;
+  float: right;
+  text-align: center;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  border-radius: 4px;
+}
+
+.msg-to-answer {
+  background-color: #D0D0D0;
+  border-radius: 10px;
+}
+
+li.message-el {
+  margin-top: 5px;
+  cursor: pointer;
+}

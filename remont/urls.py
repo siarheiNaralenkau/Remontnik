@@ -40,6 +40,7 @@ urlpatterns = patterns('',
   url(r'^change_spec_filter/$', views.change_spec_filter, name='change_spec_filter'),
   url(r'^top_orgs/$', views.top_orgs, name='top_orgs'),
   url(r'^get_new_messages_for_user/$', views.get_new_messages_for_user, name='get_new_messages_for_user'),
+  url(r'^answer_mesaage/$', views.answer_mesaage, name='answer_mesaage'),
   (r'^ckeditor/', include('ckeditor.urls')),
   )
 
