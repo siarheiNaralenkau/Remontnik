@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+from django.db.models import Q
 
 from smtplib import SMTPAuthenticationError
 
@@ -733,3 +734,27 @@ def answer_mesaage(request):
   answer_response["status"] = "success"
 
   return JsonResponse(answer_response, safe=False)
+
+
+# Получаение истории диалога с определенным пользователем.
+@csrf_exempt
+def get_dialogs_history(request):
+  partner_id = request.GET.get("dialog_partner", False)
+  dialog_partner = Users.objects.filter(id=int(partner_id)).first()
+  logged_user = request.user
+  dialog_messages = Message.objects.filter(
+      Q(msg_to=request.user, msg_from=dialog_partner) |
+      Q(msg_from=request.user, msg_to=dialog_partner)).order_by("-was_written")
+
+  messages_array = []
+  for msg in dialog_messages:
+    messages_array.append({
+      "sender_id": msg.msg_from.id,
+      "sender_name": msg.msg_from.username,
+      "receiver_id": msg.msg_to.id,
+      "receiver_name": msg.msg_to.username,
+      "text": msg.text,
+      "was_written": msg.was_written
+    })
+
+  return JsonResponse(messages_array, safe=False)
