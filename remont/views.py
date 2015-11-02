@@ -6,6 +6,7 @@ from django.contrib.auth.models import User
 from django.http import JsonResponse
 from django.views.decorators.csrf import csrf_exempt
 from django.core import serializers
+from django.db.models import Q
 
 from smtplib import SMTPAuthenticationError
 
@@ -684,6 +685,7 @@ def get_new_messages_for_user(request):
         was_written = was_written_date
 
       msg_item = {
+          "msg_id": msg.id,
           "from_name": sender_name,
           "from_logo": sender_logo,
           "msg_text": msg.text,
@@ -697,6 +699,7 @@ def get_new_messages_for_user(request):
   new_messages_array = []
   for key, data in new_messages_result.iteritems():
     new_messages_array.append({
+      "msg_id": data["msg_id"],
       "sender_id": key,
       "from_name": data["from_name"],
       "from_logo": data["from_logo"],
@@ -711,7 +714,47 @@ def get_new_messages_for_user(request):
 # Обработка ответа на сообщение от пользователя или организации
 @csrf_exempt
 def answer_mesaage(request):
+  source_msg_id = request.POST.get("source_msg_id", False)
   receiver_id = request.POST.get("receiver_id", False)
   print("Receiver id: {0}".format(receiver_id))
-  answer_response = []
+  answer_response = {}
+
+  receiver = User.objects.filter(id=int(receiver_id)).first()
+  sender = request.user
+  message_text = request.POST.get("message", False)
+
+  msg = Message(msg_to=receiver, msg_from=sender, text=message_text)
+  msg.save()
+
+  source_msg = Message.objects.filter(id=int(source_msg_id)).first()
+  if(source_msg):
+    source_msg.was_read = datetime.now()
+    source_msg.save()
+
+  answer_response["status"] = "success"
+
   return JsonResponse(answer_response, safe=False)
+
+
+# Получаение истории диалога с определенным пользователем.
+@csrf_exempt
+def get_dialogs_history(request):
+  partner_id = request.GET.get("dialog_partner", False)
+  dialog_partner = Users.objects.filter(id=int(partner_id)).first()
+  logged_user = request.user
+  dialog_messages = Message.objects.filter(
+      Q(msg_to=request.user, msg_from=dialog_partner) |
+      Q(msg_from=request.user, msg_to=dialog_partner)).order_by("-was_written")
+
+  messages_array = []
+  for msg in dialog_messages:
+    messages_array.append({
+      "sender_id": msg.msg_from.id,
+      "sender_name": msg.msg_from.username,
+      "receiver_id": msg.msg_to.id,
+      "receiver_name": msg.msg_to.username,
+      "text": msg.text,
+      "was_written": msg.was_written
+    })
+
+  return JsonResponse(messages_array, safe=False)

@@ -41,6 +41,7 @@ urlpatterns = patterns('',
   url(r'^top_orgs/$', views.top_orgs, name='top_orgs'),
   url(r'^get_new_messages_for_user/$', views.get_new_messages_for_user, name='get_new_messages_for_user'),
   url(r'^answer_mesaage/$', views.answer_mesaage, name='answer_mesaage'),
+  url(r'^get_dialogs_history/$', views.get_dialogs_history, name='get_dialogs_history'),
   (r'^ckeditor/', include('ckeditor.urls')),
   )
 

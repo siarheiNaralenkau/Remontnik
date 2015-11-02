@@ -26,10 +26,13 @@ $(function() {
 
   function showAnswerMessage(event) {
     event.stopPropagation();
-    var questionMessage = this.parentNode.children[1].children[1].textContent;
+    var questionMessageEl = this.parentNode.children[1].children[1];
+    var questionMessage = questionMessageEl.textContent;
+    var questionMessageId = $(questionMessageEl).attr("dataMessageId");
     var senderId = $(this.parentNode.parentNode).attr("dataPersonId");
     $("#curSenderId").html(senderId);
     $("#msgToAnswer").html(questionMessage);
+    $("#msgToAnswerId").html(questionMessageId);
     $("#tMessage").val('');
     msgAnswerDialog.dialog("open");
   }
@@ -37,7 +40,8 @@ $(function() {
   function answerMessage() {
     var data = {
       receiver_id: $("#curSenderId").html(),
-      message: $("#tMessage").val()
+      message: $("#tMessage").val(),
+      source_msg_id: $("#msgToAnswerId").html()
     }
     $.post("/remont/answer_mesaage/", data, processAnswerResult);
   }
@@ -54,12 +58,42 @@ $(function() {
     for(var i = 0; i < responseData.length; i++) {
       var msgData = responseData[i];
       var msgTemplate = $("#personMsgTemplate").html();
+      var msgTextDisplay;
+      var msgText;
+      if(msgData.msg_text.length > 140) {
+        msgTextDisplay = msgData.msg_text.substring(0, 139) + "...";
+        msgText = msgData.msg_text;
+      } else {
+        msgTextDisplay = msgText = msgData.msg_text;
+      }
       var msgItem = "<li class='message-el' dataPersonId='" + msgData.sender_id + "'>" +
-        msgTemplate.format(msgData.from_logo, msgData.from_name, msgData.msg_text, msgData.msg_written, msgData.messages_count) + "</li>";
+        msgTemplate.format(
+                            msgData.from_logo,
+                            msgData.from_name,
+                            msgTextDisplay,
+                            msgData.msg_written,
+                            msgData.messages_count,
+                            msgData.msg_id,
+                            msgText
+                          )
+        + "</li>";
+
       list.html(list.html() + msgItem);
     }
     $(".answer-btn").on("click", showAnswerMessage);
-    $(".message-el").on("click", showConversationWithPerson);
+    $(".message-el").on("click", switchFullMessage);
+
+    var messageAmounts = $(".undead-messages-amount");
+    for(var i = 0; i < messageAmounts.length; i++) {
+      var amount = $(messageAmounts[i]).html();
+      try {
+        if(parseInt(amount) > 1) {
+          $(messageAmounts[i]).attr("title", "Показать диалог");
+          $(messageAmounts[i]).on("click", showConversationWithPerson);
+        }
+      } catch(e) {}
+    }
+
     showMessagesDialog();
   }
 
@@ -70,6 +104,16 @@ $(function() {
 
   function showMessagesDialog() {
     messagesDialog.dialog("open");
+  }
+
+  function switchFullMessage() {
+    var msgTextEl = this.children[0].children[1].children[1];
+    var displayText = msgTextEl.textContent;
+    var hiddenText = $(msgTextEl).attr("dataHiddenText");
+    if(displayText !== hiddenText) {
+      msgTextEl.textContent = hiddenText;
+      $(msgTextEl).attr("dataHiddenText", displayText);
+    }
   }
 
   $(".new-messages").on("click", getNewMessages);
