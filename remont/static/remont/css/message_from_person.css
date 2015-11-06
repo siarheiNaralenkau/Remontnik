@@ -68,3 +68,10 @@ li.message-el {
   margin-top: 5px;
   cursor: pointer;
 }
+
+.dialog-item {
+  width: 450px;
+  border-radius: 8px;
+  background-color: #DDDDDD;
+  margin-left: 140px;
+}

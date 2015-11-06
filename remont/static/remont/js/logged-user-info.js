@@ -81,25 +81,29 @@ $(function() {
       list.html(list.html() + msgItem);
     }
     $(".answer-btn").on("click", showAnswerMessage);
-    $(".message-el").on("click", switchFullMessage);
-
-    var messageAmounts = $(".undead-messages-amount");
-    for(var i = 0; i < messageAmounts.length; i++) {
-      var amount = $(messageAmounts[i]).html();
-      try {
-        if(parseInt(amount) > 1) {
-          $(messageAmounts[i]).attr("title", "Показать диалог");
-          $(messageAmounts[i]).on("click", showConversationWithPerson);
-        }
-      } catch(e) {}
-    }
+    $(".message-el").on("click", loadConversationWithPerson);
 
     showMessagesDialog();
   }
 
-  function showConversationWithPerson() {
+  function loadConversationWithPerson() {
+    var messageItem = this;
     var senderId = $(this).attr("dataPersonId");
-    alert("Showing conversation with person which id is: " + senderId + " should be implemented here");
+    $.get("/remont/get_dialogs_history/", {dialog_partner: senderId}, function(responseData) {
+      showConversation(responseData, messageItem);
+    });
+  }
+
+  function showConversation(responseData, msgItem) {
+    console.log("Conversation: ", responseData);
+    var msgItemTemplate = $("#dialogItemTemplate").html();
+    var dialogHtml = "";
+    for(var i = 0; i < responseData.length; i++) {
+      var msgText = responseData[i].msg_text;
+      var messageHtml = msgItemTemplate.format(msgText);
+      dialogHtml += messageHtml;
+    }
+    $(msgItem).html(dialogHtml);
   }
 
   function showMessagesDialog() {

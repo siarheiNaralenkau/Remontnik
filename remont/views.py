@@ -740,7 +740,7 @@ def answer_mesaage(request):
 @csrf_exempt
 def get_dialogs_history(request):
   partner_id = request.GET.get("dialog_partner", False)
-  dialog_partner = Users.objects.filter(id=int(partner_id)).first()
+  dialog_partner = User.objects.filter(id=int(partner_id)).first()
   logged_user = request.user
   dialog_messages = Message.objects.filter(
       Q(msg_to=request.user, msg_from=dialog_partner) |
@@ -748,13 +748,15 @@ def get_dialogs_history(request):
 
   messages_array = []
   for msg in dialog_messages:
+    sender_org = OrganizationProfile.objects.filter(account=msg.msg_from).first()
     messages_array.append({
       "sender_id": msg.msg_from.id,
       "sender_name": msg.msg_from.username,
       "receiver_id": msg.msg_to.id,
       "receiver_name": msg.msg_to.username,
-      "text": msg.text,
-      "was_written": msg.was_written
+      "msg_text": msg.text,
+      "was_written": msg.was_written,
+      "sender_logo": get_org_logo(sender_org)
     })
 
   return JsonResponse(messages_array, safe=False)
