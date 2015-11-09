@@ -95,12 +95,25 @@ $(function() {
   }
 
   function showConversation(responseData, msgItem) {
-    console.log("Conversation: ", responseData);
-    var msgItemTemplate = $("#dialogItemTemplate").html();
+    var userId = parseInt($("#userId").html());
+    var msgItemTemplate;
     var dialogHtml = "";
+    var msgDirection;
     for(var i = 0; i < responseData.length; i++) {
-      var msgText = responseData[i].msg_text;
-      var messageHtml = msgItemTemplate.format(msgText);
+      if(userId === responseData[i].sender_id) {
+        msgItemTemplate = $("#dialogItemTemplateRight").html();
+        msgDirection = "right";
+      } else {
+        msgItemTemplate = $("#dialogItemTemplateLeft").html();
+        msgDirection = "left";
+      }
+      var messageHtml = msgItemTemplate.format(
+        responseData[i].sender_logo,
+        responseData[i].sender_name,
+        msgDirection,
+        responseData[i].msg_text,
+        responseData[i].was_written
+      );
       dialogHtml += messageHtml;
     }
     $(msgItem).html(dialogHtml);

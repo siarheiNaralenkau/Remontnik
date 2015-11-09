@@ -13,7 +13,7 @@ from smtplib import SMTPAuthenticationError
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
-from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
+from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo, format_message_time
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -755,7 +755,7 @@ def get_dialogs_history(request):
       "receiver_id": msg.msg_to.id,
       "receiver_name": msg.msg_to.username,
       "msg_text": msg.text,
-      "was_written": msg.was_written,
+      "was_written": format_message_time(msg.was_written),
       "sender_logo": get_org_logo(sender_org)
     })
 

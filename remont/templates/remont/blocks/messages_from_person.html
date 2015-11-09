@@ -29,10 +29,32 @@
         </div>
       </div>
 
-      <div id="dialogItemTemplate">
+      <div id="dialogItemTemplateLeft">
         <li>
-          <div class="dialog-item">
-            <div class="dialog-message">{0}</div>
+          <div class="dialog-item-left">
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div class="message-time">{4}</div>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <div id="dialogItemTemplateRight">
+        <li>
+          <div class="dialog-item-right">
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div class="message-time">{4}</div>
+            </div>
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
           </div>
         </li>
       </div>
