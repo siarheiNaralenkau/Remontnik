@@ -22,7 +22,8 @@
 }
 
 .from-name {
-  margin-top: 0px;
+  text-align: center;
+  margin-top: 5px;
   font-size: 1.1em;
   font-weight: 800;
 }
@@ -75,40 +76,45 @@ li.message-el {
 }
 
 .dialog-item-left {
-  display: table-row;
-  background-color: rgba(218, 218, 218, 0.5);
+  overflow: hidden;
+  background-color: rgba(218, 218, 218, 1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
 }
 
 .dialog-item-right {
-  display: table-row;
-  background-color: rgba(201, 233, 233, 0.5);
+  overflow: hidden;
+  background-color: rgba(201, 233, 233, 1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-left: 40px;
 }
 
 .dialog-item-photo {
   width: 80px;
   height: 80px;
-  display: table-cell;
+  float: left;
 }
 
 .dialog-item-message {
-  width: 500px;
-  display: table-cell;
+  width: 460px;
+  float: left;
 }
 
-.dialog-item-time {
-  width: 50px;
-  display: table-cell;
-}
-
-.message-time: {
+.msg-time: {
   text-align: right;
-  width: 100%;
 }
 
 .dialog-message {
   position: relative;
   padding: 10px;
-  margin: 10px 0 10px;
+  margin: 10px 10px 10px;
   color: #000;
   background: #f3961c;
   /* css3 */
@@ -140,8 +146,8 @@ li.message-el {
 }
 
 .dialog-message.left:after {
-  top: 16px; /* controls vertical position */
-  left: -50px; /* value = - border-left-width - border-right-width */
+  top: 11px;
+  left: -50px;
   bottom: auto;
   border-width: 10px 50px 10px 0;
   border-color: transparent #f3961c;
@@ -153,10 +159,63 @@ li.message-el {
 }
 
 .dialog-message.right:after {
-  top: 16px; /* controls vertical position */
-  right: -50px; /* value = - border-left-width - border-right-width */
+  top: 11px;
+  right: -50px;
   bottom: auto;
   left: auto;
   border-width: 10px 0 10px 50px;
   border-color: transparent #f3961c;
+}
+
+.collapse-dialog {
+  cursor: pointer;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+  float: right;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.dialog-header {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-answer {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  width: 150px;
+  float: right;
+}
+
+.answer-div {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.answer-message {
+  width: 580px;
+  height: 140px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  overflow-y: auto;
 }

@@ -38,7 +38,7 @@
             <div class="dialog-item-message">
               <div class="from-name">{1}</div>
               <div class="dialog-message {2}">{3}</div>
-              <div class="message-time">{4}</div>
+              <div style="text-align: right; margin-right: 5px">{4}</div>
             </div>
           </div>
         </li>
@@ -50,12 +50,24 @@
             <div class="dialog-item-message">
               <div class="from-name">{1}</div>
               <div class="dialog-message {2}">{3}</div>
-              <div class="message-time">{4}</div>
+              <div style="text-align: left; margin-left: 5px">{4}</div>
             </div>
             <div class="dialog-item-photo">
               <img src="{0}" class="sender-logo"/>
             </div>
           </div>
+        </li>
+      </div>
+
+      <div id="collapseDialogTemplate">
+        <li>
+          <div class="collapse-dialog">Свернуть</div>
+        </li>
+      </div>
+
+      <div id="dialogHeaderTemplate">
+        <li>
+          <div class="dialog-header">{0} &#8596; {1}</div>
         </li>
       </div>
 
@@ -68,6 +80,23 @@
         <div class="error-div" id="msgError"></div>
         <span class="hidden-el" id="curSenderId"></span>
         <span class="hidden-el" id="msgToAnswerId"></span>
+      </div>
+
+      <div id="answerTemplate">
+        <li>
+          <div class="answer-div">
+            <div>
+              <label for="tMessage">Текст сообщения: </label>
+            </div>
+            <div>
+              <textarea id="tMessage" name="tMessage" maxlength="1000" class="answer-message"></textarea>
+            </div>
+            <div class="btn-answer">Ответить</div>
+            <div class="error-div" id="msgError"></div>
+            <span class="hidden-el" id="curSenderId"></span>
+            <span class="hidden-el" id="msgToAnswerId"></span>
+          </div>
+        </li>
       </div>
 
     </div>

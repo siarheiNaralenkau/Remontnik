@@ -4,7 +4,7 @@ $(function() {
     resizable: false,
     modal: true,
     title: "Сообщения",
-    height: 480,
+    height: 640,
     width: 640
   });
 
@@ -97,7 +97,10 @@ $(function() {
   function showConversation(responseData, msgItem) {
     var userId = parseInt($("#userId").html());
     var msgItemTemplate;
-    var dialogHtml = "";
+    var sourceHtml = $(msgItem).html();
+    var dialogHeader = $("#dialogHeaderTemplate").html().format(responseData[0].sender_name, responseData[0].receiver_name);
+    var dialogHtml = dialogHeader;
+    dialogHtml += $("#answerTemplate").html();
     var msgDirection;
     for(var i = 0; i < responseData.length; i++) {
       if(userId === responseData[i].sender_id) {
@@ -116,7 +119,18 @@ $(function() {
       );
       dialogHtml += messageHtml;
     }
+    dialogHtml += $("#collapseDialogTemplate").html();
     $(msgItem).html(dialogHtml);
+    $(msgItem).attr("dataSourceHtml", sourceHtml);
+    $(".collapse-dialog").on("click", collapseDialog);
+  }
+
+  function collapseDialog(event) {
+    var dialogSourceEl = this.parentNode.parentNode;
+    var sourceHtml = $(dialogSourceEl).attr("dataSourceHtml");
+    $(dialogSourceEl).html(sourceHtml);
+    $(dialogSourceEl).removeAttr("dataSourceHtml");
+    event.stopPropagation();
   }
 
   function showMessagesDialog() {
