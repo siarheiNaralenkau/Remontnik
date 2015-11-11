@@ -1,3 +1,7 @@
+* {
+  font-family: Calibri;
+}
+
 .hidden-el {
   display: none;
 }
@@ -92,11 +96,11 @@ label {
 
 .job-type-label {
   font-weight: 500;
-  font-size: 1.1em;
+  font-size: 1em;
   cursor: pointer;
   color: #0033CC;
-  line-height: 1.1;
-  margin-bottom: 8px;
+  line-height: 1.2;
+  margin: 0.9em 0;
 }
 .job-type-label:hover {
   text-decoration: underline;

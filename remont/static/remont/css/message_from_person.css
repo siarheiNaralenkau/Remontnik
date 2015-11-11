@@ -14,18 +14,24 @@
 .sender-logo {
   width: 72px;
   height: 72px;
+  margin: 4px;
 }
 .name-and-text {
   float: left;
   width: 60%;
 }
+
 .from-name {
+  text-align: center;
+  margin-top: 5px;
   font-size: 1.1em;
   font-weight: 800;
 }
+
 .msg-text {
   font-size: 0.85em;
 }
+
 .written-time {
   float: left;
   width: 22%;
@@ -67,4 +73,149 @@
 li.message-el {
   margin-top: 5px;
   cursor: pointer;
+}
+
+.dialog-item-left {
+  overflow: hidden;
+  background-color: rgba(218, 218, 218, 1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-left: 20px;
+  margin-right: 20px;
+}
+
+.dialog-item-right {
+  overflow: hidden;
+  background-color: rgba(201, 233, 233, 1);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  margin-left: 40px;
+}
+
+.dialog-item-photo {
+  width: 80px;
+  height: 80px;
+  float: left;
+}
+
+.dialog-item-message {
+  width: 460px;
+  float: left;
+}
+
+.msg-time: {
+  text-align: right;
+}
+
+.dialog-message {
+  position: relative;
+  padding: 10px;
+  margin: 10px 10px 10px;
+  color: #000;
+  background: #f3961c;
+  /* css3 */
+  background: -webkit-gradient(linear, 0 0, 0 100%, from(#f9d835), to(#f3961c));
+  background: -moz-linear-gradient(#f9d835, #f3961c);
+  background: -o-linear-gradient(#f9d835, #f3961c);
+  background: linear-gradient(#f9d835, #f3961c);
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+}
+
+.dialog-message:after {
+  content: "";
+  position: absolute;
+  bottom: -15px; /* value = - border-top-width - border-bottom-width */
+  left: 50px; /* controls horizontal position */
+  border-width: 15px 15px 0; /* vary these values to change the angle of the vertex */
+  border-style: solid;
+  border-color: #f3961c transparent;
+  /* reduce the damage in FF3.0 */
+  display: block;
+  width: 0;
+}
+
+.dialog-message.left {
+  margin-left: 50px;
+  background: #f3961c;
+}
+
+.dialog-message.left:after {
+  top: 11px;
+  left: -50px;
+  bottom: auto;
+  border-width: 10px 50px 10px 0;
+  border-color: transparent #f3961c;
+}
+
+.dialog-message.right {
+  margin-right: 50px;
+  background: #f3961c;
+}
+
+.dialog-message.right:after {
+  top: 11px;
+  right: -50px;
+  bottom: auto;
+  left: auto;
+  border-width: 10px 0 10px 50px;
+  border-color: transparent #f3961c;
+}
+
+.collapse-dialog {
+  cursor: pointer;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  padding: 5px;
+  text-align: center;
+  float: right;
+  width: 150px;
+  margin-bottom: 10px;
+}
+
+.dialog-header {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  margin-bottom: 10px;
+}
+
+.btn-answer {
+  padding: 5px;
+  text-align: center;
+  font-size: 1.2em;
+  font-weight: 600;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  width: 150px;
+  float: right;
+}
+
+.answer-div {
+  display: block;
+  overflow: hidden;
+  margin-bottom: 10px;
+}
+
+.answer-message {
+  width: 580px;
+  height: 140px;
+  -webkit-border-radius: 10px;
+  -moz-border-radius: 10px;
+  border-radius: 10px;
+  overflow-y: auto;
 }

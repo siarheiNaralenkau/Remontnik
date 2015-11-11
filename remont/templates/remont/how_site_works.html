@@ -8,13 +8,15 @@
 <body>
   <div class="how-site-works">
     <div class="video-container">
-      <p class="how-to-header">Как работает сайт</p>
-      <video class="video-how-to" poster="{{ STATIC_URL }}remont/images/logo.jpg" controls>
-        <source src="{{ STATIC_URL }}remont/video/how_site_works.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
-        <source src="{{ STATIC_URL }}remont/video/how_site_works.webm" type='video/webm; codecs="vp8, vorbis"' />
-        <source src="{{ STATIC_URL }}remont/video/how_site_works.ogv" type='video/ogg; codecs="theora, vorbis"' />
-        Video tag not supported. Download the video <a href="{{ STATIC_URL }}remont/video/how_site_works.mp4">here</a>.
-      </video>
+      <div class="video-dummy"></div>
+      <div class="video-div">
+        <video class="video-how-to" poster="{{ STATIC_URL }}remont/images/how-site-works.png" controls>
+          <source src="{{ STATIC_URL }}remont/video/how_site_works.mp4" type='video/mp4; codecs="avc1.42E01E, mp4a.40.2"' />
+          <source src="{{ STATIC_URL }}remont/video/how_site_works.webm" type='video/webm; codecs="vp8, vorbis"' />
+          <source src="{{ STATIC_URL }}remont/video/how_site_works.ogv" type='video/ogg; codecs="theora, vorbis"' />
+          Video tag not supported. Download the video <a href="{{ STATIC_URL }}remont/video/how_site_works.mp4">here</a>.
+        </video>
+      </div>
     </div>
     <div class="banner-container">
       <div class="banner-dummy"></div>

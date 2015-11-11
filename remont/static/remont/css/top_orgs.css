@@ -1,5 +1,6 @@
 .top-orgs-container {
-  margin-top: 10px
+  margin-top: 10px;
+  width: 100%;
 }
 .top-orgs-parent {
   width: 96%;
@@ -13,7 +14,7 @@
   overflow: hidden;
 }
 .top-orgs-child {
-  width: 11%;
+  width: 10%;
   height: 130px;
   border: solid 1px #ccc;
   display: inline-block;
@@ -21,7 +22,8 @@
   cursor: pointer;
 
   *display: inline;
-  *margin: 0 20px 0 20px;
+  /**margin: 0 20px 0 20px;*/
+  *margin-left: 1%;
 }
 
 .top-logo {

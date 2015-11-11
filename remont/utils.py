@@ -3,6 +3,8 @@
 from remont.models import OrganizationProfile, PartnerRequest
 from random import randrange
 from operator import itemgetter
+from datetime import datetime, date, time
+import locale
 
 def get_pending_partner_requests(user):
   response_data = []
@@ -48,3 +50,18 @@ def get_org_logo(org):
 def get_org_rating(org):
   rating = randrange(1, 11) / 2
   return rating
+
+
+def format_message_time(time_obj):
+  cur_datetime = datetime.now()
+  cur_date = cur_datetime.strftime("%d-%m-%Y")
+  cur_time = cur_datetime.strftime("%H:%M")
+
+  was_written_date = time_obj.strftime("%d-%m-%Y")
+  was_written_time = time_obj.strftime("%H:%M")
+  if was_written_date == cur_date:
+    was_written = was_written_time
+  else:
+    was_written = was_written_date
+
+  return was_written

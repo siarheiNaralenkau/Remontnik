@@ -13,7 +13,7 @@ from smtplib import SMTPAuthenticationError
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
                           WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
-from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo
+from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo, format_message_time
 
 from lastActivityDate.users_activity_service import get_last_visit
 
@@ -714,24 +714,25 @@ def get_new_messages_for_user(request):
 # Обработка ответа на сообщение от пользователя или организации
 @csrf_exempt
 def answer_mesaage(request):
-  source_msg_id = request.POST.get("source_msg_id", False)
-  receiver_id = request.POST.get("receiver_id", False)
-  print("Receiver id: {0}".format(receiver_id))
   answer_response = {}
-
-  receiver = User.objects.filter(id=int(receiver_id)).first()
+  message = request.POST.get("message", False)
+  receiver_id = int(request.POST.get("receiver_id"), False)
+  receiver = User.objects.filter(id=receiver_id).first()
   sender = request.user
-  message_text = request.POST.get("message", False)
-
-  msg = Message(msg_to=receiver, msg_from=sender, text=message_text)
+  msg = Message(msg_to=receiver, msg_from=sender, text=message)
   msg.save()
 
-  source_msg = Message.objects.filter(id=int(source_msg_id)).first()
-  if(source_msg):
-    source_msg.was_read = datetime.now()
-    source_msg.save()
+  sender_org = OrganizationProfile.objects.filter(account=sender).first()
 
-  answer_response["status"] = "success"
+  answer_response = {
+    "sender_id": msg.msg_from.id,
+    "sender_name": msg.msg_from.username,
+    "receiver_id": msg.msg_to.id,
+    "receiver_name": msg.msg_to.username,
+    "msg_text": msg.text,
+    "was_written": format_message_time(msg.was_written),
+    "sender_logo": get_org_logo(sender_org)
+  }
 
   return JsonResponse(answer_response, safe=False)
 
@@ -740,7 +741,7 @@ def answer_mesaage(request):
 @csrf_exempt
 def get_dialogs_history(request):
   partner_id = request.GET.get("dialog_partner", False)
-  dialog_partner = Users.objects.filter(id=int(partner_id)).first()
+  dialog_partner = User.objects.filter(id=int(partner_id)).first()
   logged_user = request.user
   dialog_messages = Message.objects.filter(
       Q(msg_to=request.user, msg_from=dialog_partner) |
@@ -748,13 +749,21 @@ def get_dialogs_history(request):
 
   messages_array = []
   for msg in dialog_messages:
+
+    if msg.msg_to.id == request.user.id:
+      msg.was_read = datetime.now()
+      print("Message was read!");
+      msg.save()
+
+    sender_org = OrganizationProfile.objects.filter(account=msg.msg_from).first()
     messages_array.append({
       "sender_id": msg.msg_from.id,
       "sender_name": msg.msg_from.username,
       "receiver_id": msg.msg_to.id,
       "receiver_name": msg.msg_to.username,
-      "text": msg.text,
-      "was_written": msg.was_written
+      "msg_text": msg.text,
+      "was_written": format_message_time(msg.was_written),
+      "sender_logo": get_org_logo(sender_org)
     })
 
   return JsonResponse(messages_array, safe=False)

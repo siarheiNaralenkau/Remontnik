@@ -4,55 +4,15 @@ $(function() {
     resizable: false,
     modal: true,
     title: "Сообщения",
-    height: 480,
+    height: 640,
     width: 640
-  });
-
-  var msgAnswerDialog = $("#msgAnswerDialog").dialog({
-    autoOpen: false,
-    resizable: false,
-    modal: true,
-    title: "Ответить на сообщение",
-    height: 440,
-    width: 580,
-    buttons: {
-      "Ответить": answerMessage
-    }
   });
 
   function getNewMessages() {
     $.get("/remont/get_new_messages_for_user/", fetchMessages);
   }
 
-  function showAnswerMessage(event) {
-    event.stopPropagation();
-    var questionMessageEl = this.parentNode.children[1].children[1];
-    var questionMessage = questionMessageEl.textContent;
-    var questionMessageId = $(questionMessageEl).attr("dataMessageId");
-    var senderId = $(this.parentNode.parentNode).attr("dataPersonId");
-    $("#curSenderId").html(senderId);
-    $("#msgToAnswer").html(questionMessage);
-    $("#msgToAnswerId").html(questionMessageId);
-    $("#tMessage").val('');
-    msgAnswerDialog.dialog("open");
-  }
-
-  function answerMessage() {
-    var data = {
-      receiver_id: $("#curSenderId").html(),
-      message: $("#tMessage").val(),
-      source_msg_id: $("#msgToAnswerId").html()
-    }
-    $.post("/remont/answer_mesaage/", data, processAnswerResult);
-  }
-
-  function processAnswerResult(responseData) {
-    console.log("Response Data: ", responseData);
-    msgAnswerDialog.dialog("close");
-  }
-
   function fetchMessages(responseData) {
-    console.log("Messages data: ", responseData);
     var list = $("#messagesList");
     list.html("");
     for(var i = 0; i < responseData.length; i++) {
@@ -80,26 +40,88 @@ $(function() {
 
       list.html(list.html() + msgItem);
     }
-    $(".answer-btn").on("click", showAnswerMessage);
-    $(".message-el").on("click", switchFullMessage);
-
-    var messageAmounts = $(".undead-messages-amount");
-    for(var i = 0; i < messageAmounts.length; i++) {
-      var amount = $(messageAmounts[i]).html();
-      try {
-        if(parseInt(amount) > 1) {
-          $(messageAmounts[i]).attr("title", "Показать диалог");
-          $(messageAmounts[i]).on("click", showConversationWithPerson);
-        }
-      } catch(e) {}
-    }
+    $(".message-el").on("click", loadConversationWithPerson);
 
     showMessagesDialog();
   }
 
-  function showConversationWithPerson() {
+  function loadConversationWithPerson() {
+    var messageItem = this;
     var senderId = $(this).attr("dataPersonId");
-    alert("Showing conversation with person which id is: " + senderId + " should be implemented here");
+    $.get("/remont/get_dialogs_history/", {dialog_partner: senderId}, function(responseData) {
+      showConversation(responseData, messageItem);
+    });
+  }
+
+  function showConversation(responseData, msgItem) {
+    var userId = parseInt($("#userId").html());
+    var msgItemTemplate;
+    var sourceHtml = $(msgItem).html();
+    var dialogHeader = $("#dialogHeaderTemplate").html().format(responseData[0].sender_name, responseData[0].receiver_name);
+    var dialogHtml = dialogHeader;
+    var recipientId = $(msgItem).attr("dataPersonId");
+    dialogHtml += $("#answerTemplate").html().format(recipientId);
+    var msgDirection;
+    for(var i = 0; i < responseData.length; i++) {
+      if(userId === responseData[i].sender_id) {
+        msgItemTemplate = $("#dialogItemTemplateRight").html();
+        msgDirection = "right";
+      } else {
+        msgItemTemplate = $("#dialogItemTemplateLeft").html();
+        msgDirection = "left";
+      }
+      var messageHtml = msgItemTemplate.format(
+        responseData[i].sender_logo,
+        responseData[i].sender_name,
+        msgDirection,
+        responseData[i].msg_text,
+        responseData[i].was_written
+      );
+      dialogHtml += messageHtml;
+    }
+    dialogHtml += $("#collapseDialogTemplate").html();
+    $(msgItem).html(dialogHtml);
+    $(msgItem).attr("dataSourceHtml", sourceHtml);
+    $(msgItem).unbind("click");
+    $(".collapse-dialog").on("click", collapseDialog);
+    $(".btn-answer").on("click", {msgItem: msgItem}, answerMessage);
+  }
+
+  function collapseDialog(event) {
+    var dialogSourceEl = this.parentNode.parentNode;
+    var sourceHtml = $(dialogSourceEl).attr("dataSourceHtml");
+    $(dialogSourceEl).html(sourceHtml);
+    $(dialogSourceEl).removeAttr("dataSourceHtml");
+    event.stopPropagation();
+    $(dialogSourceEl).on("click", loadConversationWithPerson);
+  }
+
+  function answerMessage(event) {
+    var data = {
+      receiver_id: $(event.target).attr("dataRecipientId"),
+      message: event.target.parentNode.children[1].children[0].value
+    };
+    $.post("/remont/answer_mesaage/", data, function(responseData) {
+      processAnswerResult(responseData, event.data.msgItem);
+    });
+  }
+
+  function processAnswerResult(responseData, msgItem) {
+    var msgItemTemplate = $("#dialogItemTemplateRight").html();
+    var msgDirection = "right";
+
+    var messageHtml = msgItemTemplate.format(
+      responseData.sender_logo,
+      responseData.sender_name,
+      msgDirection,
+      responseData.msg_text,
+      responseData.was_written
+    );
+    var newMessageNode = $.parseHTML(messageHtml)[1];
+    var firstMessageNode = msgItem.children[2];
+    msgItem.insertBefore(newMessageNode, firstMessageNode);
+    var messageTextarea = msgItem.getElementsByTagName("textarea")[0];
+    messageTextarea.value = "";
   }
 
   function showMessagesDialog() {

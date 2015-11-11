@@ -8,7 +8,6 @@
 
   <body>
     <div class="hidden-el">
-
       <div id="personMsgTemplate">
         <div class="person-messages-template">
           <div class="logo-cont message-cell-item">
@@ -22,19 +21,68 @@
             <div class="last-message-time">{3}</div>
             <div class="undead-messages-amount">{4}</div>
           </div>
-          <div class="answer-btn message-cell-item">Ответить</div>
+        </div>
+        <div class="dialog-container">
+          <ul id="dialogList" class="dialog-list"></ul>
         </div>
       </div>
 
-      <div id="msgAnswerDialog" title="Ответить на сообщение">
-        <div class="msg-to-answer" id="msgToAnswer"></div>
-        <div>
-          <label for="tMessage">Текст сообщения: </label>
-          <textarea id="tMessage" name="tMessage" rows="10" cols="50" maxlength="1000"></textarea>
-        </div>
-        <div class="error-div" id="msgError"></div>
-        <span class="hidden-el" id="curSenderId"></span>
-        <span class="hidden-el" id="msgToAnswerId"></span>
+      <div id="dialogItemTemplateLeft">
+        <li>
+          <div class="dialog-item-left">
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div style="text-align: right; margin-right: 5px">{4}</div>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <div id="dialogItemTemplateRight">
+        <li>
+          <div class="dialog-item-right">
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div style="text-align: left; margin-left: 5px">{4}</div>
+            </div>
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <div id="collapseDialogTemplate">
+        <li>
+          <div class="collapse-dialog">Свернуть</div>
+        </li>
+      </div>
+
+      <div id="dialogHeaderTemplate">
+        <li>
+          <div class="dialog-header">{0} &#8596; {1}</div>
+        </li>
+      </div>
+
+      <div id="answerTemplate">
+        <li>
+          <div class="answer-div">
+            <div>
+              <label>Текст сообщения: </label>
+            </div>
+            <div>
+              <textarea name="tMessage" maxlength="1000" class="answer-message"></textarea>
+            </div>
+            <div class="btn-answer" dataRecipientId="{0}">Отправить</div>
+            <div class="error-div" id="msgError"></div>
+            <span class="hidden-el" class="receiver-id"></span>
+          </div>
+        </li>
       </div>
 
     </div>
