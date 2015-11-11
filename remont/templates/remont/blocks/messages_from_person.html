@@ -8,7 +8,6 @@
 
   <body>
     <div class="hidden-el">
-
       <div id="personMsgTemplate">
         <div class="person-messages-template">
           <div class="logo-cont message-cell-item">
@@ -22,7 +21,6 @@
             <div class="last-message-time">{3}</div>
             <div class="undead-messages-amount">{4}</div>
           </div>
-          <div class="answer-btn message-cell-item">Ответить</div>
         </div>
         <div class="dialog-container">
           <ul id="dialogList" class="dialog-list"></ul>
@@ -71,30 +69,18 @@
         </li>
       </div>
 
-      <div id="msgAnswerDialog" title="Ответить на сообщение">
-        <div class="msg-to-answer" id="msgToAnswer"></div>
-        <div>
-          <label for="tMessage">Текст сообщения: </label>
-          <textarea id="tMessage" name="tMessage" rows="10" cols="50" maxlength="1000"></textarea>
-        </div>
-        <div class="error-div" id="msgError"></div>
-        <span class="hidden-el" id="curSenderId"></span>
-        <span class="hidden-el" id="msgToAnswerId"></span>
-      </div>
-
       <div id="answerTemplate">
         <li>
           <div class="answer-div">
             <div>
-              <label for="tMessage">Текст сообщения: </label>
+              <label>Текст сообщения: </label>
             </div>
             <div>
-              <textarea id="tMessage" name="tMessage" maxlength="1000" class="answer-message"></textarea>
+              <textarea name="tMessage" maxlength="1000" class="answer-message"></textarea>
             </div>
-            <div class="btn-answer">Ответить</div>
+            <div class="btn-answer" dataRecipientId="{0}">Отправить</div>
             <div class="error-div" id="msgError"></div>
-            <span class="hidden-el" id="curSenderId"></span>
-            <span class="hidden-el" id="msgToAnswerId"></span>
+            <span class="hidden-el" class="receiver-id"></span>
           </div>
         </li>
       </div>
