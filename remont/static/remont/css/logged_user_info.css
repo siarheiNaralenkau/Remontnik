@@ -1,7 +1,11 @@
 .logged-user-info {
-  background-color: #FFFFCC;
+  background-color: #40E0D0;
   width: 100%;
   height: 36px;
+}
+
+.logged-user-info * {
+  margin-top: 3px;
 }
 
 .logged-user-info .welcome-message {
