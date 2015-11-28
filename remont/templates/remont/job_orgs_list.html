@@ -16,21 +16,26 @@
       {% include "remont/how_site_works.html" %}
     </div>
     <div class="content-div">
-      <p class="page-header">Оргинзации, выполняющие работу: {{job_type.name}}</p>
+      <p class="job-type-header">{{job_type.name}}</p>
       <div class="orgs-list">
-      {% for org in orgs_list %}
-        <a href="/remont/view_profile?org_id={{org.id}}">
-          <div class="org-info" data-categoryId="{{org.id}}">
-            {% if org.logo %}
-              <img class="org-logo" src="/remont/{{org.logo.url}}"/>
-            {% else %}
-              <img class="org-logo" src="{{ STATIC_URL }}remont/images/info_empty.jpg"/>
-            {% endif %}
-            <br/>
-            <span class="org-header">{{ org.name }}</span>
-          </div>
-        </a>
-      {% endfor %}
+        <ul class="no-marker job-orgs-list">
+        {% for org in orgs_list %}
+          <li><a href="/remont/view_profile?org_id={{org.id}}">
+            <div class="org-info" data-categoryId="{{org.id}}">
+              <div style="float: left">
+                {% if org.logo %}
+                  <img class="org-logo" src="/remont/{{org.logo.url}}"/>
+                {% else %}
+                  <img class="org-logo" src="{{ STATIC_URL }}remont/images/info_empty.jpg"/>
+                {% endif %}
+              </div>
+              <div style="float: left; margin-left: 20px">
+                <span class="org-header">{{ org.name }}</span>
+              </div>
+            </div>
+          </a></li>
+        {% endfor %}
+        </ul>
       </div>
     </div>
   </div>

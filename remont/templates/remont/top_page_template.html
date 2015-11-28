@@ -11,7 +11,9 @@
       <img src="{{ STATIC_URL }}remont/images/logo.jpg" class="img_auto_100p site-logo" title="На главную страницу">
     </div>
     <div id="sectionBanner" class="sectionBanner">
-      <img src="{{ STATIC_URL }}remont/images/banner_top.jpg" class="img_auto_100p">
+      <div class="banner-wrap">
+        <img src="{{ STATIC_URL }}remont/images/baner_top3.jpg" class="img_auto_100p">
+      </div>
     </div>
     <div id="sectionRegister" class="section-register">
       {% if not user.is_authenticated %}

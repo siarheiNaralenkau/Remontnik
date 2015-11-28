@@ -1,5 +1,5 @@
 .logged-user-info {
-  background-color: #40E0D0;
+  background-color: rgba(187, 207, 255, 1);
   width: 100%;
   height: 36px;
 }
@@ -27,7 +27,7 @@
 }
 
 .logged-user-info .new-items-amount {
-  background-color: #FF3333;
+  background-color: yellow;
   float: left;
   padding-left: 2.5px;
   padding-right: 2.5px;

@@ -25,18 +25,18 @@ def get_pending_partner_requests(user):
 
 # Метод получает 8 организаций с самым высоким рейтингом.
 def get_top_orgs():
-  top8_data = []
+  top10_data = []
   orgs_list = OrganizationProfile.objects.all()
   index = 0
   for org in orgs_list:
     rating = get_org_rating(org)
     logo = get_org_logo(org)
-    top8_data.append({"id": org.id, "name": org.name, "rating": rating, "logo": logo})
+    top10_data.append({"id": org.id, "name": org.name, "rating": rating, "logo": logo})
     index = index + 1
     if index == 8:
       break
 
-  return sorted(top8_data, key=itemgetter("rating"), reverse=True)
+  return sorted(top10_data, key=itemgetter("rating"), reverse=True)
 
 
 def get_org_logo(org):

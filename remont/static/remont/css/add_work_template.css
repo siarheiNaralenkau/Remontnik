@@ -47,6 +47,11 @@
     width: 350px
 }
 
+.place-job-request-btn:hover {
+    background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+    cursor: pointer;
+}
+
 .width350 {
     width: 350px;
 }

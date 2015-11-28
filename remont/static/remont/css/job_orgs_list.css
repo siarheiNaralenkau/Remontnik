@@ -4,8 +4,7 @@
 }
 
 .orgs-list {
-  margin-left: 10%;
-  margin-top: 2%;
+  margin-top: 5%;
   width: 80%;
 }
 
@@ -23,4 +22,20 @@
 .content-div {
   float: left;
   width: 74%;
+}
+
+.job-type-header {
+  margin-left: 5%;
+  font-size: 1.45em;
+}
+
+.job-orgs-list {
+  columns: 2;
+  -webkit-columns: 2;
+  -moz-columns: 2;
+  -webkit-column-gap: 1em;
+  -moz-column-gap: 1em;
+  overflow: hidden;
+  padding: 0;
+  margin-left: 5%
 }

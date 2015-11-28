@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, City, OrganizationProfile, JobSuggestion, WorkSpec, \
-WorkPhotoAlbum, WorkPhoto, Article
+WorkPhotoAlbum, WorkPhoto, Article, Currency, JobPrice
 from remont.rem_forms import OrganizationProfileModelForm
 
 from django.utils.encoding import force_unicode
@@ -39,3 +39,5 @@ admin.site.register(WorkSpec)
 admin.site.register(WorkPhotoAlbum)
 admin.site.register(WorkPhoto)
 admin.site.register(Article, ArticleAdmin)
+admin.site.register(Currency)
+admin.site.register(JobPrice)

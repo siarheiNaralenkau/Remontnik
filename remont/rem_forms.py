@@ -8,6 +8,7 @@ from django.core.exceptions import ValidationError
 from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
+
 def get_cities():
   cities_choices = []
   cities = City.objects.all()

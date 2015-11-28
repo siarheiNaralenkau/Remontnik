@@ -64,7 +64,7 @@ def index(request):
       "categories": categories,
       "suggest_job_form": suggest_job_form,
       "work_specs": work_specs,
-      "top8_orgs": get_top_orgs()
+      "top_orgs": get_top_orgs()
   }
   # Check if user is logged in.
   if request.user.is_authenticated():
