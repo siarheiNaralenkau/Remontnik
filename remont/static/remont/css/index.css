@@ -37,12 +37,10 @@
 }
 
 .searchInput {
-  width: 40%;
-  display: inline-block;
+  width: 70%;
   vertical-align: middle;
-
-  *display: inline;
-  *margin: 0 20px 0 20px;
+  /**display: inline;
+  *margin: 0 20px 0 20px;*/
 }
 
 .top10Inner {
@@ -106,19 +104,6 @@
   text-align: center;
 }
 
-.jobsSuggestions {
-  width: 60%;
-  margin: 0 auto;
-  /*background-color: rgb(245, 245, 245);*/
-  border-radius: 4px;
-  overflow-y: auto;
-}
-
-.suggestionsHeader {
-  margin: 0 auto;
-  border-radius: 4px;
-}
-
 .details-label {
   font-weight: 700;
   margin-right: 10px;
@@ -127,15 +112,6 @@
 .org-details {
   margin-top: 10px;
   border-bottom: 1px dotted black;
-}
-
-.job-request-div {
-  margin-left: 10px;
-  margin-top: 10px;
-  margin-right: 20px;
-  padding: 10px;
-  background-color: #ffffff;
-  border: 1px solid darkgray;
 }
 
 /*Стили для формы оставления заявки о работе*/
@@ -188,16 +164,14 @@
 
 .login-fields-div {
   width: 450px;
+  height: 25px;
   margin-bottom: 20px;
   display: block;
 }
 
-.login-field-label {
+.login-dialog-label {
   float: left;
-}
-
-.login-label {
-  font-size: 12px;
+  font-size: 0.9em;
 }
 
 .login-fields-input {
@@ -206,7 +180,8 @@
 }
 
 .login-link {
-  margin-left: 30px;
+  padding-left: 10px;
+  padding-right: 10px;
 }
 
 .main-div {
@@ -216,7 +191,7 @@
 
 .content-div {
   float: left;
-  width: 74%;
+  width: 82%;
 }
 
 .error-div {
@@ -240,4 +215,9 @@
   margin-top: 5px;
   width: 50px;
   height: 50px;
+}
+
+.select-spec-cont {
+  width: 70%;
+  margin: 0 auto;
 }

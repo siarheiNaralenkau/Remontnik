@@ -22,18 +22,6 @@
       {% include "remont/how_site_works.html" %}
     </div>
     <div class="content-div">
-      <div class="select-spec-cont">
-        <label for="workSpec">Специализация работ:</label>
-        <select id="workSpec">
-          {% for spec in work_specs %}
-            {% if spec.selected %}
-              <option value="{{spec.id}}" selected="selected">{{spec.value}}</option>
-            {% else %}
-              <option value="{{spec.id}}">{{spec.value}}</option>
-            {% endif %}
-          {% endfor %}
-        </select>
-      </div>
       {% include "remont/top_orgs_template.html" %}
       {% include "remont/search_template.html" %}
       {% include "remont/add_work_template.html" %}
@@ -44,16 +32,22 @@
   <div class="hidden-el" id="loginDialog" title="Вход">
     <form name="loginForm" action="site_login">
       <div class="login-fields-div">
-        <label class="login-label" for="login">Название организации/Логин:</label>
+        <label class="login-dialog-label" for="login">Название организации/Логин:</label>
         <input type="text" name="login" id="login" value="" class="login-fields-input"/>
       </div>
       <div class="login-fields-div">
-        <label for="password">Пароль:</label>
+        <label class="login-dialog-label" for="password">Пароль:</label>
         <input type="password" name="password" id="password" value="" class="login-fields-input"/>
       </div>
       <div class="login-fields-div">
-        <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
-        <a href="/remont/register" class="login-link">Регистрация</a>
+        <table width="100%"><tr>
+          <td align="right">
+            <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+          </td>
+          <td align="left">
+            <a href="/remont/register" class="login-link">Регистрация</a>
+          </td>
+        </tr></table>
       </div>
       <div class="error-div" id="loginError"></div>
     </form>
@@ -101,8 +95,12 @@
     </ul>
   </div>
 
+  <span class="hidden-el" id="selSpec">{{sel_spec}}</span>
+
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jRate.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/rem_utils.js"></script>
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
 
 </body>

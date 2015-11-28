@@ -7,3 +7,75 @@
   float: left;
   width: 74%;
 }
+
+.orglist-container {
+  width: 100%;
+}
+
+.orgs-list-header {
+  margin-left: 50px;
+}
+
+.orgs-list {
+  list-style-type: none;
+  columns: 3;
+  -webkit-columns: 3;
+  -moz-columns: 3;
+  -webkit-column-gap: 1em;
+  -moz-column-gap: 1em;
+  overflow: hidden;
+}
+
+/* Tricky fix to prevent breaking list items between columns */
+.orgs-list li {
+  overflow: hidden; /* Fix for firefox and IE 10-11  */
+  -webkit-column-break-inside: avoid; /* Chrome, Safari, Opera */
+  page-break-inside: avoid; /* Deprecated Firefox */
+  -moz-column-break-inside:avoid; /* Current Firefox */
+  column-break-inside:avoid;
+  break-inside: avoid; /* IE 10+ */
+  break-inside: avoid-column;
+}
+
+.org-item-container {
+  height: 120px;
+  width: 98%;
+  border: 2px solid white;
+}
+
+.org-item-container:hover {
+  cursor: pointer;
+  border: 2px dashed blue;
+}
+
+.org-item-logo {
+  width: 133px;
+  height: 100px;
+  float: left;
+  margin: 10px 10px 10px 10px;
+}
+
+.org-logo {
+  display: inline;
+  width: 100%;
+  height: 100%;
+}
+
+.org-item-data {
+  width: 100%;
+  height: 100%;
+}
+
+.org-item-name {
+  font-size: 0.95em;
+  font-weight: 600;
+}
+
+.search-company {
+  margin-left: 50px;
+}
+
+.search-input {
+  width: 400px;
+  height: 22px;
+}

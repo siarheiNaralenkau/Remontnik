@@ -22,11 +22,11 @@ $(function() {
     $("#orgLogo").attr("src", data.logo_url);
     $("#orgRating").jRate({
       readOnly: true,
-      startColor: "orange",
-      endColor: "orange",
+      startColor: "#FFFF33",
+      endColor: "#FFFF33",
       rating: data.rating,
-      width: 25,
-      height: 25,
+      width: 19,
+      height: 19,
       shape: 'STAR',
       min: 0,
       max: 5,

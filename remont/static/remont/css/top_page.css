@@ -8,7 +8,7 @@
 
 .topPage .sectionLogo {
   height: 90px;
-  width: 15%;
+  width: 14%;
   margin-top: 4px;
   margin-left: 1%;
   display: table-cell;
@@ -18,20 +18,21 @@
   display: table-cell;
   border: solid 1px #999;
   height: 90px;
-  width: 70%;
+  width: 67%;
   float: left;
   margin-top: 4px;
   margin-left: 6%;
 }
 
-.topPage .sectionRegister {
-  display: table-cell;
+.topPage .section-register {
   height: 90px;
-  width: 15%;
-  float: right;
-  margin-right: 1%;
+  width: 18%;
+  float: left;
+  margin-left: 6%;
   margin-top: 4px;
-  border-radius: 2px;
+  border-radius: 6px;
+  background: linear-gradient(rgba(220, 220, 220, 0.5), rgba(210, 210, 210, 1));
+  overflow: hidden;
 }
 
 .topPage .img_auto_100p {
@@ -40,16 +41,29 @@
 }
 
 .topPage .reg-login-cont {
-  display: table;
+  padding-left: 3em;
   width: 100%;
-  height: 100%;
-  border-radius: 6px;
-  background: linear-gradient(rgba(220, 220, 220, 0.5), rgba(210, 210, 210, 1));
+  height: 60%;
+}
+
+.topPage .select-spec-cont {
+  width: 100%;
+  height: 30%;
+  text-align: center;
+  vertical-align: middle;
+  padding-top: 1%;
+}
+
+.topPage .sel-work-spec {
+  width: 80%;
+  height: 80%;
+  margin: 0 auto;
 }
 
 .topPage .action-btn {
+  float: left;
   display: inline-block;
-  margin-top: 26px;
+  margin-top: 20px;
   height: 28px;
   border-radius: 4px;
   font-size: 1.15em;
@@ -57,6 +71,18 @@
   text-align: left;
   cursor: pointer;
   text-decoration: underline;
+  padding-left: 5px;
+  padding-right: 5px;
+}
+
+.topPage .shash-sep {
+  float: left;
+  display: inline-block;
+  margin-top: 20px;
+  height: 28px;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: center;
   padding-left: 5px;
   padding-right: 5px;
 }

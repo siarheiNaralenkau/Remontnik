@@ -1,0 +1,38 @@
+.top-orgs-container {
+  margin-top: 10px;
+  width: 100%;
+}
+.top-orgs-parent {
+  width: 96%;
+  margin: 0 auto;
+  /*border: 1px solid black;*/
+  text-align: center;
+  font-size: 20px;
+  letter-spacing: 17px;
+  white-space: nowrap;
+  line-height: 12px;
+  overflow: hidden;
+}
+.top-orgs-child {
+  width: 10%;
+  height: 130px;
+  border: solid 1px #ccc;
+  display: inline-block;
+  vertical-align: middle;
+  cursor: pointer;
+
+  *display: inline;
+  /**margin: 0 20px 0 20px;*/
+  *margin-left: 1%;
+}
+
+.top-logo {
+  margin-left: 1%;
+  width: 98%;
+  height: 85%;
+}
+
+.top-rating {
+  margin-left: 1%;
+  float: left;
+}

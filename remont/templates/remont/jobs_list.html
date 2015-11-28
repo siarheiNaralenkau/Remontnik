@@ -17,7 +17,14 @@
       <p class="page-header">Каталог типов работ</p>
       <div class="categories-cont">
       {% for cat, jobs in job_types.items %}
-        <div class="category-info" data-categoryId="{{cat.id}}">
+        <!--<p class="category-header">{{ cat.name }}</p>-->
+        <ul class="category-jobs-list">
+          <li class="category-header">{{ cat.name }}</li>
+          {% for job in jobs %}
+            <li class="job-type-label" data-jobId="{{job.id}}">{{ job.name }}</li>
+          {% endfor %}
+        </ul>
+        <!--<div class="category-info" data-categoryId="{{cat.id}}">-->
           <!-- <p class="category-icon">
             {% if cat.icon %}
               <img class="category-icon" src="/remont/{{cat.icon.url}}"/>
@@ -25,13 +32,7 @@
               <img class="category-icon" src="{{ STATIC_URL }}remont/images/question.jpg"/>
             {% endif %}
           </p> -->
-          <p class="category-header">{{ cat.name }}</p>
-          <ul class="category-jobs-list">
-            {% for job in jobs %}
-              <li class="job-type-label" data-jobId="{{job.id}}">{{ job.name }}</li>
-            {% endfor %}
-          </ul>
-        </div>
+        <!--</div>-->
       {% endfor %}
       </div>
     </div>

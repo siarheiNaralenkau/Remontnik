@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+  <head lang="en">
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+    <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/message_from_person.css">
+  </head>
+
+  <body>
+    <div class="hidden-el">
+      <div id="personMsgTemplate">
+        <div class="person-messages-template">
+          <div class="logo-cont message-cell-item">
+            <img src="{0}" class="sender-logo"/>
+          </div>
+          <div class="name-and-text message-cell-item">
+            <div class="from-name">{1}</div>
+            <div class="msg-text" dataMessageId="{5}" dataHiddenText="{6}">{2}</div>
+          </div>
+          <div class="written-time message-cell-item">
+            <div class="last-message-time">{3}</div>
+            <div class="undead-messages-amount">{4}</div>
+          </div>
+        </div>
+        <div class="dialog-container">
+          <ul id="dialogList" class="dialog-list"></ul>
+        </div>
+      </div>
+
+      <div id="dialogItemTemplateLeft">
+        <li>
+          <div class="dialog-item-left">
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div style="text-align: right; margin-right: 5px">{4}</div>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <div id="dialogItemTemplateRight">
+        <li>
+          <div class="dialog-item-right">
+            <div class="dialog-item-message">
+              <div class="from-name">{1}</div>
+              <div class="dialog-message {2}">{3}</div>
+              <div style="text-align: left; margin-left: 5px">{4}</div>
+            </div>
+            <div class="dialog-item-photo">
+              <img src="{0}" class="sender-logo"/>
+            </div>
+          </div>
+        </li>
+      </div>
+
+      <div id="collapseDialogTemplate">
+        <li>
+          <div class="collapse-dialog">Свернуть</div>
+        </li>
+      </div>
+
+      <div id="dialogHeaderTemplate">
+        <li>
+          <div class="dialog-header">{0} &#8596; {1}</div>
+        </li>
+      </div>
+
+      <div id="answerTemplate">
+        <li>
+          <div class="answer-div">
+            <div>
+              <label>Текст сообщения: </label>
+            </div>
+            <div>
+              <textarea name="tMessage" maxlength="1000" class="answer-message"></textarea>
+            </div>
+            <div class="btn-answer" dataRecipientId="{0}">Отправить</div>
+            <div class="error-div" id="msgError"></div>
+            <span class="hidden-el" class="receiver-id"></span>
+          </div>
+        </li>
+      </div>
+
+    </div>
+  </body>
+</html>
