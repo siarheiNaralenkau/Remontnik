@@ -4,12 +4,11 @@
   height: 100%;
   display: block;
   float: left;
-  border-right: 2px solid #CCC;
   padding-right: 10px;
 }
 
 .menu-div .menu {
-  border-bottom: 1px solid #CCC;
+  /*border-bottom: 1px solid #CCC;*/
 }
 
 .menu-div .main-menu-list {
@@ -27,7 +26,7 @@
 .menu-div .action-btn {
   height: 40px;
   border-radius: 4px;
-  font-size: 1.15;
+  font-size: 1.15em;
   font-weight: 700;
   text-align: left;
   line-height: 40px;

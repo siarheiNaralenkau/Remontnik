@@ -7,7 +7,7 @@
 <body>
   <div class="top-orgs-container">
     <div class='top-orgs-parent'>
-      {% for org in top8_orgs %}
+      {% for org in top_orgs %}
         <div class="top-orgs-child" title="{{org.name}}" dataOrgId="{{org.id}}">
           <img src="{{org.logo}}" class="top-logo"/>
           <div class="top-rating" id="rating{{org.id}}" dataRating="{{org.rating}}"></div>
