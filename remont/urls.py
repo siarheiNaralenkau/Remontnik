@@ -42,6 +42,7 @@ urlpatterns = patterns('',
   url(r'^get_new_messages_for_user/$', views.get_new_messages_for_user, name='get_new_messages_for_user'),
   url(r'^answer_mesaage/$', views.answer_mesaage, name='answer_mesaage'),
   url(r'^get_dialogs_history/$', views.get_dialogs_history, name='get_dialogs_history'),
+  url(r'^check_spec/$', views.check_spec, name='check_spec'),
   (r'^ckeditor/', include('ckeditor.urls')),
   )
 

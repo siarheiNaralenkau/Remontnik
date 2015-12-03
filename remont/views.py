@@ -54,6 +54,8 @@ def index(request):
     work_specs[0]["selected"] = "selected=selected"
     request.session["sel_spec"] = work_specs[0]["id"]
 
+  request.session["work_specs"] = work_specs
+
   suggest_job_form = SuggestJobForm()
   response_data = {
       "jobSuggestions": job_suggestions,
@@ -61,7 +63,6 @@ def index(request):
       "logged_in": False,
       "categories": categories,
       "suggest_job_form": suggest_job_form,
-      "work_specs": work_specs,
       "top_orgs": get_top_orgs(),
       "mainPage": True
   }
@@ -766,3 +767,16 @@ def get_dialogs_history(request):
     })
 
   return JsonResponse(messages_array, safe=False)
+
+
+# Проверяем, выбрана ли специализация работ(Для функционирования меню и поиска организаций).
+@csrf_exempt
+def check_spec(request):
+  sel_spec = request.session.get("sel_spec")
+  response_data = {}
+  if sel_spec:
+    response_data["spec_selected"] = "true"
+  else:
+    response_data["spec_selected"] = "false"
+  return JsonResponse(response_data, safe=False)
+

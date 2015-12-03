@@ -16,6 +16,7 @@ import sys
 import codecs
 import locale
 import socket
+from django.conf import global_settings
 
 BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 
@@ -133,3 +134,7 @@ SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 MAIL_FROM = "staatix.gomel@gmail.com"
 MAIL_PASSWORD = "staatix2015"
+
+TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
+    "django.core.context_processors.request",
+)

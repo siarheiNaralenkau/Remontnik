@@ -30,12 +30,14 @@ $(function() {
   function mainMenuClick() {
     var link = $(this).attr("dataLink");
     if(link === "/remont/orgs_list") {
-      var selSpec = $("#selSpec").html();
-      if(selSpec) {
-        window.open(link, "_self");
-      } else {
-        noSpecDialog.dialog("open");
-      }
+      var specSelected = checkSpecSelected();
+      $.get("/remont/check_spec", {}, function(responseData) {
+        if(responseData.spec_selected === "true") {
+          window.open(link, "_self");
+        } else {
+          noSpecDialog.dialog("open");
+        }
+      });
     } else if(link) {
       window.open(link, "_self");
     } else {
