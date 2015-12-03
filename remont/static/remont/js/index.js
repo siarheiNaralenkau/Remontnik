@@ -243,13 +243,14 @@ $(function() {
     var ratingEl = ratings[i];
     var ratingValue = +$(ratingEl).attr("dataRating");
     var ratingElId = "#" + $(ratingEl).attr("id");
+
     $(ratingElId).jRate({
       readOnly: true,
       startColor: "#CCCC33",
       endColor: "#CCCC33",
       rating: ratingValue,
-      width: 14,
-      height: 14,
+      width: 12.5,
+      height: 12.5,
       shape: 'STAR',
       min: 0,
       max: 5,

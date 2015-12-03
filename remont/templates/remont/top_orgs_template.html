@@ -9,7 +9,7 @@
     <div class='top-orgs-parent'>
       {% for org in top_orgs %}
         <div class="top-orgs-child" title="{{org.name}}" dataOrgId="{{org.id}}">
-          <img src="{{org.logo}}" class="top-logo"/>
+          <img src="{{org.logo}}" class="top-logo scaled"/>
           <div class="top-rating" id="rating{{org.id}}" dataRating="{{org.rating}}"></div>
         </div>
       {% endfor %}
