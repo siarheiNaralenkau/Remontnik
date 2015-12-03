@@ -20,22 +20,24 @@
         <img src="{{ STATIC_URL }}remont/images/baner_top3.jpg" class="img_auto_100p">
       </div>
     </div>
-    <div id="sectionRegister" class="section-register">
-      {% if not user.is_authenticated %}
-        <div class="reg-login-cont">
-          <div class="action-btn" id="registerLink">Регистрация</div>
-          <div class="shash-sep">/</div>
-          <div class="action-btn" id="loginLink">Вход</div>
+    {% if mainPage %}
+      <div id="sectionRegister" class="section-register">
+        {% if not user.is_authenticated %}
+          <div class="reg-login-cont">
+            <div class="action-btn" id="registerLink">Регистрация</div>
+            <div class="shash-sep">/</div>
+            <div class="action-btn" id="loginLink">Вход</div>
+          </div>
+        {% endif %}
+        <div class="select-spec-cont">
+          <select id="workSpec" class="sel-work-spec">
+            {% for spec in work_specs %}
+              <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+            {% endfor %}
+          </select>
         </div>
-      {% endif %}
-      <div class="select-spec-cont">
-        <select id="workSpec" class="sel-work-spec">
-          {% for spec in work_specs %}
-            <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
-          {% endfor %}
-        </select>
       </div>
-    </div>
+    {% endif %}
   </div>
 
   <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>

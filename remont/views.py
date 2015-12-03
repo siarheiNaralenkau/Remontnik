@@ -32,8 +32,6 @@ import locale
 
 # Главная страница приложения
 def index(request):
-  top10 = {'top10 masters': 'top10 masters should be displayed here'}
-
   # Получаем выбранную специализацию
   sel_spec = request.session.get("sel_spec")
 
@@ -64,7 +62,8 @@ def index(request):
       "categories": categories,
       "suggest_job_form": suggest_job_form,
       "work_specs": work_specs,
-      "top_orgs": get_top_orgs()
+      "top_orgs": get_top_orgs(),
+      "mainPage": True
   }
   # Check if user is logged in.
   if request.user.is_authenticated():
