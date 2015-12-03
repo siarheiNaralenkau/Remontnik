@@ -31,7 +31,7 @@
         {% endif %}
         <div class="select-spec-cont">
           <select id="workSpec" class="sel-work-spec">
-            {% for spec in work_specs %}
+            {% for spec in request.session.work_specs %}
               <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
             {% endfor %}
           </select>
