@@ -1,106 +1,121 @@
-.topPage {
-  display: table;
+.top-page {
+  margin-top: 1%;
   width: 100%;
   height: 150px;
   table-layout: fixed;
-  border-spacing: 10px;
   margin-bottom: 20px;
 }
 
-.topPage .sectionLogo {
-  height: 140px;
+.top-page .section-logo {
+  float: left;
+  height: 98%;
   width: 14%;
-  margin-top: 4px;
   margin-left: 1%;
-  display: table-cell;
 }
 
-.topPage .sectionBanner {
-  display: table-cell;
-  height: 140px;
-  width: 67%;
+.top-page .section-banner {
   float: left;
-  margin-top: 4px;
-  margin-left: 6%;
+  height: 98%;
+  width: 60%;
+  margin-left: 5%;
 }
 
-.topPage .section-register {
-  height: 140px;
-  width: 18%;
+.top-page .section-register {
   float: left;
-  margin-left: 6%;
-  margin-top: 4px;
+  height: 98%;
+  width: 15%;
+  margin-left: 5%;
   border-radius: 6px;
   background: linear-gradient(rgba(220, 220, 220, 0.5), rgba(210, 210, 210, 1));
   overflow: hidden;
 }
 
-.topPage .img_auto_100p {
+.top-page .img_auto_100p {
   width: 100%;
   height: 100%;
 }
 
-.topPage .banner-wrap {
+.top-page .banner-wrap {
   width: 100%;
   height: 100%;
   margin: 0 auto;
 }
 
-.topPage .reg-login-cont {
-  padding-left: 3em;
-  width: 100%;
-  height: 60%;
+.top-page .reg-login-cont {
+  width: 80%;
+  height: 45%;
+  margin: 0 auto;
 }
 
-.topPage .select-spec-cont {
+.top-page .select-spec-cont {
   width: 100%;
-  height: 30%;
+  height: 25%;
   text-align: center;
   vertical-align: middle;
   padding-top: 1%;
 }
 
-.topPage .sel-work-spec {
+.top-page .sel-work-spec {
   width: 80%;
   height: 80%;
   margin: 0 auto;
+  font-size: 0.9vw;
 }
 
-.topPage .action-btn {
+.top-page .action-btn {
   float: left;
-  display: inline-block;
-  margin-top: 20px;
-  height: 28px;
+  margin-top: 10%;
+  height: 40%;
   border-radius: 4px;
-  font-size: 1.15em;
-  font-weight: 700;
-  text-align: left;
-  cursor: pointer;
-  text-decoration: underline;
-  padding-left: 5px;
-  padding-right: 5px;
-}
-
-.topPage .shash-sep {
-  float: left;
-  display: inline-block;
-  margin-top: 20px;
-  height: 28px;
-  font-size: 1.15em;
+  font-size: 1.1vw;
   font-weight: 700;
   text-align: center;
-  padding-left: 5px;
-  padding-right: 5px;
+  cursor: pointer;
+  text-decoration: underline;
+  padding-top: 2%;
+  padding-left: 5%;
+  padding-right: 5%;
 }
 
-.topPage .action-btn:hover {
+.top-page .shash-sep {
+  float: left;
+  margin-top: 10%;
+  height: 40%;
+  font-size: 1.1vw;
+  font-weight: 700;
+  text-align: center;
+  padding-top: 2%;
+  padding-left: 1%;
+  padding-right: 1%;
+}
+
+.top-page .action-btn:hover {
   background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
-}
-
-.topPage .slash-sep {
-  display: table-cell;
 }
 
 .site-logo {
   cursor: pointer;
+  width: 100%;
+  height: 100%;
 }
+
+.top-page .logo-container {
+  display: inline-block;
+  position: relative;
+  left: 0px;
+  top: 0px;
+  width: 100%;
+}
+
+.top-page .logo-dummy {
+  padding-top: 55%;
+}
+
+.top-page .logo-div {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+}
+
