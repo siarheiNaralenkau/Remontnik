@@ -1,0 +1,44 @@
+.font13 {
+  font-size: 13px
+}
+
+.search-company {
+  width: 72%;
+  margin: 0 auto;
+  height: 50px;
+  margin-top: 20px;
+}
+
+.align-middle {
+  display: inline-block;
+  vertical-align: middle;
+  font-size: 13px !important;
+}
+
+.search-btn {
+  margin-left: 1%;
+  border-radius: 4px;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: middle;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+}
+
+.search-input {
+  width: 100%;
+  height: 25px;
+}
+
+.keywords-div {
+  width: 75%;
+}
+
+.horizontal {
+  float: left;
+  display: inline-block;
+}

@@ -114,7 +114,7 @@ def search_organizations(request):
 
   if request.user.is_authenticated():
     logged_org = OrganizationProfile.objects.filter(account=request.user).first()
-  key_phrase = request.REQUEST["q"]
+  key_phrase = request.REQUEST["keyWords"]
   response_data = []
 
   # 1) Поиск по имени организации
