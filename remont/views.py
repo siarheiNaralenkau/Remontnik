@@ -38,6 +38,17 @@ def index(request):
   job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
+
+  categories_data = []
+  for cat in categories:
+    cat_item = {"id": cat.id, "name": cat.name}
+    jobs = WorkType.objects.filter(category=cat)
+    cat_jobs = []
+    for job in jobs:
+      cat_jobs.append({"id": job.id, "name": job.name})
+    cat_item["jobs"] = cat_jobs
+    categories_data.append(cat_item)
+
   work_specs = []
   work_specs.append({"id": 0, "value": u"Специализация работ", "selected": "", "disabled": "disabled=disabled"})
   work_specs.append({"id": -1,  "value": u"Все", "selected": "", "disabled": ""})
@@ -61,7 +72,7 @@ def index(request):
       "jobSuggestions": job_suggestions,
       "cities": cities,
       "logged_in": False,
-      "categories": categories,
+      "categories": categories_data,
       "suggest_job_form": suggest_job_form,
       "top_orgs": get_top_orgs(),
       "mainPage": True
