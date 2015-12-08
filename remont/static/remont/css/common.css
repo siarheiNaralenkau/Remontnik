@@ -212,3 +212,17 @@ label {
   list-style-type: none;
   padding: 0;
 }
+
+.auto-size-btn {
+  display: inline-block;
+  border-radius: 4px;
+  font-size: 1.15em;
+  font-weight: 700;
+  text-align: middle;
+  padding-left: 15px;
+  padding-right: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
+  cursor: pointer;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+}

@@ -8,35 +8,24 @@
   <div class="place-job-container">
     <div class="placeJobOrder">
       <form action="../suggest_job_save/" method="post" class="suggest-job-form">
+        <input type="hidden" id="jobCategory"/>
+        <input type="hidden" id="jobType"/>
         <div class="input-fields-div">
           <input type="text" name="job_header" placeholder="Краткий заголовок заявки" class="input-base job_header">
         </div>
         <div class="input-fields-div">
-          <input type="button" class="job-type-btn" id="jobTypeBtn" value="Вид работ"/>
+          <div class="auto-size-btn show-menu-btn" id="jobTypeBtn">Вид работ</div>
           <ul id="jobCategoryMenu" class="job-category hidden-el">
             {% for category in categories %}
-              <li dataCatId="{{ category.id }}">{{ category.name }}
+              <li dataCatId="{{ category.id }}" class="job-menu-item">{{ category.name }}
                 <ul>
                   {% for job in category.jobs %}
-                    <li dataJobId="{{ job.id }}">{{ job.name }}</li>
+                    <li dataJobId="{{ job.id }}" class="job-type job-menu-item">{{ job.name }}</li>
                   {% endfor %}
                 </ul>
               </li>
             {% endfor %}
           </ul>
-
-          <div class="hidden-el">
-              {# <select name="job_category" id="job_category" class="input-base job_category">
-                <option value="" disabled selected>Категория работ</option>
-                {% for category in categories %}
-                <option value="{{ category.id }}">{{ category.name }}</option>
-                {% endfor %}
-              </select>
-
-              <select name="job_type" id="job_type" class="input-base job_type">
-                <option value="" disabled selected>Вид работ</option>
-              </select>
-          </div>
         </div>
         <div class="input-fields-div">
           <textarea
