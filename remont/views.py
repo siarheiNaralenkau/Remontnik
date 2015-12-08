@@ -32,14 +32,23 @@ import locale
 
 # Главная страница приложения
 def index(request):
-  top10 = {'top10 masters': 'top10 masters should be displayed here'}
-
   # Получаем выбранную специализацию
   sel_spec = request.session.get("sel_spec")
 
   job_suggestions = JobSuggestion.objects.order_by("-date_created")[:5]
   cities = City.objects.all()
   categories = WorkCategory.objects.all()
+
+  categories_data = []
+  for cat in categories:
+    cat_item = {"id": cat.id, "name": cat.name}
+    jobs = WorkType.objects.filter(category=cat)
+    cat_jobs = []
+    for job in jobs:
+      cat_jobs.append({"id": job.id, "name": job.name})
+    cat_item["jobs"] = cat_jobs
+    categories_data.append(cat_item)
+
   work_specs = []
   work_specs.append({"id": 0, "value": u"Специализация работ", "selected": "", "disabled": "disabled=disabled"})
   work_specs.append({"id": -1,  "value": u"Все", "selected": "", "disabled": ""})
@@ -56,15 +65,17 @@ def index(request):
     work_specs[0]["selected"] = "selected=selected"
     request.session["sel_spec"] = work_specs[0]["id"]
 
+  request.session["work_specs"] = work_specs
+
   suggest_job_form = SuggestJobForm()
   response_data = {
       "jobSuggestions": job_suggestions,
       "cities": cities,
       "logged_in": False,
-      "categories": categories,
+      "categories": categories_data,
       "suggest_job_form": suggest_job_form,
-      "work_specs": work_specs,
-      "top_orgs": get_top_orgs()
+      "top_orgs": get_top_orgs(),
+      "mainPage": True
   }
   # Check if user is logged in.
   if request.user.is_authenticated():
@@ -114,7 +125,7 @@ def search_organizations(request):
 
   if request.user.is_authenticated():
     logged_org = OrganizationProfile.objects.filter(account=request.user).first()
-  key_phrase = request.REQUEST["q"]
+  key_phrase = request.REQUEST["keyWords"]
   response_data = []
 
   # 1) Поиск по имени организации
@@ -767,3 +778,16 @@ def get_dialogs_history(request):
     })
 
   return JsonResponse(messages_array, safe=False)
+
+
+# Проверяем, выбрана ли специализация работ(Для функционирования меню и поиска организаций).
+@csrf_exempt
+def check_spec(request):
+  sel_spec = request.session.get("sel_spec")
+  response_data = {}
+  if sel_spec:
+    response_data["spec_selected"] = "true"
+  else:
+    response_data["spec_selected"] = "false"
+  return JsonResponse(response_data, safe=False)
+

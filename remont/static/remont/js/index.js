@@ -93,11 +93,12 @@ $(function() {
     if(!selSpec) {
       noSpecDialog.dialog("open");
     } else {
+      var description = $.trim($(".job_description").first().val());
       var data = {
         'job_header': $(".job_header").first().val(),
-        'job_category': $(".job_category").first().val(),
-        'job_type': $(".job_type").first().val(),
-        'job_description': $(".job_description").first().val(),
+        'job_category': $("#jobCategory").val(),
+        'job_type': $("#jobType").val(),
+        'job_description': description,
         'contact_name': $(".contact_name").first().val(),
         'job_city': $(".job_city").first().val(),
         'contact_phone': $(".contact_phone").first().val(),
@@ -209,19 +210,6 @@ $(function() {
     $('.suggest-job-form')[0].reset();
   }
 
-  function categoryChanged() {
-    var categoryId = $(this).val();
-    $.get('/remont/get_job_types_by_category?category_id=' + categoryId,
-      function(data) {
-        console.log(data);
-        $('#job_type').children('option:not(:first)').remove();
-        for(var i = 0; i < data.length; i++) {
-          $('#job_type').append($("<option></option>").attr("value",data[i].id).text(data[i].name));
-        }
-      }
-    );
-  }
-
   function viewProfile() {
     var orgId = $(this).attr("dataOrgId");
     window.location.replace("/remont/view_profile?org_id=" + orgId);
@@ -234,7 +222,6 @@ $(function() {
   $(".add-partner").on('click', approvePartner);
   $(".reject-partner").on('click', rejectPartner);
   $("#workSpec").on("change", changeSpec);
-  $("#job_category").change(categoryChanged);
   $(".place-job-request-btn").on('click', saveJobRequest);
   $(".top-orgs-child").on('click', viewProfile);
 
@@ -243,13 +230,14 @@ $(function() {
     var ratingEl = ratings[i];
     var ratingValue = +$(ratingEl).attr("dataRating");
     var ratingElId = "#" + $(ratingEl).attr("id");
+
     $(ratingElId).jRate({
       readOnly: true,
       startColor: "#CCCC33",
       endColor: "#CCCC33",
       rating: ratingValue,
-      width: 14,
-      height: 14,
+      width: 12.5,
+      height: 12.5,
       shape: 'STAR',
       min: 0,
       max: 5,
@@ -257,5 +245,14 @@ $(function() {
       horizontal: true
     });
   }
+
+  // Прячем меню при нажатии мыши где либо за его пределами.
+  var jobMenuEl = $("#jobCategoryMenu");
+  $(document).click(function(e) {
+    var clickedEl = $(e.target);
+    if(!$.contains(jobMenuEl, clickedEl) && !clickedEl.hasClass("show-menu-btn")) {
+      jobMenuEl.addClass("hidden-el");
+    }
+  });
 
 });

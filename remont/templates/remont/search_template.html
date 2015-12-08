@@ -3,36 +3,22 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
-  <style>
-    .searchButton {
-      display: inline-block;
-      vertical-align: middle;
-    }
-    .font13 {
-      font-size: 13px
-    }
-    .align-middle {
-      display: inline-block;
-      vertical-align: middle;
-      font-size: 13px !important;
-    }
-  </style>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/search_template.css"/>
 </head>
 <body>
-  <div class="searchCompany ui-widget">
-    <label for="searchKeyword">Поиск организаций</label>
-    <input type="text" maxlength="80" class="searchInput" name="searchKeyword" id="searchKeyword"
-      placeholder="Введите название организации или тип работы">
-    <!-- <label for="orgCity">Город:</label>
-    <select name="city" class="align-middle" id="orgCity">
-      <optgroup class="font13">
-        {% for city in cities %}
-        <option value="{{ city.id }}">
-          <span>{{ city.name }}</span>
-        </option>
-        {% endfor %}
-      </optgroup>
-    </select> -->
+  <div class="search-company">
+    <div class="horizontal keywords-div">
+      <input type="text" maxlength="80" id="searchKeyword" class="search-input"
+        placeholder="Введите название организации или тип работы">
+    </div>
+    <div class="search-btn horizontal" id="searchBtn">Поиск</div>
   </div>
+
+  <div class="hidden-el" id="searchResultsDlg">
+    <ul class="list-orgs non-markered-list" id="listOrgs">
+    </ul>
+  </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/search-org.js"></script>
 </body>
 </html>

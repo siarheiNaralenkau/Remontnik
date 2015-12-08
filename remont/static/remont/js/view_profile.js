@@ -107,11 +107,12 @@ $(function() {
       $(imgLink).attr("href", "/remont/" + data.photos[i]);
       var photoImg = document.createElement("img");
       $(photoImg).attr("src", "/remont/" + data.photos[i]);
-      $(photoImg).addClass("work-image");
+      $(photoImg).addClass("work-image scaled");
       imgLink.appendChild(photoImg);
       photoFragment.appendChild(imgLink);
     }
     $("#photos")[0].appendChild(photoFragment);
+    scaleImages();
   }, "json");
 
   function showMoreJobs() {

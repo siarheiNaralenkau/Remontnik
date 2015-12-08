@@ -12,25 +12,23 @@
 }
 
 .menu-div .main-menu-list {
-  width: 90%;
   padding: 0;
   text-decoration: underline;
 }
 
 .menu-div .main-menu-item {
-  width: 90%;
   list-style-type: none;
   margin-top: 10px;
 }
 
 .menu-div .action-btn {
-  height: 40px;
   border-radius: 4px;
   font-size: 1.15em;
   font-weight: 700;
   text-align: left;
-  line-height: 40px;
   padding-left: 15px;
+  padding-top: 4px;
+  padding-bottom: 4px;
 }
 .menu-div .action-btn:hover {
   background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));

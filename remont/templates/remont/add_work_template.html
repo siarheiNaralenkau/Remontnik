@@ -3,30 +3,29 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
-  <style>
-    .place-job-container {
-      margin-top: 10px;
-    }
-  </style>
 </head>
 <body>
   <div class="place-job-container">
     <div class="placeJobOrder">
       <form action="../suggest_job_save/" method="post" class="suggest-job-form">
+        <input type="hidden" id="jobCategory"/>
+        <input type="hidden" id="jobType"/>
         <div class="input-fields-div">
           <input type="text" name="job_header" placeholder="Краткий заголовок заявки" class="input-base job_header">
         </div>
         <div class="input-fields-div">
-          <select name="job_category" id="job_category" class="input-base job_category">
-            <option value="" disabled selected>Категория работ</option>
+          <div class="auto-size-btn show-menu-btn" id="jobTypeBtn">Вид работ</div>
+          <ul id="jobCategoryMenu" class="job-category hidden-el">
             {% for category in categories %}
-            <option value="{{ category.id }}">{{ category.name }}</option>
+              <li dataCatId="{{ category.id }}" class="job-menu-item">{{ category.name }}
+                <ul>
+                  {% for job in category.jobs %}
+                    <li dataJobId="{{ job.id }}" class="job-type job-menu-item">{{ job.name }}</li>
+                  {% endfor %}
+                </ul>
+              </li>
             {% endfor %}
-          </select>
-
-          <select name="job_type" id="job_type" class="input-base job_type">
-            <option value="" disabled selected>Вид работ</option>
-          </select>
+          </ul>
         </div>
         <div class="input-fields-div">
           <textarea
@@ -48,5 +47,9 @@
     </form>
   </div>
 </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/add-work-template.js"></script>
 </body>
 </html>
