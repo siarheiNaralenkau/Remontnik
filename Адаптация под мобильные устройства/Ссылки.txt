@@ -1,0 +1,10 @@
+http://www.internet-technologies.ru/articles/article_1996.html
+http://texterra.ru/blog/polnoe-rukovodstvo-po-adaptatsii-sayta-pod-mobilnyy-trafik.html
+http://siteclinic.ru/blog/technical-aspects/3-sposoba-bystro-adaptirovat-sayt/
+http://kate-land.net/html-css/item/156-mobile
+https://developers.google.com/webmasters/mobile-sites/mobile-seo/configurations/responsive-design?hl=ru
+https://developers.google.com/webmasters/mobile-sites/mobile-seo/common-mistakes/?hl=ru
+http://habrahabr.ru/post/107764/
+http://ktonanovenkogo.ru/seo/optimizaciya-sajta-dlya-prosmotra-mobilnyx-ustrojstvax-adaptivnogo-dizajna.html
+http://habrahabr.ru/company/netcat/blog/170807/
+http://stackoverflow.com/questions/10819768/django-mobile-and-full-site-redirects
