@@ -1,0 +1,57 @@
+.place-job-container {
+  margin-top: 15%;
+  width: 98%;
+  margin-left: 0.5%;
+  border: 2px solid black;
+}
+
+.input-fields-div {
+  margin-top: 10px;
+  width: 100%;
+  display: table;
+}
+
+.input-base {
+  width: 98%;
+  margin-left: 1%;
+  height: 44px;
+}
+
+.select-job-div {
+  width: 50%;
+  margin: 0 auto;
+  margin-top: 10px;
+}
+
+.show-menu-btn {
+  height: 44px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  border-radius: 10px;
+  font-size: 2em;
+}
+
+.save-job-btn {
+  height: 66px;
+  display: table-cell;
+  text-align: center;
+  vertical-align: middle;
+  background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
+  border-radius: 30px;
+  font-size: 2em;
+}
+
+.job-description {
+  width: 98%;
+  margin-left: 1%;
+  height: 120px;
+}
+
+.place-job-request-div {
+  width: 35%;
+  margin: 0 auto;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}

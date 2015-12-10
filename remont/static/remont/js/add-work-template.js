@@ -3,6 +3,8 @@ $(function(){
     select: jobTypeSelect
   });
 
+  $(".jobs-for-category").hide();
+
   $("#jobTypeBtn").click(showMenu);
 
   function showMenu() {
@@ -19,6 +21,9 @@ $(function(){
       $("#jobCategory").val(categoryId);
       console.log(jobTypeId);
       $("#jobCategoryMenu").addClass("hidden-el");
+    } else {
+      var subMenu = $(selectedEl).find(".jobs-for-category");
+      $(subMenu).show();
     }
   }
 });
