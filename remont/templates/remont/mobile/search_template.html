@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/mobile/search-template.css"/>
+</head>
+<body>
+  <div class="search-company">
+    <div class="horizontal keywords-div">
+      <input type="text" maxlength="80" id="searchKeyword" class="search-input"
+        placeholder="Введите название организации или тип работы">
+    </div>
+    <div class="horizontal search-btn-outer">
+      <div class="search-btn" id="searchBtn">Поиск</div>
+    </div>
+  </div>
+
+  <div class="hidden-el" id="searchResultsDlg">
+    <ul class="list-orgs non-markered-list" id="listOrgs">
+    </ul>
+  </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/search-org.js"></script>
+</body>
+</html>
