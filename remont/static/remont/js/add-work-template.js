@@ -6,9 +6,15 @@ $(function(){
   $(".jobs-for-category").hide();
 
   $("#jobTypeBtn").click(showMenu);
+  $("#btnSuggestJob").click(showSuggestForm);
 
   function showMenu() {
     $("#jobCategoryMenu").removeClass("hidden-el");
+  }
+
+  function showSuggestForm() {
+    $(".place-job-container").removeClass("hidden-el");
+    $("#btnSuggestJob").addClass("hidden-el");
   }
 
   function jobTypeSelect(event, ui) {

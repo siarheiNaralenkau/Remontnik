@@ -208,6 +208,11 @@ $(function() {
     var newHtml = newSuggestionHtml + jobsHtml;
     jobRequestsList.html(newHtml);
     $('.suggest-job-form')[0].reset();
+
+    if($("#btnSuggestJob")) {
+      $("#btnSuggestJob").removeClass("hidden-el");
+      $(".place-job-container").addClass("hidden-el");
+    }
   }
 
   function viewProfile() {
@@ -222,7 +227,7 @@ $(function() {
   $(".add-partner").on('click', approvePartner);
   $(".reject-partner").on('click', rejectPartner);
   $("#workSpec").on("change", changeSpec);
-  $(".place-job-request-btn").on('click', saveJobRequest);
+  $("#placeOrderButton").on('click', saveJobRequest);
   $(".top-orgs-child").on('click', viewProfile);
 
   var ratings = $(".top-rating");

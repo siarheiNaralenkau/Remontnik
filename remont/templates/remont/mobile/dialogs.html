@@ -34,3 +34,14 @@
     </div>
   </form>
 </div>
+
+<div class="hidden-el" id="noSpecDialog">
+  <p>Пожалуйста, укажите специализацию работ!</p>
+  <form name="selSpecDialogForm">
+    <select id="selectSpecInDialog" class="sel-spec-in-dialog">
+      {% for spec in request.session.work_specs %}
+        <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>
