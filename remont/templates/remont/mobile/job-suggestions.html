@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title></title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/mobile/job-suggestions.css">
+</head>
+<body>
+  <div class="jobs-suggestions-container">
+    <div class="job-suggestions-header">
+      <p class="header-text">Недавно добавленные заказы и тендеры</h2>
+    </div>
+    <ul class="job-requests-list non-markered-list">
+      {% for job in jobSuggestions%}
+      <li class="job-request-item">
+        <div class="job-request-div" dataJobId="{{job.id}}">
+          <h3>{{ job.short_header}}</h3>
+          <h5>{{ job.job_type.name }}</h5>
+          <div>
+            <span>{{ job.date_created }}</span>
+            <p>{{ job.description }}</p>
+          </div>
+        </div>
+      </li>
+      {% endfor %}
+      <li>
+        <div class="div-show-more">
+          <div class="btn-show-more" onclick="showMore()">Показать больше...</div>
+        </div>
+      </li>
+    </ul>
+  </div>
+</body>
+</html>

@@ -1,0 +1,47 @@
+<div class="hidden-el" id="loginDialog" title="Вход">
+  <form name="loginForm" action="site_login">
+    <div class="login-fields-div">
+      <label class="login-dialog-label" for="login">Название организации/Логин:</label>
+      <input type="text" name="login" id="login" value="" class="login-fields-input"/>
+    </div>
+    <div class="login-fields-div">
+      <label class="login-dialog-label" for="password">Пароль:</label>
+      <input type="password" name="password" id="password" value="" class="login-fields-input"/>
+    </div>
+    <div class="login-fields-div">
+      <table width="100%"><tr>
+        <td align="right">
+          <a href="#" onclick="restorePasswordOpen()" class="login-link">Я забыл пароль</a>
+        </td>
+        <td align="left">
+          <a href="/remont/register" class="login-link">Регистрация</a>
+        </td>
+      </tr></table>
+    </div>
+    <div class="error-div" id="loginError"></div>
+  </form>
+</div>
+
+<div class="hidden-el" id="setPasswordDialog">
+  <form name="createPassword" action="createPassword">
+    <input type="hidden" name="passwordOrgName", id="passwordOrgName"/>
+    <div class="login-fields-div">
+      <label for="firstPassword">Введите пароль:</label>
+      <input type="password" name="firstPassword" id="firstPassword" class="login-fields-input"/>
+    </div>
+    <div class="login-fields-div">
+      <span class="help-text">Пароль должен быть не короче 6 символов</span>
+    </div>
+  </form>
+</div>
+
+<div class="hidden-el" id="noSpecDialog">
+  <p>Пожалуйста, укажите специализацию работ!</p>
+  <form name="selSpecDialogForm">
+    <select id="selectSpecInDialog" class="sel-spec-in-dialog">
+      {% for spec in request.session.work_specs %}
+        <option value="{{spec.id}}" {{spec.selected}} {{spec.disabled}}>{{spec.value}}</option>
+      {% endfor %}
+    </select>
+  </form>
+</div>

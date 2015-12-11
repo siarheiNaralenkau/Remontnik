@@ -208,6 +208,11 @@ $(function() {
     var newHtml = newSuggestionHtml + jobsHtml;
     jobRequestsList.html(newHtml);
     $('.suggest-job-form')[0].reset();
+
+    if($("#btnSuggestJob")) {
+      $("#btnSuggestJob").removeClass("hidden-el");
+      $(".place-job-container").addClass("hidden-el");
+    }
   }
 
   function viewProfile() {
@@ -222,7 +227,7 @@ $(function() {
   $(".add-partner").on('click', approvePartner);
   $(".reject-partner").on('click', rejectPartner);
   $("#workSpec").on("change", changeSpec);
-  $(".place-job-request-btn").on('click', saveJobRequest);
+  $("#placeOrderButton").on('click', saveJobRequest);
   $(".top-orgs-child").on('click', viewProfile);
 
   var ratings = $(".top-rating");
@@ -247,12 +252,12 @@ $(function() {
   }
 
   // Прячем меню при нажатии мыши где либо за его пределами.
-  var jobMenuEl = $("#jobCategoryMenu");
-  $(document).click(function(e) {
-    var clickedEl = $(e.target);
-    if(!$.contains(jobMenuEl, clickedEl) && !clickedEl.hasClass("show-menu-btn")) {
-      jobMenuEl.addClass("hidden-el");
-    }
-  });
+  // var jobMenuEl = $("#jobCategoryMenu");
+  // $(document).click(function(e) {
+  //   var clickedEl = $(e.target);
+  //   if(!$.contains(jobMenuEl, clickedEl) && !clickedEl.hasClass("show-menu-btn")) {
+  //     jobMenuEl.addClass("hidden-el");
+  //   }
+  // });
 
 });

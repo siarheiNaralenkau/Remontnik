@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <meta name=viewport content="width=800">
+  <title>Мобильная версия приложения</title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/mobile/index.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+</head>
+
+<body>
+  {% if user.is_authenticated %}
+    {% include "remont/logged_user_info_template.html" %}
+  {% endif %}
+  {% include "remont/mobile/top-page.html" %}
+  {% include "remont/mobile/main-menu.html" %}
+  {% include "remont/mobile/search_template.html" %}
+  {% include "remont/mobile/add-work-template.html" %}
+  {% include "remont/mobile/job-suggestions.html" %}
+
+  {% include "remont/mobile/dialogs.html" %}
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jRate.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/rem_utils.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/index.js"></script>
+</body>
+
+</html>

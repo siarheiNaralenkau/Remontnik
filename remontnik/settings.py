@@ -61,6 +61,7 @@ INSTALLED_APPS = (
   'django.contrib.staticfiles',
   'django.db.backends.mysql',
   'ckeditor',
+  'django_mobile',
   'remont',
   'lastActivityDate',
 )
@@ -73,6 +74,8 @@ MIDDLEWARE_CLASSES = (
   'django.contrib.messages.middleware.MessageMiddleware',
   'django.middleware.clickjacking.XFrameOptionsMiddleware',
   'django.middleware.locale.LocaleMiddleware',
+  'django_mobile.middleware.MobileDetectionMiddleware',
+  'django_mobile.middleware.SetFlavourMiddleware',
   'lastActivityDate.middleware.LastActivityMiddleware'
 )
 
@@ -135,6 +138,13 @@ SMTP_PORT = 587
 MAIL_FROM = "staatix.gomel@gmail.com"
 MAIL_PASSWORD = "staatix2015"
 
+OPTIONS = {
+  'loaders': [
+    'django_mobile.loader.Loader'
+  ]
+}
+
 TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.request",
+    "django_mobile.context_processors.flavour"
 )

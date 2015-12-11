@@ -84,7 +84,12 @@ def index(request):
     response_data["newMesagesAmount"] = len(newMessages)
     response_data["partner_requests"] = get_pending_partner_requests(request.user)
 
-  return render(request, 'remont/index.html', response_data)
+  print("Device type: {0}".format(request.flavour))
+  device_type = request.flavour
+  if device_type == "full":
+    return render(request, "remont/index.html", response_data)
+  else:
+    return render(request, "remont/mobile/index.html", response_data)
 
 
 # Регистрация пользователя
