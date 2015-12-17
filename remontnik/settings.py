@@ -62,6 +62,7 @@ INSTALLED_APPS = (
   'django.db.backends.mysql',
   'ckeditor',
   'django_mobile',
+  'push_notifications',
   'remont',
   'lastActivityDate',
 )
@@ -148,3 +149,8 @@ TEMPLATE_CONTEXT_PROCESSORS = global_settings.TEMPLATE_CONTEXT_PROCESSORS + (
     "django.core.context_processors.request",
     "django_mobile.context_processors.flavour"
 )
+
+PUSH_NOTIFICATIONS_SETTINGS = {
+    "GCM_API_KEY": "<your api key>",
+    "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
+}
