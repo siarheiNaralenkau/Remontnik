@@ -68,6 +68,7 @@ def index(request):
   request.session["work_specs"] = work_specs
 
   suggest_job_form = SuggestJobForm()
+  device_type = request.flavour
   response_data = {
       "jobSuggestions": job_suggestions,
       "cities": cities,
@@ -75,7 +76,8 @@ def index(request):
       "categories": categories_data,
       "suggest_job_form": suggest_job_form,
       "top_orgs": get_top_orgs(),
-      "mainPage": True
+      "mainPage": True,
+      "device_type": device_type
   }
   # Check if user is logged in.
   if request.user.is_authenticated():
@@ -85,7 +87,7 @@ def index(request):
     response_data["partner_requests"] = get_pending_partner_requests(request.user)
 
   print("Device type: {0}".format(request.flavour))
-  device_type = request.flavour
+
   if device_type == "full":
     return render(request, "remont/index.html", response_data)
   else:
