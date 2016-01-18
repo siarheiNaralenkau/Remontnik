@@ -1,7 +1,7 @@
 from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, City, OrganizationProfile, JobSuggestion, WorkSpec, \
-WorkPhotoAlbum, WorkPhoto, Article, Currency, JobPrice
+WorkPhotoAlbum, WorkPhoto, Article, Currency, JobPrice, ProductCategory, ProductType, Product
 from remont.rem_forms import OrganizationProfileModelForm
 
 from django.utils.encoding import force_unicode
@@ -30,6 +30,12 @@ class ArticleAdmin(admin.ModelAdmin):
   list_display = ('name', 'date_created', 'date_modified')
 
 
+class ProductAdmin(admin.ModelAdmin):
+  list_display = ('name', 'description', 'price', 'ptype', 'image')
+  list_filter = ('name', 'price')
+  search_fields = ['name', 'description']
+
+
 admin.site.register(WorkCategory)
 admin.site.register(WorkType, WorkTypeAdmin)
 admin.site.register(City)
@@ -41,3 +47,6 @@ admin.site.register(WorkPhoto)
 admin.site.register(Article, ArticleAdmin)
 admin.site.register(Currency)
 admin.site.register(JobPrice)
+admin.site.register(ProductCategory)
+admin.site.register(ProductType)
+admin.site.register(Product, ProductAdmin)
