@@ -55,6 +55,12 @@ def save_organization_logo(instance, filename):
   return storage_path
 
 
+def save_product_image(instance, filename):
+  storage_path = 'products/' + filename
+  return storage_path
+
+
+# Категория работ
 class WorkCategory(models.Model):
   name = models.CharField(u"Наименование категории работ", max_length=100)
   icon = models.ImageField(upload_to="icons/", blank=True, default=None)
@@ -67,6 +73,7 @@ class WorkCategory(models.Model):
     verbose_name_plural = u'Категории работ'
 
 
+# Вид выполняемых работ
 class WorkType(models.Model):
   name = models.CharField(u"Вид работы", max_length=100)
   category = models.ForeignKey(WorkCategory, verbose_name=u"Категория работ")
@@ -79,6 +86,7 @@ class WorkType(models.Model):
     verbose_name_plural = u'Виды работ'
 
 
+# Город
 class City(models.Model):
   name = models.CharField(u'Город', max_length=40)
 
@@ -90,11 +98,13 @@ class City(models.Model):
     verbose_name_plural = u'Города'
 
 
+# Специализация работ
 class WorkSpec(models.Model):
 
   WORK_SPEC = (
     (u'industrial', u'Промышленное строительство'),
-    (u'individual', u'Частное строительство')
+    (u'individual', u'Частное строительство'),
+    (u'seller', u'Продажа материалов')
   )
 
   class Meta:
@@ -107,6 +117,7 @@ class WorkSpec(models.Model):
   name = models.CharField(u"Специализация", max_length=50, choices=WORK_SPEC)
 
 
+# Аккаунт строительной организации
 class OrganizationProfile(models.Model):
 
   class Meta:
@@ -134,6 +145,9 @@ class OrganizationProfile(models.Model):
   account = models.ForeignKey(User, verbose_name=u"Аккаунт", related_name="account", null=True, blank=True)
 
   collegues = models.ManyToManyField('self', verbose_name=u"Коллеги", related_name="collegues", blank=True)
+
+  is_job_executor = models.BooleanField(u'Производитель работ', default=False)
+  is_seller = models.BooleanField(u'Продавец товаров', default=False)
 
   def save(self, *args, **kwargs):
     if not self.landline_phone and not self.mobile_phone and not self.mobile_phone2 and not self.fax:
@@ -175,30 +189,6 @@ class OrganizationProfile(models.Model):
   def get_spec(self):
     return ', '.join([s.get_name_display() for s in self.spec.all()])
   get_spec.short_description = u'Специализация'
-
-
-# Профайл продавца товаров
-class SellerProfile(models.Model):
-  class Meta:
-    verbose_name = u"Продавец"
-    verbose_name_plural = u"Продавцы"
-
-  name = models.CharField("Наименование продавца", max_length=100)
-  account = models.ForeignKey(User, verbose_name=u"Аккаунт", null=True, blank=True)
-  password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
-  login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
-
-
-# Профайл заказчика
-class CustomerProfile(models.Model):
-  class Meta:
-    verbose_name = u"Продавец"
-    verbose_name_plural = u"Продавцы"
-
-  name = models.CharField("Контактное имя заказчика", max_length=100)
-  account = models.ForeignKey(User, verbose_name=u"Аккаунт", null=True, blank=True)
-  password = models.CharField(u'Пароль', max_length=120, blank=True, null=True, default=None)
-  login = models.CharField(u'Логин на сайте', max_length=100, blank=True, null=True, default=None)
 
 
 # Предложение работы
@@ -256,6 +246,7 @@ class WorkPhotoAlbum(models.Model):
     return self.name
 
 
+# Фото выполненных работ
 class WorkPhoto(models.Model):
   class Meta:
     verbose_name = u"Фотография выполненной работы"
@@ -269,6 +260,7 @@ class WorkPhoto(models.Model):
     return self.photo.url
 
 
+# Видео с примером выполняемых работ
 class WorkVideo(models.Model):
   class Meta:
     verbose_name = u"Видео выполненной работы"
@@ -278,6 +270,7 @@ class WorkVideo(models.Model):
   video = models.FileField(u"Видео сделанной работы", upload_to=save_work_video)
 
 
+# Статья о строительстве и ремонте
 class Article(models.Model):
   class Meta:
     verbose_name = u"Статья о стройке и ремонте"
@@ -317,6 +310,7 @@ class Message(models.Model):
   was_written = models.DateTimeField(verbose_name=u"Дата создания сообщения", auto_now_add=True, null=True)
   was_read = models.DateTimeField(verbose_name=u"Дата прочтения сообщения", null=True, default=None)
 
+
 # Валюта
 class Currency(models.Model):
   class Meta:
@@ -350,3 +344,58 @@ class PartnerRequest(models.Model):
   org_from = models.ForeignKey(OrganizationProfile, verbose_name=u"Отправитель запроса", related_name="sender")
   org_to = models.ForeignKey(OrganizationProfile, verbose_name=u"Адресат запроса", related_name="recipient")
   approved = models.BooleanField(u"Подтвержден", default=False)
+
+
+# Категория товаров
+class ProductCategory(models.Model):
+  class Meta:
+    verbose_name = u"Категория товаров"
+    verbose_name_plural = u"Категории товаров"
+
+  name = models.CharField(u"Наименование категории", max_length=100)
+
+  def __unicode__(self):
+    return self.name
+
+
+# Вид товара
+class ProductType(models.Model):
+  class Meta:
+    verbose_name = u"Вид товара"
+    verbose_name_plural = u"Виды товаров"
+
+  name = models.CharField(u"Вид товара", max_length=100)
+  category = models.ForeignKey(ProductCategory, verbose_name=u"Категория товара", null=False, blank=False)
+  logo = models.ImageField(u'Изображение', upload_to=save_product_image, blank=True, default=None)
+
+  def __unicode__(self):
+    return self.name
+
+
+# Единица товара
+class Product(models.Model):
+  class Meta:
+    verbose_name = u"Товар"
+    verbose_name_plural = u"Товары"
+
+  name = models.CharField(u"Название товара", max_length=200, null=False, blank=False)
+  description = models.CharField(u"Описание товара", max_length=500, null=True, blank=True)
+  ptype = models.ForeignKey(ProductType, verbose_name=u"Вид товара", null=False, blank=False)
+  image = models.ImageField(u"Изображение", upload_to=save_product_image, blank=True, default=None)
+
+  def __unicode__(self):
+    return self.name
+
+
+# Продаваемый организацией товар
+class SellingProduct(models.Model):
+  class Meta:
+    verbose_name = u"Продаваемый организацией товар"
+    verbose_name_plural = u"Продаваемые организациями товары"
+
+  org = models.ForeignKey(OrganizationProfile, verbose_name=u"Организация, продающая товар", null=False, blank=False)
+  product = models.ForeignKey(Product, verbose_name=u"Товар", null=False, blank=False)
+  price = models.BigIntegerField(u"Цена товара(бел. руб.)", null=False, blank=False)
+
+  def __unicode__(self):
+    return u"Организация: {0}, Товар: {1}, Цена: {2}".format(self.org.name, self.product.name, self.price)

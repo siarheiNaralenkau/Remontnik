@@ -251,13 +251,4 @@ $(function() {
     });
   }
 
-  // Прячем меню при нажатии мыши где либо за его пределами.
-  // var jobMenuEl = $("#jobCategoryMenu");
-  // $(document).click(function(e) {
-  //   var clickedEl = $(e.target);
-  //   if(!$.contains(jobMenuEl, clickedEl) && !clickedEl.hasClass("show-menu-btn")) {
-  //     jobMenuEl.addClass("hidden-el");
-  //   }
-  // });
-
 });

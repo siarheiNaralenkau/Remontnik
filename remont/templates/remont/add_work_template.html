@@ -3,6 +3,42 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
+  <style>
+    .show-menu-wrapper {
+      height: 40px;
+      display: table;
+      width: 200px;
+      cursor: pointer;
+      border-radius: 8px;
+    }
+
+    .show-menu-icon {
+      display: table-cell;
+      vertical-align: middle;
+      margin-right: 5px;
+      margin-left: 5px;
+      height: 100%;
+      width: 24px;
+    }
+
+    .show-menu-btn {
+      display: table-cell;
+      width: 175px;
+      height: 100%;
+      vertical-align: middle;
+      font-size: 1.5em;
+      font-weight: 700;
+    }
+
+    .arrow-icon {
+      width: 20px;
+      height: 20px;
+    }
+
+    .show-menu-wrapper:hover {
+      background: rgba(210, 210, 210, 0.7);
+    }
+  </style>
 </head>
 <body>
   <div class="place-job-container">
@@ -14,7 +50,12 @@
           <input type="text" name="job_header" placeholder="Краткий заголовок заявки" class="input-base job_header">
         </div>
         <div class="input-fields-div">
-          <div class="auto-size-btn show-menu-btn" id="jobTypeBtn">Вид работ</div>
+          <div class="show-menu-wrapper">
+            <div class="show-menu-icon">
+              <img src="{{STATIC_URL}}remont/images/arrow-right.png" class="arrow-icon"/>
+            </div>
+            <div class="show-menu-btn" id="jobTypeBtn">Вид работ</div>
+          </div>
           <ul id="jobCategoryMenu" class="job-category hidden-el">
             {% for category in categories %}
               <li dataCatId="{{ category.id }}" class="job-menu-item">{{ category.name }}
