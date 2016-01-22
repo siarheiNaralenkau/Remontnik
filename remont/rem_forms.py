@@ -1,11 +1,11 @@
 # -*- coding: utf-8 -*-
 
 from django import forms
-from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple, HiddenInput
+from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple, HiddenInput, TextInput
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto
+from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto, Product
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
 
@@ -102,7 +102,7 @@ class RegisterForm(forms.Form):
 class OrganizationProfileModelForm(forms.ModelForm):
   class Meta:
     model = OrganizationProfile
-    fields = ('name', 'logo', 'city', 'address', 'spec',
+    fields = ('name', 'logo', 'city', 'address', 'spec', 'is_job_executor', 'is_seller',
       'description',  'login', 'password', 'landline_phone', 'mobile_phone',
       'mobile_phone2', 'fax', 'web_site', 'email', 'work_cities', 'job_types', 'collegues', 'login', 'password', )
     widgets = {
@@ -112,6 +112,16 @@ class OrganizationProfileModelForm(forms.ModelForm):
       'description': Textarea(attrs={'cols': 100, 'rows': 10, 'style': 'overflow: auto; margin-left: 20px'}),
       'logo': SingleImageInput,
       'collegues': CheckboxSelectMultiple
+    }
+
+
+class ProductModelForm(forms.ModelForm):
+  class Meta:
+    model = Product
+    fields = ('name', 'description', 'ptype', 'image')
+    widgets = {
+      'name': TextInput(attrs={'size': 120}),
+      'description': Textarea(attrs={'cols': 120, 'rows': 3})
     }
 
 
