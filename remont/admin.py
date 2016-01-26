@@ -30,6 +30,7 @@ class ArticleAdmin(admin.ModelAdmin):
   list_display = ('name', 'date_created', 'date_modified')
   form = ArticleAdminForm
 
+
 class ProductTypeAdmin(admin.ModelAdmin):
   list_display = ('name', 'category')
   list_filter = ('category', )

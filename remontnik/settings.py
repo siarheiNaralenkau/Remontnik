@@ -38,18 +38,17 @@ ALLOWED_HOSTS = []
 platform = sys.platform
 
 if sys.platform.startswith("win"):
-  MEDIA_ROOT = "c://MyDevelopment//MediaStorage//"
+  MEDIA_ROOT = "c://MyDevelopment//MediaStorage"
 elif sys.platform.startswith("linux"):
-  MEDIA_ROOT = "/home/media/remontnik/"
+  MEDIA_ROOT = "/home/media/remontnik"
 else:
-  MEDIA_ROOT = "/home/media/"
+  MEDIA_ROOT = "/home/media"
 
 MEDIA_URL = "media/"
 
 # Environment configuration(local or remote)
 ENVIRONMENT = os.environ.get('REM_ENVIRONMENT', 'local')
 
-ADMIN_MEDIA_PREFIX = '/static/admin/'
 # Application definition
 
 INSTALLED_APPS = (
@@ -62,6 +61,7 @@ INSTALLED_APPS = (
   'django.db.backends.mysql',
   'ckeditor',
   'redactor',
+  'froala_editor',
   'django_mobile',
   'push_notifications',
   'remont',
@@ -157,4 +157,4 @@ PUSH_NOTIFICATIONS_SETTINGS = {
 }
 
 REDACTOR_OPTIONS = {'lang': 'en'}
-REDACTOR_UPLOAD = 'articles_images/'
+REDACTOR_UPLOAD = 'static/'
