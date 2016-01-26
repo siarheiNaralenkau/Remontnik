@@ -61,6 +61,7 @@ INSTALLED_APPS = (
   'django.contrib.staticfiles',
   'django.db.backends.mysql',
   'ckeditor',
+  'redactor',
   'django_mobile',
   'push_notifications',
   'remont',
@@ -154,3 +155,6 @@ PUSH_NOTIFICATIONS_SETTINGS = {
     "GCM_API_KEY": "<your api key>",
     "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
 }
+
+REDACTOR_OPTIONS = {'lang': 'en'}
+REDACTOR_UPLOAD = 'articles_images/'

@@ -2,7 +2,7 @@ from django.contrib import admin
 from django import forms
 from remont.models import WorkCategory, WorkType, City, OrganizationProfile, JobSuggestion, WorkSpec, \
 WorkPhotoAlbum, WorkPhoto, Article, Currency, JobPrice, ProductCategory, ProductType, Product, SellingProduct
-from remont.rem_forms import OrganizationProfileModelForm, ProductModelForm
+from remont.rem_forms import OrganizationProfileModelForm, ProductModelForm, ArticleAdminForm
 
 from django.utils.encoding import force_unicode
 from django.utils.html import conditional_escape, format_html
@@ -28,7 +28,7 @@ class OrganizationProfileAdmin(admin.ModelAdmin):
 
 class ArticleAdmin(admin.ModelAdmin):
   list_display = ('name', 'date_created', 'date_modified')
-
+  form = ArticleAdminForm
 
 class ProductTypeAdmin(admin.ModelAdmin):
   list_display = ('name', 'category')
