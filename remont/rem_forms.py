@@ -5,9 +5,11 @@ from django.forms import Textarea, Select, PasswordInput, CheckboxSelectMultiple
 from django.contrib.auth.models import User
 from django.core.exceptions import ValidationError
 
-from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto, Product
+from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPhoto, Product, Article
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
+from redactor.widgets import RedactorEditor
+from froala_editor.widgets import FroalaEditor
 
 def get_cities():
   cities_choices = []
@@ -179,3 +181,10 @@ class UploadPhotoForm(forms.ModelForm):
   class Meta:
     model = WorkPhoto
     fields = ('organization', 'album', 'photo')
+
+
+class ArticleAdminForm(forms.ModelForm):
+  class Meta:
+    model = Article
+    fields = ('name', 'content', 'job_spec')
+

@@ -1,4 +1,5 @@
 from django.conf.urls import patterns, url, include
+from django.contrib.staticfiles.urls import staticfiles_urlpatterns
 from django.conf import settings
 from remont import views
 
@@ -43,12 +44,14 @@ urlpatterns = patterns('',
   url(r'^answer_mesaage/$', views.answer_mesaage, name='answer_mesaage'),
   url(r'^get_dialogs_history/$', views.get_dialogs_history, name='get_dialogs_history'),
   url(r'^check_spec/$', views.check_spec, name='check_spec'),
-  (r'^ckeditor/', include('ckeditor.urls')),
-  )
+  url(r'^redactor/', include('redactor.urls')),
+)
+
+urlpatterns += staticfiles_urlpatterns()
 
 if settings.DEBUG:
   urlpatterns += patterns('',
     url(r'^media/(?P<path>.*)$', 'django.views.static.serve', {
       'document_root': settings.MEDIA_ROOT,
       }),
-    )
+  )

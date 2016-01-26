@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.utils.encoding import python_2_unicode_compatible
 from django.core.exceptions import ValidationError
 from django.conf import settings
-from ckeditor.fields import RichTextField
+from redactor.fields import RedactorField
 from django.core.validators import MaxValueValidator, MinValueValidator
 
 import os
@@ -277,7 +277,10 @@ class Article(models.Model):
     verbose_name_plural = u"Статьи о стройке и ремонте"
 
   name = models.CharField(u"Название статьи", max_length=100)
-  content = RichTextField()
+  content = RedactorField(
+    max_length=10000,
+    verbose_name=u"Текст статьи"
+  )
   job_spec = models.ForeignKey(WorkSpec, verbose_name=u"Специализация", null=True, default="")
   date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
   date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)
