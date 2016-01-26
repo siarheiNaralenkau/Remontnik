@@ -59,9 +59,7 @@ INSTALLED_APPS = (
   'django.contrib.messages',
   'django.contrib.staticfiles',
   'django.db.backends.mysql',
-  'ckeditor',
   'redactor',
-  'froala_editor',
   'django_mobile',
   'push_notifications',
   'remont',
@@ -116,19 +114,6 @@ USE_L10N = True
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
 
 STATIC_URL = '/static/'
-
-# CKEditor settings
-CKEDITOR_UPLOAD_PATH = "ckeditor_uploads/"
-CKEDITOR_IMAGE_BACKEND = "pillow"
-CKEDITOR_JQUERY_URL = STATIC_URL + "remont/js/jquery-2.1.3.min.js"
-CKEDITOR_CONFIGS = {
-  'default': {
-    'toolbar': 'full',
-    'height': 600,
-    'width': 800,
-    'language': 'ru'
-  },
-}
 
 try:
   HOST_NAME = socket.gethostbyname(socket.gethostname())

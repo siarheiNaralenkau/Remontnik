@@ -9,7 +9,6 @@ from remont.models import WorkSpec, OrganizationProfile, WorkType, City, WorkPho
 from remont.rem_widgets import CustomCheckBoxSelectMultiple, SingleImageInput
 
 from redactor.widgets import RedactorEditor
-from froala_editor.widgets import FroalaEditor
 
 def get_cities():
   cities_choices = []
