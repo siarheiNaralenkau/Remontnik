@@ -3,46 +3,10 @@
 <head lang="en">
   <meta charset="UTF-8">
   <title></title>
-  <style>
-    .show-menu-wrapper {
-      height: 40px;
-      display: table;
-      width: 200px;
-      cursor: pointer;
-      border-radius: 8px;
-    }
-
-    .show-menu-icon {
-      display: table-cell;
-      vertical-align: middle;
-      margin-right: 5px;
-      margin-left: 5px;
-      height: 100%;
-      width: 24px;
-    }
-
-    .show-menu-btn {
-      display: table-cell;
-      width: 175px;
-      height: 100%;
-      vertical-align: middle;
-      font-size: 1.5em;
-      font-weight: 700;
-    }
-
-    .arrow-icon {
-      width: 20px;
-      height: 20px;
-    }
-
-    .show-menu-wrapper:hover {
-      background: rgba(210, 210, 210, 0.7);
-    }
-  </style>
 </head>
 <body>
   <div class="place-job-container">
-    <div class="placeJobOrder">
+    <div class="place-job-order">
       <form action="../suggest_job_save/" method="post" class="suggest-job-form">
         <input type="hidden" id="jobCategory"/>
         <input type="hidden" id="jobType"/>
@@ -69,22 +33,19 @@
           </ul>
         </div>
         <div class="input-fields-div">
-          <textarea
-          placeholder="Максимально подробное описание работ(площадь, объем, сроки и т.п.)"
-          class="job_description">
-        </textarea>
-      </div>
-      <div class="input-fields-div">
-        <input type="text" placeholder="Контактное лицо" class="input-base contact_name">
-        <input type="text" placeholder="Ваш город" class="input-base job_city">
-      </div>
-      <div class="input-fields-div">
-        <input type="tel" placeholder="Телефон" class="input-base contact_phone">
-        <input type="email" placeholder="Электронная почта" class="input-base contact_mail">
-      </div>
-      <div class="input-fields-div margin-top20">
-        <input type="button" id="placeOrderButton" value="Оставить заявку" class="place-job-request-btn"/>
-      </div>
+          <textarea placeholder="Максимально подробное описание работ(площадь, объем, сроки и т.п.)" class="job_description"></textarea>
+        </div>
+        <div class="input-fields-div">
+          <input type="text" placeholder="Контактное лицо" class="input-base contact_name">
+          <input type="text" placeholder="Ваш город" class="input-base job_city">
+        </div>
+        <div class="input-fields-div">
+          <input type="tel" placeholder="Телефон" class="input-base contact_phone">
+          <input type="email" placeholder="Электронная почта" class="input-base contact_mail">
+        </div>
+        <div class="input-fields-div">
+          <input type="button" id="placeOrderButton" value="Оставить заявку" class="place-job-request-btn"/>
+        </div>
     </form>
   </div>
 </div>
