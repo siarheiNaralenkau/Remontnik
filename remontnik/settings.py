@@ -28,15 +28,13 @@ SECRET_KEY = '-b1o=+9@9#*zs$iq@b4%c^r1e#845!gcz_#@b4^*c#vyo8-fx7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 if socket.gethostname() == 'staatix.by':
-  DEBUG = false
-  TEMPLATE_DEBUG = false
+  DEBUG = False
+  TEMPLATE_DEBUG = False
 else:
   DEBUG = True
   TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
-
-ALLOWED_HOSTS = []
 
 platform = sys.platform
 
