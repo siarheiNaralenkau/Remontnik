@@ -27,9 +27,12 @@ BASE_DIR = os.path.dirname(os.path.dirname(__file__))
 SECRET_KEY = '-b1o=+9@9#*zs$iq@b4%c^r1e#845!gcz_#@b4^*c#vyo8-fx7'
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = True
-
-TEMPLATE_DEBUG = True
+if socket.get_hostname() == 'staatix.by':
+  DEBUG = false
+  TEMPLATE_DEBUG = false
+else:
+  DEBUG = True
+  TEMPLATE_DEBUG = True
 
 TEMPLATE_DIRS = [os.path.join(BASE_DIR, 'templates')]
 

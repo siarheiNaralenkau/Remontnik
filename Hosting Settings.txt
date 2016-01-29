@@ -1,0 +1,3 @@
+URL: belhost.by
+Login: belmoto
+Password: test123e39

@@ -114,23 +114,6 @@
   border-bottom: 1px dotted black;
 }
 
-/*Стили для формы оставления заявки о работе*/
-.placeJobOrder {
-  width: 850px;
-  margin: 0 auto;
-  border-radius: 4px;
-  /*background-color: rgb(245, 245, 245);*/
-}
-
-.input-fields-div {
-  margin-top: 10px;
-  margin-left: 50px
-}
-
-.input-base {
-  border-radius: 4px
-}
-
 .place-job-request-btn {
   text-align: center;
 }
