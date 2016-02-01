@@ -14,10 +14,7 @@ def get_pending_partner_requests(user):
   print("Pending partner requests amount: {0}".format(len(partner_requests)))
 
   for pr in partner_requests:
-    if pr.org_from.logo:
-      logo = pr.org_from.logo.url
-    else:
-      logo = "/static/remont/images/info_empty.jpg"
+    logo = get_org_logo(pr.org_from)
     response_data.append({"org_id": pr.org_from.id, "org_name": pr.org_from.name, "org_logo": logo})
 
   return response_data
@@ -41,8 +38,7 @@ def get_top_orgs():
 
 def get_org_logo(org):
   if org.logo:
-    # logo_url = "/remont/" + org.logo.url
-    logo_url = org.logo.url
+    logo_url = "/remont/" + org.logo.url
     print logo_url
   else:
     logo_url = "/static/remont/images/info_empty.jpg"

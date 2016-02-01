@@ -1,13 +1,15 @@
-1) cd /var/www/
-2) Activate python virtual environment: source ./remontnik/bin/activate
-3) cd ./app/remontnik
-4) Remove compiled python files: find . -name "*.pyc" -type f -delete
-5) Commit the changes: 
+1) Create virtualenv with python version 2.7: virtualenv -p /usr/bin/python2.7 ${ENV_NAME}
+2) Install mod_wsgi for apache with python 2.7: https://code.google.com/archive/p/modwsgi/wikis/QuickInstallationGuide.wiki
+3) Configure Apache and mod_wsgi to run Django Application: https://www.digitalocean.com/community/tutorials/how-to-serve-django-applications-with-apache-and-mod_wsgi-on-ubuntu-14-04
+4) Activate python virtual environment: source .${ENV_NAME}/bin/activate
+5) Goto app folder: cd ./app/remontnik
+6) Remove compiled python files: find . -name "*.pyc" -type f -delete
+7) Commit the changes: 
 	git add .; 
 	git commit -m 'pyc files were removed'
-6) Checkout latest changes: git pull
-7) Install Pillow dependencies: (Only once for new server)
+8) Checkout latest changes: git pull
+9) Install Pillow dependencies: (Only once for new server)
 	sudo apt-get install libtiff5-dev libjpeg8-dev zlib1g-dev libfreetype6-dev liblcms2-dev libwebp-dev tcl8.6-dev tk8.6-dev python-tk
-8) Update dependencies: pip install -r requirements.pip (If nessessary)
-9) Run migrations: python manage.py migrate
-10) Run server: nohup python manage.py runserver 0:8000 &
+10) Update dependencies: pip install -r requirements.pip (If nessessary)
+11) Run migrations: python manage.py migrate
+12) Run server: nohup python manage.py runserver 0:8000 &
