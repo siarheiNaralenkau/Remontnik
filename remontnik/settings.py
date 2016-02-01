@@ -42,10 +42,15 @@ if sys.platform.startswith("win"):
   MEDIA_ROOT = "c://MyDevelopment//MediaStorage"
 elif sys.platform.startswith("linux"):
   MEDIA_ROOT = "/home/media/remontnik"
+  STATIC_ROOT = "/var/www/app/remontnik_static"
 else:
   MEDIA_ROOT = "/home/media"
 
 MEDIA_URL = "media/"
+
+# Static files (CSS, JavaScript, Images)
+# https://docs.djangoproject.com/en/1.6/howto/static-files/
+STATIC_URL = '/static/'
 
 # Environment configuration(local or remote)
 ENVIRONMENT = os.environ.get('REM_ENVIRONMENT', 'local')
@@ -109,12 +114,6 @@ USE_TZ = True
 TIME_ZONE = 'Europe/Minsk'
 USE_I18N = True
 USE_L10N = True
-
-
-# Static files (CSS, JavaScript, Images)
-# https://docs.djangoproject.com/en/1.6/howto/static-files/
-
-STATIC_URL = '/static/'
 
 try:
   HOST_NAME = socket.gethostbyname(socket.gethostname())
