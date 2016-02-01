@@ -40,6 +40,7 @@ platform = sys.platform
 
 if sys.platform.startswith("win"):
   MEDIA_ROOT = "c://MyDevelopment//MediaStorage"
+  STATIC_ROOT = "c://MyDevelopment//remontnik_static"
 elif sys.platform.startswith("linux"):
   MEDIA_ROOT = "/home/media/remontnik"
   STATIC_ROOT = "/var/www/app/remontnik_static"
@@ -70,6 +71,7 @@ INSTALLED_APPS = (
   'push_notifications',
   'remont',
   'lastActivityDate',
+  'ckeditor',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,3 +145,13 @@ PUSH_NOTIFICATIONS_SETTINGS = {
 
 REDACTOR_OPTIONS = {'lang': 'en'}
 REDACTOR_UPLOAD = 'static/'
+
+# CKEditor Settings
+CKEDITOR_UPLOAD_PATH = "ckeditor/"
+CKEDITOR_CONFIGS = {
+    'default': {
+        'toolbar': 'full',
+        'height': 600,
+        'width': 800,
+    },
+}

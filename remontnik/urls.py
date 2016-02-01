@@ -7,4 +7,5 @@ urlpatterns = patterns('',
   url(r'^', include('remont.urls')),
   url(r'^remont/', include('remont.urls')),
   url(r'^admin/', include(admin.site.urls)),
+  (r'^ckeditor/', include('ckeditor_uploader.urls')),
 )
