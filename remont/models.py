@@ -8,6 +8,7 @@ from django.conf import settings
 from redactor.fields import RedactorField
 from django.core.validators import MaxValueValidator, MinValueValidator
 from ckeditor.fields import RichTextField
+from ckeditor_uploader.fields import RichTextUploadingField
 
 import os
 import os.path
@@ -278,7 +279,7 @@ class Article(models.Model):
     verbose_name_plural = u"Статьи о стройке и ремонте"
 
   name = models.CharField(u"Название статьи", max_length=100)
-  content = RichTextField()
+  content = RichTextUploadingField()
   job_spec = models.ForeignKey(WorkSpec, verbose_name=u"Специализация", null=True, default="")
   date_created = models.DateTimeField(u"Дата создания статьи", auto_now_add=True, null=True)
   date_modified = models.DateTimeField(u"Дата последнего изменения статьи", auto_now=True, null=True)

@@ -38,7 +38,7 @@ def get_top_orgs():
 
 def get_org_logo(org):
   if org.logo:
-    logo_url = "/remont/" + org.logo.url
+    logo_url = "/remont" + org.logo.url
     print logo_url
   else:
     logo_url = "/static/remont/images/info_empty.jpg"

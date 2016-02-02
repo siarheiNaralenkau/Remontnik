@@ -47,7 +47,7 @@ elif sys.platform.startswith("linux"):
 else:
   MEDIA_ROOT = "/home/media"
 
-MEDIA_URL = "media/"
+MEDIA_URL = "/media/"
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/1.6/howto/static-files/
@@ -72,6 +72,7 @@ INSTALLED_APPS = (
   'remont',
   'lastActivityDate',
   'ckeditor',
+  'ckeditor_uploader',
 )
 
 MIDDLEWARE_CLASSES = (
@@ -143,11 +144,9 @@ PUSH_NOTIFICATIONS_SETTINGS = {
     "APNS_CERTIFICATE": "/path/to/your/certificate.pem",
 }
 
-REDACTOR_OPTIONS = {'lang': 'en'}
-REDACTOR_UPLOAD = 'static/'
-
 # CKEditor Settings
 CKEDITOR_UPLOAD_PATH = "ckeditor/"
+CKEDITOR_IMAGE_BACKEND = "pillow"
 CKEDITOR_CONFIGS = {
     'default': {
         'toolbar': 'full',
