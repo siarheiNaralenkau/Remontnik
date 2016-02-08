@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/common.css">
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/css/newest_articles.css">
+</head>
+<body>
+  <ul class="articles-list non-markered-list">{% autoescape off %}
+    {% for article in newest_articles %}
+      <li class="article-item">
+        <p class="article-title">{{article.name}}</p>
+        <div class="article-beginning">
+          {{article.content|truncatewords_html:30}}
+        </div>
+        <a href="#" class="read-link">Читать дальше</a>
+      </li>
+    {% endfor %}
+  {% endautoescape %}</ul>
+</body>
+</html>

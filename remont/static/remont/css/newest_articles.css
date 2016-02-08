@@ -1,0 +1,24 @@
+.articles-list {
+  width: 100%;
+}
+
+.article-item {
+  width: 100%;
+  display: inline-block;
+}
+
+.article-item img {
+  width: 400px !important;
+  height: 300px !important;
+}
+
+.article-item strong {
+  padding-left: 5px;
+}
+
+.article-title {
+  display: block;
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: 800;
+}

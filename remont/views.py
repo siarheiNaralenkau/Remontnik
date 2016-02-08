@@ -12,7 +12,7 @@ from smtplib import SMTPAuthenticationError
 
 from remont.rem_forms import RegisterForm, OrganizationProfileModelForm, SuggestJobForm, OrganizationEditForm, UploadPhotoForm
 from remont.models import WorkType, WorkCategory, JobSuggestion, OrganizationProfile, City, WorkSpec, \
-                          WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest
+                          WorkPhotoAlbum, WorkPhoto, Message, Review, PartnerRequest, Article
 from remont.utils import get_pending_partner_requests, get_top_orgs, get_org_rating, get_org_logo, format_message_time
 
 from lastActivityDate.users_activity_service import get_last_visit
@@ -85,6 +85,10 @@ def index(request):
     newMessages = Message.objects.filter(was_read__isnull=True, msg_to=request.user)
     response_data["newMesagesAmount"] = len(newMessages)
     response_data["partner_requests"] = get_pending_partner_requests(request.user)
+
+  # Получаем 5 самых новых статей.
+  newest_articles = Article.objects.order_by("-date_created")[:5]
+  response_data["newest_articles"] = newest_articles
 
   print("Device type: {0}".format(request.flavour))
 
