@@ -28,6 +28,8 @@ from  django.contrib.auth.hashers import check_password
 
 from datetime import datetime, date, time
 
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+
 import locale
 
 # Главная страница приложения
@@ -377,6 +379,7 @@ def get_orgs_list(request):
 
   print("Amount of organizations: {0}".format(len(orgs_list)))
   return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
+
 
 def view_profile(request):
   return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
@@ -802,3 +805,20 @@ def check_spec(request):
     response_data["spec_selected"] = "false"
   return JsonResponse(response_data, safe=False)
 
+
+# Получаем список статей, по 10 на 1 страницу.
+@csrf_exempt
+def articles_list(request):
+  articles_list = Article.objects.order_by("-date_created")
+  paginator = Paginator(articles_list, 10)
+  print("Pages amount: {0}".format(paginator.num_pages))
+
+  active_page = request.GET.get("active_page")
+  try:
+    articles = paginator.page(active_page)
+  except PageNotAnInteger:
+    articles = paginator.page(1)
+  except EmptyPage:
+    articles = paginator.page(paginator.num_pages)
+
+  return render(request, "remont/articles_list.html", {"articles": articles})

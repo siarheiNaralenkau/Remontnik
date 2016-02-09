@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+  <meta charset="UTF-8">
+  <title>Статьи о стройке и ремонте</title>
+  <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/orgs_list.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
+</head>
+<body>
+  {% include "remont/top_page_template.html" %}
+
+  {# Split page into 2 sections: 25 and 75 % width #}
+  <div class="main-div">
+    <div class="menu-div">
+      {% include "remont/main_menu.html" %}
+      {% include "remont/how_site_works.html" %}
+    </div>
+    <div class="content-div">
+      <div class="orglist-container">
+        <ul class="non-markered-list">
+          {% for article in articles %}
+            <li>{{ article.name }}</li>
+          {% endfor %}
+        </ul>
+        <div class="pagination">
+          <span class="step-links">
+            {% if articles.has_previous %}
+              <a href="?active_page={{ articles.previous_page_number }}">Предудущая</a>
+            {% endif %}
+
+            <span class="current">
+              Page {{ articles.number }} of {{ articles.paginator.num_pages }}
+            </span>
+
+            {% if articles.has_next %}
+              <a href="?active_page={{ articles.next_page_number }}">Следующая</a>
+            {% endif %}
+          </span>
+        </div>
+      </div>
+    </div>
+  </div>
+</body>
