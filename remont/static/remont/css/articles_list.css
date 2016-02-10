@@ -1,0 +1,60 @@
+.art-list-container {
+  max-width: 1000px;
+  min-width: 600px;
+  width: 80%;
+  margin: 0 auto;
+}
+
+.articles-list {
+  width: 100%;
+}
+
+.article-item {
+  width: 100%;
+  display: inline-block;
+}
+
+.article-item img {
+  width: 400px !important;
+  height: 300px !important;
+}
+
+.article-item strong {
+  padding-left: 5px;
+}
+
+.article-title {
+  display: block;
+  text-align: center;
+  font-size: 1.6em;
+  font-weight: 800;
+}
+
+.article-beginning {
+  display: inline-block;
+}
+
+.nav-buttons {
+  font-size: 1.5em;
+}
+
+.inactive {
+  color: rgba(128, 128, 128, 0.5);
+}
+
+.pages-list {
+  padding: 0;
+}
+
+.pages-list li {
+  display: inline;
+  padding-left: 10px;
+  padding-right: 10px;
+  border-radius: 5px;
+  font-size: 1.5em;
+}
+
+.active-page-link {
+  background-color: #009933;
+  font-weight: bold;
+}

@@ -1,0 +1,25 @@
+<div class="pagination">
+
+  <div class="nav-buttons">
+    {% if articles.has_previous %}
+      <a href="?active_page={{ articles.previous_page_number }}">&#8592; предудущая</a>
+    {% else %}
+      <span class="inactive">&#8592; предыдущая</span>
+    {% endif %}
+
+    {% if articles.has_next %}
+      <a href="?active_page={{ articles.next_page_number }}">следующая &#8594;</a>
+    {% else %}
+      <span class="inactive">следующая &#8594;</span>
+    {% endif %}
+  </div>
+
+  <ul class="pages-list">
+    {% for page in articles.paginator.page_range %}
+      <li class="{% if articles.number == page %}active-page-link{% endif %}">
+        <a href="?active_page={{page}}">{{page}}</a>
+      </li>
+    {% endfor %}
+  </ul>
+
+</div>

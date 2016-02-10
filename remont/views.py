@@ -822,3 +822,13 @@ def articles_list(request):
     articles = paginator.page(paginator.num_pages)
 
   return render(request, "remont/articles_list.html", {"articles": articles})
+
+
+@csrf_exempt
+def read_article(request, id=None):
+  if(id):
+    print("Openning article with id: {0}".format(id))
+    article = Article.objects.filter(pk=id).first()
+    return render(request, "remont/read_article.html", {"article": article})
+  else:
+    print("No article selected!")

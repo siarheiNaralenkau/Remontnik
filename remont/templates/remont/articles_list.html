@@ -4,7 +4,7 @@
   <meta charset="UTF-8">
   <title>Статьи о стройке и ремонте</title>
   <link rel="stylesheet" href="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/themes/smoothness/jquery-ui.css">
-  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/orgs_list.css">
+  <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/articles_list.css">
   <link rel="stylesheet" type="text/css" href="{{ STATIC_URL }}remont/css/common.css">
 </head>
 <body>
@@ -17,28 +17,30 @@
       {% include "remont/how_site_works.html" %}
     </div>
     <div class="content-div">
-      <div class="orglist-container">
-        <ul class="non-markered-list">
+      <div class="art-list-container">
+        {% include "remont/blocks/articles-paginator.html" %}
+
+        <ul class="non-markered-list articles-list">
           {% for article in articles %}
-            <li>{{ article.name }}</li>
+            <li class="article-item">
+              <p class="article-title">{{article.name}} ({{article.date_modified}})</p>
+              <div class="article-beginning">{% autoescape off %}
+                {{article.content|truncatewords_html:100}}
+              {% endautoescape %}</div>
+              <br/>
+              <a href="/remont/read_article/{{article.id}}" class="read-link">Читать дальше</a>
+            </li>
           {% endfor %}
         </ul>
-        <div class="pagination">
-          <span class="step-links">
-            {% if articles.has_previous %}
-              <a href="?active_page={{ articles.previous_page_number }}">Предудущая</a>
-            {% endif %}
 
-            <span class="current">
-              Page {{ articles.number }} of {{ articles.paginator.num_pages }}
-            </span>
-
-            {% if articles.has_next %}
-              <a href="?active_page={{ articles.next_page_number }}">Следующая</a>
-            {% endif %}
-          </span>
-        </div>
+        {% include "remont/blocks/articles-paginator.html" %}
       </div>
     </div>
   </div>
+
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-2.1.3.min.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jquery-ui-1.11.3.custom/jquery-ui.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/rem_utils.js"></script>
+  <script type="text/javascript" src="{{ STATIC_URL }}remont/js/jobs_list.js"></script>
 </body>
+</html>

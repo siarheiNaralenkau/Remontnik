@@ -13,7 +13,7 @@
         <div class="article-beginning">
           {{article.content|truncatewords_html:30}}
         </div>
-        <a href="#" class="read-link">Читать дальше</a>
+        <a href="/remont/read_article/{{article.id}}" class="read-link">Читать дальше</a>
       </li>
     {% endfor %}
   {% endautoescape %}</ul>
