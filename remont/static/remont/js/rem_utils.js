@@ -11,13 +11,6 @@ function scaleImages() {
     var scaledHeight = elWidth * 0.75;
     $(imgEl).height(scaledHeight);
   }
-
-  var top8Images = $(".top8-scaled");
-  for(var i = 0; i < top8Images.length; i++) {
-    var imgEl = top8Images[i];
-    var elWidth = $(imgEl).width();
-    $(imgEl).height(elWidth);
-  }
 }
 
 function checkSpecSelected() {

@@ -1,9 +1,4 @@
 .top-orgs-container {
-  margin-top: 10px;
-  width: 100%;
-}
-
-.top-orgs-parent {
   width: 72.5%;
   text-align: center;
   white-space: nowrap;
@@ -11,30 +6,25 @@
   display: table;
 }
 
-.top-orgs-child {
+.top-org {
   display: table-cell;
   cursor: pointer;
-  width: 11%;
-  padding-left: 1.715%;
+  width: 10.5%;
+  padding-left: 1%;
+  padding-right: 1%;
 }
 
-.top-orgs-child:first-of-type {
-  padding-left: 0%;
-}
-
-.top-logo-container {
+.logo-container {
   display: inline-block;
   position: relative;
-  left: 0px;
-  top: 0px;
   width: 100%;
 }
 
-.top-logo-dummy {
-  padding-top: 75%;
+.logo-dummy {
+  margin-top: 100%;
 }
 
-.top-logo-div {
+.logo-div {
   position: absolute;
   top: 0;
   bottom: 0;
