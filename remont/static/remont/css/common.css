@@ -226,3 +226,13 @@ label {
   cursor: pointer;
   background: linear-gradient(rgba(40, 149, 230, 0.5), rgba(17, 87, 138, 0.5));
 }
+
+.main-div {
+  float: left;
+  width: 100%;
+}
+
+.content-div {
+  float: left;
+  width: 74%;
+}

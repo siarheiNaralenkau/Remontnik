@@ -213,7 +213,11 @@ class SingleImageInput(FileInput):
       """)
     output.append(u"""<input class="single-file-upload" type="file" name="{0}" id="{1}"
       onchange="handleFileSelect(event);"/>""".format(name, attrs["id"]))
-    output.append(u"""</div><div id="{0}"><img class="thumb" src="/remont/media/{1}"/></div>""".format(preview_div_id, value))
+    if value:
+      img_url = "/remont/media/" + value
+    else:
+      img_url = "/static/remont/images/info_empty.jpg"
+    output.append(u"""</div><div id="{0}"><img class="thumb" src="{1}"/></div>""".format(preview_div_id, img_url))
 
     result = mark_safe(''.join(output))
     return result
