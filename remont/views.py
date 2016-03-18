@@ -554,7 +554,13 @@ def jobs_list(request):
 def get_orgs_by_job_type(request):
   job_type_id = request.GET["jobId"]
   job_type = WorkType.objects.filter(id=job_type_id).first()
-  orgs_list = OrganizationProfile.objects.filter(job_types__id__exact=job_type_id)
+  orgs = OrganizationProfile.objects.filter(job_types__id__exact=job_type_id)
+
+  orgs_list = []
+  for org in orgs:
+    org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
+    orgs_list.append(org_data)
+
   return render(request, "remont/job_orgs_list.html", {"orgs_list": orgs_list, "job_type": job_type})
 
 
