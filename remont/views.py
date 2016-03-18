@@ -106,14 +106,6 @@ def register(request):
   return render(request, "remont/register.html", {"reg_form": reg_form})
 
 
-# Страница предложения о работе.
-def suggest_job(request):
-  work_types = WorkType.objects.all()
-  # Авторизация еще не реализована
-  is_autorized = False
-  return render(request, "remont/suggest_job.html", {"is_autorized": is_autorized, "work_types": work_types})
-
-
 # Сохранение предложения о работе
 def suggest_job_save(request):
   contact_person = unicode(request.REQUEST["contactPerson"])
@@ -128,6 +120,35 @@ def suggest_job_save(request):
     phone=phone, email=mail, short_header=header)
   job.save()
   return redirect("/remont")
+
+# Получаем список организаций(Для страницы)
+def orgs_list(request):
+  # Filter by organization specialization...
+  sel_spec = request.session.get("sel_spec")
+  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
+  logged_org = ""
+
+  if request.user.is_authenticated():
+    logged_org = OrganizationProfile.objects.filter(account=request.user).first()
+
+  orgs = OrganizationProfile.objects.all().order_by('name')
+  if logged_org:
+    orgs = orgs.exclude(id=logged_org.id)
+  if org_spec:
+    orgs = orgs.filter(spec=org_spec)
+
+  nameStarts = request.GET.get("nameStarts", "")
+  if nameStarts:
+    print("Filtering orgs list by name...")
+    orgs = orgs.filter(name__icontains=nameStarts)
+
+  orgs_list = []
+  for org in orgs:
+    org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
+    orgs_list.append(org_data)
+
+  print("Amount of organizations: {0}".format(len(orgs_list)))
+  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
 
 
 # Поиск организации по ключевым словам, фильтр - промышленное, частное строительство, все.
@@ -166,27 +187,6 @@ def search_organizations(request):
   return response
 
 
-def search_orgs_html(request):
-  key_phrase = request.REQUEST["q"]
-  response_data = []
-  # 1) Поиск по имени организации
-  orgs_by_name = OrganizationProfile.objects.filter(name__istartswith=key_phrase)
-  for org in orgs_by_name:
-    response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
-
-  # 2) Поиск по типу выполняемых работ.
-  orgs_by_job_type = OrganizationProfile.objects.all()
-  for org in orgs_by_job_type:
-    job_types = org.job_types.all()
-    for job_type in job_types:
-      if key_phrase in job_type.name:
-        response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
-        break
-
-  print "Found {0} organizations: ".format(len(response_data))
-  return render(request, 'remont/search_orgs.html', {"organizatins": response_data})
-
-
 @csrf_exempt
 # Создание предложения по работе.
 def suggest_job_save_ajax(request):
@@ -217,32 +217,6 @@ def suggest_job_save_ajax(request):
 
   response_data = {'header': job.short_header, 'type_name': type_name,
       'date_created': job.date_created, 'description': job.description}
-  response = JsonResponse(response_data, safe=False)
-  return response
-
-
-# Отображает список организаций
-def organizations_list(request):
-  # city_id = request.REQUEST["city"]
-  # organizations = OrganizationProfile.objects.filter(city=city_id)
-  sel_spec = request.session.get("sel_spec")
-  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
-  if org_spec:
-    organizations = OrganizationProfile.objects.filter(spec=org_spec)
-  else:
-    organizations = OrganizationProfile.objects.all()
-  return render(request, 'remont/organizations_list.html', {"organizatins": organizations})
-
-
-# Получает список видо работ по категории
-def get_job_types_by_category(request):
-  category_id = request.GET["category_id"]
-  category = WorkCategory.objects.get(pk=category_id)
-  work_types = WorkType.objects.filter(category=category)
-  response_data = []
-  for w_type in work_types:
-    response_data.append({'id': w_type.id, 'name': w_type.name})
-
   response = JsonResponse(response_data, safe=False)
   return response
 
@@ -351,38 +325,10 @@ def get_album_photos(request):
   return response
 
 
-# Получаем список организаций(Для страницы)
-def get_orgs_list(request):
-  # Filter by organization specialization...
-  sel_spec = request.session.get("sel_spec")
-  org_spec = WorkSpec.objects.filter(id=int(sel_spec)).first()
-  logged_org = ""
-
-  if request.user.is_authenticated():
-    logged_org = OrganizationProfile.objects.filter(account=request.user).first()
-
-  orgs = OrganizationProfile.objects.all().order_by('name')
-  if logged_org:
-    orgs = orgs.exclude(id=logged_org.id)
-  if org_spec:
-    orgs = orgs.filter(spec=org_spec)
-
-  nameStarts = request.GET.get("nameStarts", "")
-  if nameStarts:
-    print("Filtering orgs list by name...")
-    orgs = orgs.filter(name__icontains=nameStarts)
-
-  orgs_list = []
-  for org in orgs:
-    org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
-    orgs_list.append(org_data)
-
-  print("Amount of organizations: {0}".format(len(orgs_list)))
-  return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
-
-
+# Открывает страницу просмотра профайла организации
 def view_profile(request):
   return render(request, "remont/view_profile.html", {"org_id": request.GET["org_id"]})
+
 
 # Получаем информацию об организации в формате JSON
 def get_profile_info(request):
@@ -515,6 +461,7 @@ def edit_organization(request, id=None):
 
   else:
     print("No user id is defined!")
+
 
 # Загрузка фотографий выполненных работ
 @csrf_exempt
@@ -660,28 +607,12 @@ def reject_partner(request):
     return res
 
 
-# Список новых предложений о партнерстве
-def get_partner_requests_json(request):
-  if request.user.is_authenticated():
-    response_data = get_pending_partner_requests(request.user)
-    return JsonResponse(response_data, false)
-  else:
-    res = HttpResponse("Unautorized")
-    res.status_code = 401
-    return res
-
-
 # Меняем фильтр специализации работ
 @csrf_exempt
 def change_spec_filter(request):
   new_spec = request.POST["spec"]
   request.session["sel_spec"] = int(new_spec)
   return JsonResponse({"status": "success"})
-
-
-# Получаем top8 организаций по рейтингу
-def top_orgs(request):
-  return JsonResponse(get_top_orgs(), safe=False)
 
 
 # Получаем новые сообщения для пользователя.
