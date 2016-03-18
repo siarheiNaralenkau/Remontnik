@@ -5,13 +5,16 @@ from random import randrange
 from operator import itemgetter
 from datetime import datetime, date, time
 import locale
+import logging
+
+logger = logging.getLogger('remont.default_logger')
 
 def get_pending_partner_requests(user):
   response_data = []
   recipient = OrganizationProfile.objects.filter(account=user).first()
   partner_requests = PartnerRequest.objects.filter(org_to=recipient, approved=False)
 
-  print("Pending partner requests amount: {0}".format(len(partner_requests)))
+  logger.info("Pending partner requests amount: {0}".format(len(partner_requests)))
 
   for pr in partner_requests:
     logo = get_org_logo(pr.org_from)
@@ -39,7 +42,7 @@ def get_top_orgs():
 def get_org_logo(org):
   if org.logo:
     logo_url = "/remont" + org.logo.url
-    print logo_url
+    logging.ingo("Logo full url: {0}".format(logo_url))
   else:
     logo_url = "/static/remont/images/info_empty.jpg"
   return logo_url

@@ -63,7 +63,7 @@ def index(request):
   if sel_spec:
     for spec in work_specs:
       if spec["id"] == sel_spec:
-        print("Selected spec is: {0}".format(sel_spec))
+        logger.info("Selected job specialization: {0}".format(sel_spec))
         spec["selected"] = "selected=selected"
         break
   else:
@@ -95,7 +95,7 @@ def index(request):
   newest_articles = Article.objects.order_by("-date_created")[:5]
   response_data["newest_articles"] = newest_articles
 
-  print("Device type: {0}".format(request.flavour))
+  logger.info("Client's device type: {0}".format(request.flavour))
 
   if device_type == "full":
     return render(request, "remont/index.html", response_data)
@@ -142,7 +142,7 @@ def orgs_list(request):
 
   nameStarts = request.GET.get("nameStarts", "")
   if nameStarts:
-    print("Filtering orgs list by name...")
+    logger.info("Filtering orgs list by name...")
     orgs = orgs.filter(name__icontains=nameStarts)
 
   orgs_list = []
@@ -150,7 +150,7 @@ def orgs_list(request):
     org_data = {"id": org.id, "name": org.name, "rating": get_org_rating(org), "logo": get_org_logo(org)}
     orgs_list.append(org_data)
 
-  print("Amount of organizations: {0}".format(len(orgs_list)))
+  logger.info("Amount of organizations: {0}".format(len(orgs_list)))
   return render(request, 'remont/orgs_list.html', {"orgs_list": orgs_list, "nameStarts": nameStarts})
 
 
@@ -185,7 +185,7 @@ def search_organizations(request):
     else:
       response_data.append({"id": org.id, "name": org.name, "logo": get_org_logo(org)})
 
-  print "Found {0} organizations: ".format(len(response_data))
+  logger.info("Found {0} organizations: ".format(len(response_data)))
   response = JsonResponse(response_data, safe=False)
   return response
 
@@ -208,7 +208,7 @@ def suggest_job_save_ajax(request):
     short_header=request.POST.get("job_header", "")
   )
   job_spec = request.session.get("sel_spec")
-  print("Work spec: {0}".format(job_spec))
+  logger.info("Work specialization: {0}".format(job_spec))
   work_spec = WorkSpec.objects.get(id=int(job_spec))
   job.job_spec = work_spec
   job.save()
@@ -265,7 +265,7 @@ def create_organization(request):
       try:
         send_confirm_registration(org.email, org.account.id)
       except SMTPAuthenticationError as e:
-        print("Unable to send registration confirmation mail! Account activation should be done manually by site admin.")
+        logger.error("Unable to send registration confirmation mail! Account activation should be done manually by site admin.")
       return render(request, 'remont/confirm_registration.html', {})
     else:
       return render(request, "remont/register.html", {"reg_form": reg_form})
@@ -283,7 +283,7 @@ def site_login(request):
 
   if user is None:
     # Попытка авторизации, используя имя организации
-    print("Authorization error!")
+    logger.error("Authorization error!")
     org = OrganizationProfile.objects.filter(name=uname).first()
     if org:
       uname = org.account.username
@@ -296,9 +296,11 @@ def site_login(request):
         else:
           response_data["status"] = "error"
           response_data["error_message"] = u"Аккаунт пользователя {0} не активирован!".format(uname)
+          logger.error(response_data["error_message"])
     else:
       response_data["status"] = "error"
       response_data["error_message"] = "Неправильное имя пользователя или пароль"
+      logger.error(response_data["error_message"])
   else:
     login(request, user)
     response_data["status"] = "success"
@@ -376,7 +378,7 @@ def get_profile_info(request):
   profile_json["photos"] = [p.photo.url for p in photos]
 
   if org_profile.account:
-    print("Organization user: {0}".format(org_profile.account.id))
+    logger.info("Organization user: {0}".format(org_profile.account.id))
     profile_json["last_visit"] = get_last_visit(org_profile.account.id)
   else:
     profile_json["last_visit"] = u"Никогда"
@@ -398,16 +400,16 @@ def send_text_mesaage(request):
   if receiver_org.account:
     message_text = request.POST["message"]
     if request.user.is_authenticated():
-      print 'User is authenticated!'
+      logger.info('User is authenticated!')
       sender = request.user
       msg = Message(msg_to=receiver_org.account, msg_from=sender, text=message_text)
       msg.save()
-      print "Message was successfully send"
+      logger.info("Message was successfully send")
       response_data["status"] = "success"
     else:
-      print "Error during message sending."
       response_data["status"] = "error"
       response_data["error_message"] = u"Организация {0} еще не активизировала свой аккаунт на сайте".format(receiver_org.name)
+      logger.error(response_data["error_message"])
 
   return JsonResponse(response_data, safe=False)
 
@@ -419,7 +421,7 @@ def confirm_registration(request):
     account = User.objects.filter(id=user_id).first()
     account.is_active = True
     account.save()
-    print "Account was activated successfully!"
+    logger.info("Account was activated successfully!")
 
     return redirect("/remont")
 
@@ -428,16 +430,16 @@ def confirm_registration(request):
 @csrf_exempt
 def edit_organization(request, id=None):
   if id:
-    print("User identifier: {0}".format(id))
+    logger.info("User identifier: {0}".format(id))
     user = get_object_or_404(User, pk=id)
     org = get_object_or_404(OrganizationProfile, account=user)
 
     if request.POST:
-      print("Saving changes...")
+      logger.info("Saving changes...")
       profile_form = OrganizationEditForm(request.POST, request.FILES, instance=org)
       if profile_form.is_valid():
         profile_form.save()
-        print("Organization changes were saved successfully!")
+        logger.info("Organization changes were saved successfully!")
         redirect_url = '/remont/edit_organization/' + str(id)
         return redirect(redirect_url)
     else:
@@ -463,7 +465,7 @@ def edit_organization(request, id=None):
       })
 
   else:
-    print("No user id is defined!")
+    logger.error("No user id is defined!")
 
 
 # Загрузка фотографий выполненных работ
@@ -563,7 +565,7 @@ def add_partner_request(request):
     sender = OrganizationProfile.objects.filter(account=request.user).first()
     recipient_id = request.POST["recipientId"]
     recipient = OrganizationProfile.objects.filter(id=recipient_id).first()
-    print("Sending partner request to {0}".format(recipient.id))
+    logger.info("Sending partner request to organization with id {0}".format(recipient.id))
     partner_request = PartnerRequest(org_from=sender, org_to=recipient)
     partner_request.save()
     return JsonResponse({"status": "succcss"}, safe=False)
@@ -711,7 +713,7 @@ def get_dialogs_history(request):
 
     if msg.msg_to.id == request.user.id:
       msg.was_read = datetime.now()
-      print("Message was read!");
+      logger.info("Message was read!");
       msg.save()
 
     sender_org = OrganizationProfile.objects.filter(account=msg.msg_from).first()
@@ -745,7 +747,7 @@ def check_spec(request):
 def articles_list(request):
   articles_list = Article.objects.order_by("-date_created")
   paginator = Paginator(articles_list, 10)
-  print("Pages amount: {0}".format(paginator.num_pages))
+  logger.info("Pages amount: {0}".format(paginator.num_pages))
 
   active_page = request.GET.get("active_page")
   try:
@@ -761,8 +763,8 @@ def articles_list(request):
 @csrf_exempt
 def read_article(request, id=None):
   if(id):
-    print("Openning article with id: {0}".format(id))
+    logger.info("Openning article with id: {0}".format(id))
     article = Article.objects.filter(pk=id).first()
     return render(request, "remont/read_article.html", {"article": article})
   else:
-    print("No article selected!")
+    logger.warning("No article selected!")
