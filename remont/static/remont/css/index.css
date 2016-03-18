@@ -167,16 +167,6 @@
   padding-right: 10px;
 }
 
-.main-div {
-  float: left;
-  width: 100%
-}
-
-.content-div {
-  float: left;
-  width: 83%;
-}
-
 .error-div {
   color: #FF0000;
   font-size: 12px;
