@@ -113,10 +113,12 @@ $(function() {
     loginDialog.dialog("open");
   }
 
+  // Диалог со список запросов на добавление в партнеры
   function showPartnersDialog() {
     partnersRequestDialog.dialog("open");
   }
 
+  // Вход на сайт
   function sendLoginRequest() {
     var data = {
       'login': $("#login").val(),
@@ -125,6 +127,7 @@ $(function() {
     $.post("/remont/site_login/", data, loginResult);
   }
 
+  // Установка пароля пользователя
   function sendSetPasswordRequest() {
     var data = {
       'login': $("#passwordOrgName").val(),
@@ -133,6 +136,7 @@ $(function() {
     $.post("/remont/set_password/", data, setPasswordResult);
   }
 
+  // Обработка результата входа на сайт
   function loginResult(responseData, textStatus, jqXHR) {
     console.log("Login status: " + responseData.status);
     if(responseData.status === "success") {
@@ -144,6 +148,7 @@ $(function() {
     }
   }
 
+  // Обработка результата установки пароля
   function setPasswordResult(responseData, textStatus, jqXHR) {
     console.log(responseData);
     if(responseData.status == "success") {
@@ -151,16 +156,13 @@ $(function() {
     }
   }
 
+  // Выход с сайта
   function logout() {
     window.location.replace("/remont/site_logout");
   }
 
   function editProfile() {
     window.location.replace("/remont/edit_organization/" + $("#userId").text());
-  }
-
-  function logSuccess(responseData, textStatus) {
-    console.log("Response status: " + responseData.status);
   }
 
   function approvePartner() {
