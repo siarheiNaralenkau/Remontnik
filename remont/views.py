@@ -31,6 +31,9 @@ from datetime import datetime, date, time
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 import locale
+import logging
+
+logger = logging.getLogger('remont.default_logger')
 
 # Главная страница приложения
 def index(request):

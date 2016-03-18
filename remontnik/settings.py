@@ -41,9 +41,11 @@ platform = sys.platform
 if sys.platform.startswith("win"):
   MEDIA_ROOT = "c://MyDevelopment//MediaStorage"
   STATIC_ROOT = "c://MyDevelopment//remontnik_static"
+  LOG_FILE = "c://MyDevelopment//logs//remontnik.log"
 elif sys.platform.startswith("linux"):
   MEDIA_ROOT = "/home/media/remontnik"
   STATIC_ROOT = "/var/www/app/remontnik_static"
+  LOG_FILE = "/var/www/logs/remontnik.log"
 else:
   MEDIA_ROOT = "/home/media"
 
@@ -55,6 +57,32 @@ STATIC_URL = '/static/'
 
 # Environment configuration(local or remote)
 ENVIRONMENT = os.environ.get('REM_ENVIRONMENT', 'local')
+
+# Logging configuration
+LOGGING = {
+  'version': 1,
+  'disable_existing_loggers': False,
+  'formatters': {
+    'simple': {
+      'format': '%(asctime)s %(levelname)s %(filename)s %(lineno)d : %(message)s'
+    }
+  },
+  'handlers': {
+    'file': {
+      'level': 'INFO',
+      'class': 'logging.FileHandler',
+      'filename': LOG_FILE,
+      'formatter': 'simple'
+    },
+  },
+  'loggers': {
+    'remont.default_logger': {
+      'handlers': ['file'],
+      'level': 'INFO',
+      'propagate': True,
+    },
+  },
+}
 
 # Application definition
 
@@ -123,6 +151,7 @@ try:
 except:
   HOST_NAME = "localhost"
 
+# Mailing settings
 SMTP_SERVER = "smtp.gmail.com"
 SMTP_PORT = 587
 MAIL_FROM = "staatix.gomel@gmail.com"
