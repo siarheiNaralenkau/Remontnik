@@ -42,7 +42,7 @@ def get_top_orgs():
 def get_org_logo(org):
   if org.logo:
     logo_url = "/remont" + org.logo.url
-    logging.ingo("Logo full url: {0}".format(logo_url))
+    logger.info("Logo url: {0}".format(logo_url))
   else:
     logo_url = "/static/remont/images/info_empty.jpg"
   return logo_url
