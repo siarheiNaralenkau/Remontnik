@@ -9,7 +9,7 @@ class UserActivity(models.Model):
         verbose_name = u'Активность пользователя'
         verbose_name_plural = u'Активности пользозьвателя'
 
-    last_activity_ip = models.IPAddressField()
+    last_activity_ip = models.GenericIPAddressField()
     last_activity_date = models.DateTimeField(default=None)
     user = models.OneToOneField(User, primary_key=True)
 
