@@ -1,15 +1,22 @@
 .articles-list {
-  width: 100%;
+  margin-left: 4%;
+  width: 71.5%;
+  border: 2px solid #DCDCDC;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .article-item {
   width: 100%;
   display: inline-block;
+  text-align: justify;
 }
 
 .article-item img {
-  width: 400px !important;
-  height: 300px !important;
+  float: left !important;
+  margin: 10px !important;
+  width: 325px !important;
+  height: 220px !important;
 }
 
 .article-item strong {
@@ -21,4 +28,8 @@
   text-align: center;
   font-size: 1.6em;
   font-weight: 800;
+}
+
+.article-beginning {
+
 }

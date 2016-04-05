@@ -1,8 +1,9 @@
 .art-list-container {
-  max-width: 1000px;
-  min-width: 600px;
-  width: 80%;
-  margin: 0 auto;
+  margin-left: 4%;
+  width: 71%;
+  border: 2px solid #DCDCDC;
+  border-radius: 10px;
+  padding: 10px;
 }
 
 .articles-list {
@@ -12,11 +13,14 @@
 .article-item {
   width: 100%;
   display: inline-block;
+  text-align: justify;
 }
 
 .article-item img {
-  width: 400px !important;
-  height: 300px !important;
+  float: left !important;
+  margin: 10px !important;
+  width: 325px !important;
+  height: 220px !important;
 }
 
 .article-item strong {
@@ -34,7 +38,14 @@
   display: inline-block;
 }
 
+.pagination {
+  width: 100%;
+  text-align: center;
+}
+
 .nav-buttons {
+  max-width: 100%;
+  margin: auto;
   font-size: 1.5em;
 }
 
@@ -49,7 +60,8 @@
 .pages-list li {
   display: inline;
   padding-left: 10px;
-  padding-right: 10px;
+  padding-right: 5px;
+  padding-bottom: 5px;
   border-radius: 5px;
   font-size: 1.5em;
 }

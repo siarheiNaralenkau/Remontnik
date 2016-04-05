@@ -1,7 +1,18 @@
 .article_content {
-  width: 80%;
-  max-width: 1000px;
-  min-width: 600px;
-  margin: 0 auto;
-  padding-bottom: 30px;
+  margin-left: 4%;
+  width: 71%;
+  border: 2px solid #DCDCDC;
+  border-radius: 10px;
+  padding: 10px;
+  text-align: justify;
+}
+
+.article_content img {
+  margin: 10px !important;
+  width: 325px !important;
+  height: 220px !important;
+}
+
+.article_content strong {
+  padding-left: 5px;
 }
