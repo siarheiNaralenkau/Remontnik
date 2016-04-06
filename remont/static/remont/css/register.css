@@ -1,3 +1,12 @@
+.reg-field-wrapper {
+  margin-top: 10px;
+}
+
+.mandatory-field label {
+  font-weight: bold;
+  color: #FF0033;
+}
+
 .register-field {
   display: block;
   width: 800px;
